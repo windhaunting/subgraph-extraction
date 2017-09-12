@@ -308,9 +308,10 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
             if len(row) >= 2:
                 nodeId = int(row[1].strip().lower())         #string type
                 nodeName = row[0].split("+++")[0].strip().lower()
+                nodeType = row[0].split("+++")[1].strip().lower()
                 if nodeId not in nodeIdtoNameMap:
                     nodeIdtoNameMap[nodeId] = nodeName
-                    
+                    nodeIdtoTypeMap[nodeId] = nodeType
         
     G = nx.MultiDiGraph()           #nx.DiGraph() 
     with codecs.open(edgeListFile, 'rU') as tsvfile:
@@ -322,7 +323,8 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
                 nodeDstId = int(row[1].strip())                     #dst node Id
                 edgeStr =  row[2].strip().lower()
                 #get node type
-                                G.add_node(nodeId, labelType=nodeType, labelName=nodeName)
+                nodeTypeSrc = nodeIdtoTypeMap[nodeSrcId]
+                G.add_node(nodeId, labelType=nodeType, labelName=nodeName)
 
                     
 #basic statisics of the graph
