@@ -43,9 +43,9 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum):
     residual = specNodeNum % queryNodeNum
     
     divideSpecNodeNum = []
-    for i in range(queryNodeNum):
+    for i in range(queryNodeNum):              #assign specNodeNum size for each queryNodeNum
         if residual != 0:
-            divideSpecNodeNum.append(divider + 1)
+            divideSpecNodeNum.append(divider + 1)           
             residual -= 1
         else:
             divideSpecNodeNum.append(divider)
@@ -131,7 +131,7 @@ def executeExtractFunction():
     
     specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-    outFile = "/home/fubao/workDir/ResearchProjects/hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphOutput/ciscoDataExtractQueryGraph"
+    outFile = "/home/fubao/workDir/ResearchProjects/hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphOutput/ciscoDataExtractQueryGraph01"
     os.remove(outFile) if os.path.exists(outFile) else None
 
     fd = open(outFile,'a')
@@ -145,8 +145,8 @@ def executeExtractFunction():
         for specNumLst in queryGraphLst:
             inputStr = ""
             for tpl in specNumLst[:-1]:
-            
                 inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+                
             inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
             writeLst.append(inputStr)  
             
