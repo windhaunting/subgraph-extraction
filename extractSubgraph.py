@@ -35,7 +35,7 @@ from math import floor
 
 #extract query graph for experiments.
 #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
-def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum):
+def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
     
     #find path of , 
     #get the specNodeNum
@@ -63,19 +63,23 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum):
                     #check how many product inside the path
                     #check how many has product type in the path
                     prodNodes = []
+                    dstTypeInd = 0
                     for nodeId in path:
+                        print(" queryNodeNum dstTypeId ", queryNodeNum, dstTypeInd)
+                        dstType = dstTypeLst[dstTypeInd]
+                        
                         if G.node[nodeId]['labelType'] == 0:
                             #print ("xxxxxxx: ", node)
                             prodNodes.append(nodeId)
                         if len(prodNodes) >= queryNodeNum:
                            # breakFlag = True
                             #get the 
-                            print(" resNodesPath ", path)
+                            #print(" resNodesPath ", path)
                             cntQueryNum = 0
                             prevj = 0
                             for nd in path:
                                 innerLst = []
-                                if G.node[nd]['labelType'] == 0:
+                                if G.node[nd]['labelType'] == dstType:
                                     #get node neighbor for specific number
                                     nbs = G[nd]  
                                     tmpCnt = 0
@@ -84,7 +88,7 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum):
                                     nbsLst= list(nbs.keys())
                                     while (j < len(nbsLst)):
                                         nb = nbsLst[j]
-                                        if G.node[nb]['labelType'] != 0 and (nb, G.node[nb]['labelType']) not in innerLst:
+                                        if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
                                             innerLst.append((nb, G.node[nb]['labelType']))
                                             tmpCnt += 1
                                             if innerLst in queryGraphLst:
@@ -92,6 +96,7 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum):
                                             elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
                                                 cntQueryNum += 1
                                                 queryGraphLst.append(innerLst)
+                                                dstTypeInd += 1    #change next dstType index                                            
                                                 if cntQueryNum >= queryNodeNum:
                                                     print(" queryGraphLst ", queryGraphLst)
                                                     return path, queryGraphLst
@@ -99,7 +104,6 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum):
                                         j += 1
                                     prevj = j
                                         
-                                            
 
                                 
                                 
@@ -139,7 +143,10 @@ def executeExtractFunction():
     for tpls in specNodesQueryNodesLst:
         specNodeNum = tpls[0]
         queryNodeNum = tpls[1]
-        path, queryGraphLst = extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum)
+        dstTypeLst = [0]*queryNodeNum
+
+        path, queryGraphLst = extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
+
 
         writeLst = []              #format: x,x;x,x;    x,x;,x,x....
         for specNumLst in queryGraphLst:
