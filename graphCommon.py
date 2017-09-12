@@ -201,6 +201,8 @@ def readAnimalGraph(adjacentListFile, nodeInfoFile1):
 5	workgroup
 6	product site
 '''
+
+
 def readCiscoDataGraph(adjacentListFile, ciscoNodeInfoFile):
     #G.add_node('abc', dob=1185, pob='usa', dayob='monday')
 
@@ -293,6 +295,25 @@ def readCiscoDataGraph(adjacentListFile, ciscoNodeInfoFile):
     #plt.savefig('graph.pdf')
     return G
 
+
+#read dblp data graph
+
+def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
+    #G.add_node('abc', dob=1185, pob='usa', dayob='monday')
+
+    NodeNameMap = {}
+    with codecs.open(dblpNodeInfoFile, 'rU') as tsvfile:
+        tsvin = csv.reader(tsvfile, delimiter='\t', quoting=0)
+        #i = 0
+        for row in tsvin:
+            if len(row) >= 3:
+                nodeId = int(row[0].strip().lower())         #string type
+                nodeName = row[1].strip().lower()
+                if nodeId not in NodeNameMap:
+                    NodeNameMap[nodeId] = nodeName
+                    
+                    
+                    
 #basic statisics of the graph
 def statistGraphInfo(G):
     nodeNum = len(G)
