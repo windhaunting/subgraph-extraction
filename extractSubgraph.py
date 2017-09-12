@@ -53,6 +53,7 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
     print ("divideSpecNodeNum, : ", divideSpecNodeNum)
     
     queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
+    dstTypeIndex = 0              #which query node type
     
     for src in productNodeSet:
         #breakFlag = False
@@ -63,11 +64,9 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
                     #check how many product inside the path
                     #check how many has product type in the path
                     prodNodes = []
-                    dstTypeInd = 0
                     for nodeId in path:
-                        print(" queryNodeNum dstTypeId ", queryNodeNum, dstTypeInd)
-                        dstType = dstTypeLst[dstTypeInd]
-                        
+                        print(" queryNodeNum dstTypeId ", queryNodeNum, dstTypeIndex)
+                        dstType = dstTypeLst[dstTypeIndex]
                         if G.node[nodeId]['labelType'] == 0:
                             #print ("xxxxxxx: ", node)
                             prodNodes.append(nodeId)
@@ -96,7 +95,8 @@ def extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
                                             elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
                                                 cntQueryNum += 1
                                                 queryGraphLst.append(innerLst)
-                                                dstTypeInd += 1    #change next dstType index                                            
+                                                dstTypeIndex += 1    #change next dstType index 
+                                                print(" dstTypeIndex aa ", dstTypeIndex)
                                                 if cntQueryNum >= queryNodeNum:
                                                     print(" queryGraphLst ", queryGraphLst)
                                                     return path, queryGraphLst
