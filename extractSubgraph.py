@@ -171,7 +171,7 @@ class ClsSubgraphExtraction(object):
         x = 1
         edgeListFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/outNodeTypeFile.tsv"
-    
+        
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
