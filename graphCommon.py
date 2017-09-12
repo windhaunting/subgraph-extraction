@@ -202,9 +202,8 @@ def readAnimalGraph(adjacentListFile, nodeInfoFile1):
 6	product site
 '''
 
-
+# read cisco product data graph
 def readCiscoDataGraph(adjacentListFile, ciscoNodeInfoFile):
-    #G.add_node('abc', dob=1185, pob='usa', dayob='monday')
 
     NodeNameMap = {}
     with codecs.open(ciscoNodeInfoFile, 'rU') as tsvfile:
@@ -299,20 +298,32 @@ def readCiscoDataGraph(adjacentListFile, ciscoNodeInfoFile):
 #read dblp data graph
 
 def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
-    #G.add_node('abc', dob=1185, pob='usa', dayob='monday')
 
-    NodeNameMap = {}
+    nodeIdtoNameMap = {}             #nodeId to node name
+    nodeIdtoTypeMap = {}             #nodeId to node type 
     with codecs.open(dblpNodeInfoFile, 'rU') as tsvfile:
         tsvin = csv.reader(tsvfile, delimiter='\t', quoting=0)
         #i = 0
         for row in tsvin:
+            if len(row) >= 2:
+                nodeId = int(row[1].strip().lower())         #string type
+                nodeName = row[0].split("+++")[0].strip().lower()
+                if nodeId not in nodeIdtoNameMap:
+                    nodeIdtoNameMap[nodeId] = nodeName
+                    
+        
+    G = nx.MultiDiGraph()           #nx.DiGraph() 
+    with codecs.open(edgeListFile, 'rU') as tsvfile:
+        tsvin = csv.reader(tsvfile, delimiter='\t', quoting=0)
+        #i = 0
+        for row in tsvin:
             if len(row) >= 3:
-                nodeId = int(row[0].strip().lower())         #string type
-                nodeName = row[1].strip().lower()
-                if nodeId not in NodeNameMap:
-                    NodeNameMap[nodeId] = nodeName
-                    
-                    
+                nodeSrcId = int(row[0].strip())                      #src node Id
+                nodeDstId = int(row[1].strip())                     #dst node Id
+                edgeStr =  row[2].strip().lower()
+                #get node type
+                                G.add_node(nodeId, labelType=nodeType, labelName=nodeName)
+
                     
 #basic statisics of the graph
 def statistGraphInfo(G):

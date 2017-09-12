@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul 20 14:20:09 2017
+Created on Thu Aug 10 14:20:09 2017
 
 @author: fubao
 """
@@ -17,6 +17,8 @@ from CommonFiles.commons import writeListRowToFileWriterTsv
 from CommonFiles.commons import  appendStringRowToFileWriterTsv
 
 from graphCommon import readCiscoDataGraph
+from graphCommon import readdblpDataGraph
+
 
 import networkx as nx
 #extractSubGraph from data graph
@@ -168,7 +170,6 @@ class ClsSubgraphExtraction(object):
 
     #extract dblp data entry
     def funcExecuteExtractProduct(self):
-        x = 1
         edgeListFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/outNodeTypeFile.tsv"
         
