@@ -306,6 +306,7 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
         #i = 0
         for row in tsvin:
             if len(row) >= 2:
+                #print ("nodeType:", row)
                 nodeId = int(row[1].strip().lower())         #string type
                 nodeName = row[0].split("+++")[0].strip().lower()
                 nodeType = row[0].split("+++")[1].strip().lower()
