@@ -331,7 +331,14 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
                 G.add_node(nodeDstId, labelType=nodeDstType, labelName=nodeDstName)
                 
                 #update src
-                
+                if edgeStr == "same":
+                    G.add_edge(nodeSrcId, nodeDstId, key='higherHierarchy', edgeHierDistance = 0)
+                elif edgeStr == "higher":
+                    G.add_edge(nodeSrcId, nodeDstId, key='higherHierarchy', edgeHierDistance = 1)
+                elif edgeStr == "lower":
+                    G.add_edge(nodeSrcId, nodeDstId, key='higherHierarchy', edgeHierDistance = -1)
+
+                    
                     
 #basic statisics of the graph
 def statistGraphInfo(G):
