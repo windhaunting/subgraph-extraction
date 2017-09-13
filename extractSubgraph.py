@@ -147,14 +147,12 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
     
         fd = open(outFile,'a')
-        
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
             dstTypeLst = [0]*queryNodeNum
     
             path, queryGraphLst = self.funcExtractSubGraph(G, productNodeSet, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
-    
     
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
             for specNumLst in queryGraphLst:
@@ -182,7 +180,29 @@ class ClsSubgraphExtraction(object):
         print ("peopleNodeSet: ", len(peopleNodeSet))
          
         specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
-        
+        outFile = "../dblpParserGraph/output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
+        os.remove(outFile) if os.path.exists(outFile) else None
+    
+        fd = open(outFile,'a')
+        for tpls in specNodesQueryNodesLst:
+            specNodeNum = tpls[0]
+            queryNodeNum = tpls[1]
+            dstTypeLst = [1]*queryNodeNum
+    
+            path, queryGraphLst = self.funcExtractSubGraph(G, peopleNodeSet, peopleNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
+            
+            writeLst = []              #format: x,x;x,x;    x,x;,x,x....
+            for specNumLst in queryGraphLst:
+                inputStr = ""
+                for tpl in specNumLst[:-1]:
+                    inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+                    
+                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
+                writeLst.append(inputStr)  
+                
+            writeListRowToFileWriterTsv(fd, writeLst, '\t')   
+            
+            
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
