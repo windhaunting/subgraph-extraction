@@ -323,8 +323,12 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
                 nodeDstId = int(row[1].strip())                     #dst node Id
                 edgeStr =  row[2].strip().lower()
                 #get node type
-                nodeTypeSrc = nodeIdtoTypeMap[nodeSrcId]
-                G.add_node(nodeId, labelType=nodeType, labelName=nodeName)
+                nodeSrcType = nodeIdtoTypeMap[nodeSrcId]
+                nodeDstType = nodeIdtoTypeMap[nodeDstId]
+                nodeSrcName = nodeIdtoNameMap[nodeSrcId]
+                nodeDstName = nodeIdtoNameMap[nodeDstId]
+                G.add_node(nodeSrcId, labelType=nodeSrcType, labelName=nodeName)
+                G.add_node(nodeDstId, labelType=nodeDstType, labelName=nodeName)
 
                     
 #basic statisics of the graph
