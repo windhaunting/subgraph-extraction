@@ -42,7 +42,8 @@ class ClsSubgraphExtraction(object):
     
     #extract query graph for experiments.
     #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
-    def funcExtractSubGraph(self, G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
+    #startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
+    def funcExtractSubGraph(self, G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
         
         #find path of , 
         #get the specNodeNum
@@ -62,9 +63,9 @@ class ClsSubgraphExtraction(object):
         queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
         dstTypeIndex = 0              #which query node type
         
-        for src in productNodeSet:
+        for src in startNodeSet:
             #breakFlag = False
-            for dst in productNodeSet:
+            for dst in endNodeSet:
                 if src != dst:
                     #get all path
                     for path in nx.all_simple_paths(G, src, dst):
@@ -152,7 +153,7 @@ class ClsSubgraphExtraction(object):
             queryNodeNum = tpls[1]
             dstTypeLst = [0]*queryNodeNum
     
-            path, queryGraphLst = self.funcExtractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
+            path, queryGraphLst = self.funcExtractSubGraph(G, productNodeSet, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
     
     
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
@@ -174,7 +175,13 @@ class ClsSubgraphExtraction(object):
         dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         
         G = readdblpDataGraph(edgeListFile, dblpNodeInfoFile)
-        
+        peopleNodeSet = set()
+        for n, d in G.nodes_iter(data=True):
+            if d['labelType'] == 1:
+                peopleNodeSet.add(n)
+        print ("peopleNodeSet: ", len(peopleNodeSet))
+         
+        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         
     
 def main():

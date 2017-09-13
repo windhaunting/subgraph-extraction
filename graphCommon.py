@@ -309,7 +309,7 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
                 #print ("nodeType:", row)
                 nodeId = int(row[1].strip().lower())         #string type
                 nodeName = row[0].split("+++")[0].strip().lower()
-                nodeType = row[0].split("+++")[1].strip().lower()
+                nodeType = int(row[0].split("+++")[1].strip().lower())
                 if nodeId not in nodeIdtoNameMap:
                     nodeIdtoNameMap[nodeId] = nodeName
                     nodeIdtoTypeMap[nodeId] = nodeType
@@ -340,7 +340,7 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
                     G.add_edge(nodeSrcId, nodeDstId, key='higherHierarchy', edgeHierDistance = -1)
 
 
-    print ('G one node: ', G[1], len(G[1]))    
+    #print ('G one node: ', G[1], len(G[1]))    
     return G
 
                     
