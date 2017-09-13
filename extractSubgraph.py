@@ -169,16 +169,21 @@ class ClsSubgraphExtraction(object):
     
 
     #extract dblp data entry
-    def funcExecuteExtractProduct(self):
+    def funcExecuteExtractDblp(self):
         edgeListFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/outNodeTypeFile.tsv"
+        
+        G = readdblpDataGraph(edgeListFile, dblpNodeInfoFile)
+        
         
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
-    subgraphExtractionObj.funcExecuteExtractProduct()
+    #subgraphExtractionObj.funcExecuteExtractProduct()
     
-    
+    subgraphExtractionObj.funcExecuteExtractDblp()
+
+
 if __name__== "__main__":
   main()
 

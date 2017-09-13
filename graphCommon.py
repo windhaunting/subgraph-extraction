@@ -338,7 +338,10 @@ def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
                 elif edgeStr == "lower":
                     G.add_edge(nodeSrcId, nodeDstId, key='higherHierarchy', edgeHierDistance = -1)
 
-                    
+
+    print ('G one node: ', G[1], len(G[1]))    
+    return G
+
                     
 #basic statisics of the graph
 def statistGraphInfo(G):
