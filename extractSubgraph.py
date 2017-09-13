@@ -180,7 +180,7 @@ class ClsSubgraphExtraction(object):
         print ("peopleNodeSet: ", len(peopleNodeSet))
          
         specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
-        outFile = "../dblpParserGraph/output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
+        outFile = "output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
         os.remove(outFile) if os.path.exists(outFile) else None
     
         fd = open(outFile,'a')
