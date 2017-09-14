@@ -209,21 +209,24 @@ class ClsSubgraphExtraction(object):
             
 
     #get subgraph from datagraph
-    def subgraphFromDatagraph(G, numberNodesLst):
+    def subgraphFromDatagraph(G, rationofNodes):
         #get random number of nodes
-        numberNodes = len(numberNodesLst)
+        numberNodes = len(G)*rationofNodes
         numberNodesLst = sample(G.nodes(), numberNodes)
         #get subgraph
         subGraph = G.subgraph(numberNodesLst)    
         
+        return subGraph
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
     #subgraphExtractionObj.funcExecuteExtractProduct()
     
-    subgraphExtractionObj.funcExecuteExtractDblp()
+    #subgraphExtractionObj.funcExecuteExtractDblp()
 
-
+    #get 10% of data; 10%, 20%, 50, 80%, 100%
+    len()
+    
 if __name__== "__main__":
   main()
 
