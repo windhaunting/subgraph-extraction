@@ -120,7 +120,7 @@ class ClsSubgraphExtraction(object):
                                     
                                     
     
-    #extract product data  entry    
+    #extract product data query graph   entry    
     def funcExecuteExtractProduct(self):
         ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
         ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
@@ -171,7 +171,7 @@ class ClsSubgraphExtraction(object):
     
     
 
-    #extract dblp data entry
+    #extract dblp data query graph entry
     def funcExecuteExtractDblp(self):
         edgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
