@@ -206,7 +206,11 @@ class ClsSubgraphExtraction(object):
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')   
             
-            
+
+    #get subgraph from datagraph
+    def subgraphSize():
+        x = 1
+          
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
