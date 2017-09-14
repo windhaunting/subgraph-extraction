@@ -107,7 +107,6 @@ def readAnimalGraph(adjacentListFile, nodeInfoFile1):
     NodeNameMap = {}
     with codecs.open(nodeInfoFile1, 'rU') as tsvfile:
         tsvin = csv.reader(tsvfile, delimiter='\t', quoting=0)
-        i = 0
         for row in tsvin:
             if len(row) >= 3:
                 nodeId = int(row[0].strip().lower())         #string type
@@ -118,7 +117,6 @@ def readAnimalGraph(adjacentListFile, nodeInfoFile1):
     G = nx.MultiDiGraph()           #nx.DiGraph() 
     with codecs.open(adjacentListFile, 'rU') as tsvfile:
         tsvin = csv.reader(tsvfile, delimiter='\t', quoting=0)
-        #i = 0
         for row in tsvin:
             if len(row) >= 2:
                 nodeId = int(row[0])

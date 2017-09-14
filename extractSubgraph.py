@@ -72,10 +72,12 @@ class ClsSubgraphExtraction(object):
                         #check how many product inside the path
                         #check how many has product type in the path
                         prodNodes = []
+                        tmpTargetIndex = 0
                         for nodeId in path:
-                            if G.node[nodeId]['labelType'] == 0:
+                            if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
                                 #print ("xxxxxxx: ", node)
                                 prodNodes.append(nodeId)
+                                tmpTargetIndex += 1
                             if len(prodNodes) >= queryNodeNum:
                                # breakFlag = True
                                 #get the 
@@ -127,12 +129,12 @@ class ClsSubgraphExtraction(object):
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
         
         productNodeSet = set()
-        vulnerNodeSet = set()
+        #vulnerNodeSet = set()
         for n, d in G.nodes_iter(data=True):
             if d['labelType'] == 0:
                 productNodeSet.add(n)
-            if d['labelType'] == 1:
-                vulnerNodeSet.add(n)
+            #if d['labelType'] == 1:
+            #    vulnerNodeSet.add(n)
     
         print ("productNodeSet: ", len(productNodeSet))
         #workgroup = ((u,v) for u,v,d in G.nodes_iter(data=True) if d['labelType']==5)
@@ -206,9 +208,9 @@ class ClsSubgraphExtraction(object):
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
-    #subgraphExtractionObj.funcExecuteExtractProduct()
+    subgraphExtractionObj.funcExecuteExtractProduct()
     
-    subgraphExtractionObj.funcExecuteExtractDblp()
+    #subgraphExtractionObj.funcExecuteExtractDblp()
 
 
 if __name__== "__main__":
