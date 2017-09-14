@@ -208,12 +208,12 @@ class ClsSubgraphExtraction(object):
             
 
     #get subgraph from datagraph
-    def subgraphFromDatagraph(numberNodesLst):
+    def subgraphFromDatagraph(G, numberNodesLst):
         #get random number of nodes
         
        
         #get subgraph
-        subgraph(numberNodesLst)    
+         G.subgraph(numberNodesLst)    
           
     
 def main():
