@@ -210,9 +210,9 @@ class ClsSubgraphExtraction(object):
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
-    subgraphExtractionObj.funcExecuteExtractProduct()
+    #subgraphExtractionObj.funcExecuteExtractProduct()
     
-    #subgraphExtractionObj.funcExecuteExtractDblp()
+    subgraphExtractionObj.funcExecuteExtractDblp()
 
 
 if __name__== "__main__":
