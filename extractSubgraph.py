@@ -11,6 +11,7 @@ import codecs
 import csv
 import os
 from collections import OrderedDict
+from random import sample
 
 from CommonFiles.commons import mycsv_reader
 from CommonFiles.commons import writeListRowToFileWriterTsv
@@ -210,11 +211,11 @@ class ClsSubgraphExtraction(object):
     #get subgraph from datagraph
     def subgraphFromDatagraph(G, numberNodesLst):
         #get random number of nodes
-        
-       
+        numberNodes = len(numberNodesLst)
+        numberNodesLst = sample(G.nodes(), numberNodes)
         #get subgraph
-         G.subgraph(numberNodesLst)    
-          
+        subGraph = G.subgraph(numberNodesLst)    
+        
     
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
