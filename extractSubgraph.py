@@ -208,7 +208,7 @@ class ClsSubgraphExtraction(object):
             writeListRowToFileWriterTsv(fd, writeLst, '\t')   
             
 
-    #get subgraph from datagraph
+    #get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100%
     def subgraphFromDatagraph(G, rationofNodes):
         #get random number of nodes
         numberNodes = len(G)*rationofNodes
@@ -218,14 +218,14 @@ class ClsSubgraphExtraction(object):
         
         return subGraph
     
+    
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
     #subgraphExtractionObj.funcExecuteExtractProduct()
     
-    #subgraphExtractionObj.funcExecuteExtractDblp()
+    subgraphExtractionObj.funcExecuteExtractDblp()
 
-    #get 10% of data; 10%, 20%, 50, 80%, 100%
-    len()
+    
     
 if __name__== "__main__":
   main()
