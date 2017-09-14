@@ -78,41 +78,43 @@ class ClsSubgraphExtraction(object):
                                 #print ("xxxxxxx: ", node)
                                 prodNodes.append(nodeId)
                                 tmpTargetIndex += 1
-                            if len(prodNodes) >= queryNodeNum:
-                               # breakFlag = True
-                                #get the 
-                                #print(" resNodesPath ", path)
-                                cntQueryNum = 0
-                                prevj = 0
-                                for nd in path:
-                                    innerLst = []
-                                    dstType = dstTypeLst[dstTypeIndex]               #get query node type
-                        
-                                    if G.node[nd]['labelType'] == dstType:
-                                        #get node neighbor for specific number
-                                        nbs = G[nd]  
-                                        tmpCnt = 0
-                                        j = prevj
-                                        #print ("type: ", type(nbs))
-                                        nbsLst= list(nbs.keys())
-                                        while (j < len(nbsLst)):
-                                            nb = nbsLst[j]
-                                            if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
-                                                innerLst.append((nb, G.node[nb]['labelType']))
-                                                tmpCnt += 1
-                                                if innerLst in queryGraphLst:
-                                                    innerLst.pop()
-                                                elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
-                                                    cntQueryNum += 1
-                                                    queryGraphLst.append(innerLst)
-                                                    print(" dstTypeIndex aa ", dstTypeIndex)
-                                                    dstTypeIndex += 1    #change next dstType index 
-                                                    if cntQueryNum >= queryNodeNum:
-                                                        print(" queryGraphLst ", queryGraphLst)
-                                                        return path, queryGraphLst
-                                                    break
-                                            j += 1
-                                        prevj = j
+                                if len(prodNodes) >= queryNodeNum:
+                                    break
+                        if len(prodNodes) >= queryNodeNum:
+                           # breakFlag = True
+                            #get the 
+                            #print(" resNodesPath ", path)
+                            cntQueryNum = 0
+                            prevj = 0
+                            for nd in path:
+                                innerLst = []
+                                dstType = dstTypeLst[dstTypeIndex]               #get query node type
+                    
+                                if G.node[nd]['labelType'] == dstType:
+                                    #get node neighbor for specific number
+                                    nbs = G[nd]  
+                                    tmpCnt = 0
+                                    j = prevj
+                                    #print ("type: ", type(nbs))
+                                    nbsLst= list(nbs.keys())
+                                    while (j < len(nbsLst)):
+                                        nb = nbsLst[j]
+                                        if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
+                                            innerLst.append((nb, G.node[nb]['labelType']))
+                                            tmpCnt += 1
+                                            if innerLst in queryGraphLst:
+                                                innerLst.pop()
+                                            elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
+                                                cntQueryNum += 1
+                                                queryGraphLst.append(innerLst)
+                                                #print(" dstTypeIndex aa ", dstTypeIndex)
+                                                dstTypeIndex += 1    #change next dstType index 
+                                                if cntQueryNum >= queryNodeNum:
+                                                    #print(" queryGraphLst ", queryGraphLst)
+                                                    return path, queryGraphLst
+                                                break
+                                        j += 1
+                                    prevj = j
                                             
     
                                     
