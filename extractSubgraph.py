@@ -237,8 +237,10 @@ class ClsSubgraphExtraction(object):
             if not os.path.exists(directoryPath):
                 os.makedirs(directoryPath)
             outFile =  directoryPath + "/edgeListPart" + str(rationofNodes)
-            fh=open(outFile,'wb')
-            nx.write_edgelist(G, fh)
+            #fh=open(outFile,'wb')
+            #nx.write_edgelist(G, fh)
+            for edge in G.edges_iter(data='edgeHierDistance', default=1):
+                print ("edge: ", edge)
             
             
 def main():
