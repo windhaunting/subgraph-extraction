@@ -230,7 +230,7 @@ class ClsSubgraphExtraction(object):
         print ("G: ", len(G))
         rationofNodesLst= [0.1, 0.2, 0.5, 0.8, 1.0]
         
-        for rationofNodes in rationofNodesLst[:1]: 
+        for rationofNodes in rationofNodesLst: 
             self.subgraphFromDatagraph(G, rationofNodes)
             #write out file
             directoryPath = outputDir + "dataGraphEdgeList" + str(rationofNodes)
@@ -239,8 +239,20 @@ class ClsSubgraphExtraction(object):
             outFile =  directoryPath + "/edgeListPart" + str(rationofNodes)
             #fh=open(outFile,'wb')
             #nx.write_edgelist(G, fh)
+            os.remove(outFile) if os.path.exists(outFile) else None
+            
+            fd = open(outFile,'a')
             for edge in G.edges_iter(data='edgeHierDistance', default=1):
-                print ("edge: ", edge)
+                #print ("edge: ", edge)
+                if edge[2] == 0:
+                    edgeStr = "same"
+                    writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
+                elif edge[2] == 1:
+                    edgeStr = "higher"
+                    writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
+                elif edgeStr == -1:
+                    edgeStr = "lower"
+                    writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')                    
             
             
 def main():
