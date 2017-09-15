@@ -209,7 +209,7 @@ class ClsSubgraphExtraction(object):
             
 
     #get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100%
-    def subgraphFromDatagraph(G, rationofNodes):
+    def subgraphFromDatagraph(self, G, rationofNodes):
         #get random number of nodes
         numberNodes = len(G)*rationofNodes
         numberNodesLst = sample(G.nodes(), numberNodes)
@@ -219,12 +219,29 @@ class ClsSubgraphExtraction(object):
         return subGraph
     
     
+    def executeSubgraphExtractFromDatagraph(self):
+        #10%, 20%, 50%, 80%, 100
+        outputDir = "output/dblpDataGraphExtractOut/"       #output directory
+        
+        inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
+        inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
+        G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
+        
+        rationofNodesLst= [0.1, 0.2, 0.5, 0.8, 1.0]
+        
+        for rationofNodes in rationofNodesLst[:1]: 
+            subgraphFromDatagraph(G)
+            #write out file
+            directory = outputDir + str(rationofNodes)
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
     #subgraphExtractionObj.funcExecuteExtractProduct()
     
-    subgraphExtractionObj.funcExecuteExtractDblp()
-
+    #subgraphExtractionObj.funcExecuteExtractDblp()
+    subgraphExtractionObj.executeSubgraphExtractFromDatagraph()
     
     
 if __name__== "__main__":
