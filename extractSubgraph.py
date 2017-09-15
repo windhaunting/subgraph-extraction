@@ -7,7 +7,6 @@ Created on Thu Aug 10 14:20:09 2017
 """
 
 
-import codecs
 import csv
 import os
 from collections import OrderedDict
@@ -212,6 +211,7 @@ class ClsSubgraphExtraction(object):
     def subgraphFromDatagraph(self, G, rationofNodes):
         #get random number of nodes
         numberNodes = int(len(G)*rationofNodes)
+        print ("G numberNodes: ", numberNodes)
         numberNodesLst = sample(G.nodes(), numberNodes)
         #get subgraph
         subGraph = G.subgraph(numberNodesLst)    
@@ -233,9 +233,13 @@ class ClsSubgraphExtraction(object):
         for rationofNodes in rationofNodesLst[:1]: 
             self.subgraphFromDatagraph(G, rationofNodes)
             #write out file
-            directory = outputDir + str(rationofNodes)
-            if not os.path.exists(directory):
-                os.makedirs(directory)
+            directoryPath = outputDir + "dataGraphEdgeList" + str(rationofNodes)
+            if not os.path.exists(directoryPath):
+                os.makedirs(directoryPath)
+            outFile =  directoryPath + "/edgeListPart" + str(rationofNodes)
+            fh=open(outFile,'wb')
+            nx.write_edgelist(G, fh)
+            
             
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
