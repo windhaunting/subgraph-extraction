@@ -231,18 +231,19 @@ class ClsSubgraphExtraction(object):
         rationofNodesLst= [0.1, 0.2, 0.5, 0.8, 1.0]
         
         for rationofNodes in rationofNodesLst: 
-            self.subgraphFromDatagraph(G, rationofNodes)
+            subG = self.subgraphFromDatagraph(G, rationofNodes)
             #write out file
             directoryPath = outputDir + "dataGraphEdgeList" + str(rationofNodes)
             if not os.path.exists(directoryPath):
                 os.makedirs(directoryPath)
             outFile =  directoryPath + "/edgeListPart" + str(rationofNodes)
+            os.remove(outFile) if os.path.exists(outFile) else None
             #fh=open(outFile,'wb')
             #nx.write_edgelist(G, fh)
             os.remove(outFile) if os.path.exists(outFile) else None
             
             fd = open(outFile,'a')
-            for edge in G.edges_iter(data='edgeHierDistance', default=1):
+            for edge in subG.edges_iter(data='edgeHierDistance', default=1):
                 #print ("edge: ", edge)
                 if edge[2] == 0:
                     edgeStr = "same"
