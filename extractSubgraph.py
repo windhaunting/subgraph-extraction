@@ -254,7 +254,8 @@ class ClsSubgraphExtraction(object):
                     edgeStr = "lower"
                     writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')                    
             
-            
+ 
+           
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
     #subgraphExtractionObj.funcExecuteExtractProduct()
