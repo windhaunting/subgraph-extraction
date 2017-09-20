@@ -237,7 +237,7 @@ class ClsSubgraphExtraction(object):
             if not os.path.exists(directoryPath):
                 os.makedirs(directoryPath)
             outFileEdgeLst =  directoryPath + "/edgeListPart" + str(rationofNodes)
-            
+            outFileNodeInfo = directoryPath + "/nodeInfoPart" + str(rationofNodes)
             os.remove(outFileEdgeLst) if os.path.exists(outFileEdgeLst) else None
             #fh=open(outFile,'wb')
             #nx.write_edgelist(G, fh)
@@ -249,6 +249,7 @@ class ClsSubgraphExtraction(object):
                 if edge[2] == 0:
                     edgeStr = "same"
                     writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
+                    
                 elif edge[2] == 1:
                     edgeStr = "higher"
                     writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
