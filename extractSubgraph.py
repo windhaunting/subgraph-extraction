@@ -258,13 +258,16 @@ class ClsSubgraphExtraction(object):
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
     ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
-    ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
-    
-    # ciscoAdjacentListFile0.1
-    subgraphExtractionObj.funcExecuteExtractProduct(ciscoNodeInfoFile, ciscoAdjacentListFile)             #extract query graph from data graph
+    #ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+    #subgraphExtractionObj.funcExecuteExtractProduct(ciscoNodeInfoFile, ciscoAdjacentListFile)             #extract query graph from data graph
     
     #subgraphExtractionObj.funcExecuteExtractDblp()
+    
+
     #subgraphExtractionObj.executeSubgraphExtractFromDatagraph()
+    
+    inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
+    inputEdgeListFile = "output/dblpDataGraphExtractOut/dataGraphEdgeList0.1/edgeListPart0.1"
     
     
 if __name__== "__main__":
