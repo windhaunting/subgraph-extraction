@@ -83,7 +83,7 @@ class ClsSubgraphExtraction(object):
                         if len(prodNodes) >= queryNodeNum:
                            # breakFlag = True
                             #get the 
-                            #print(" resNodesPath ", path)
+                            print(" resNodesPath ", path)
                             cntQueryNum = 0
                             prevj = 0
                             for nd in path:
@@ -107,7 +107,7 @@ class ClsSubgraphExtraction(object):
                                             elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
                                                 cntQueryNum += 1
                                                 queryGraphLst.append(innerLst)
-                                                #print(" dstTypeIndex aa ", dstTypeIndex)
+                                                print(" dstTypeIndex aa ", dstTypeIndex)
                                                 dstTypeIndex += 1    #change next dstType index 
                                                 if cntQueryNum >= queryNodeNum:
                                                     #print(" queryGraphLst ", queryGraphLst)
@@ -263,7 +263,6 @@ def main():
     outFile = "output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
 
     #subgraphExtractionObj.funcExecuteExtractQueryDblp(dblpNodeInfoFile, edgeListFile, outFile)
-
     #subgraphExtractionObj.executeSubgraphExtractFromDatagraph()
     
     
