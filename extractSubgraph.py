@@ -24,6 +24,7 @@ import networkx as nx
 #extractSubGraph from data graph
 
 from math import floor
+import time
 
 '''
 0	product
@@ -62,15 +63,18 @@ class ClsSubgraphExtraction(object):
         
         queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
         dstTypeIndex = 0              #which query node type
-        
+        timeOut  = 0
         for src in startNodeSet:
             #breakFlag = False
             for dst in endNodeSet:
+                print(" xxxx ", src, dst)
                 if src != dst:
                     #get all path
+                    print(" xxxx dddddd", src, dst)
                     for path in nx.all_simple_paths(G, src, dst):
                         #check how many product inside the path
                         #check how many has product type in the path
+                        print(" path aaaaa", len(path))
                         prodNodes = []
                         tmpTargetIndex = 0
                         for nodeId in path:
@@ -89,14 +93,15 @@ class ClsSubgraphExtraction(object):
                             for nd in path:
                                 innerLst = []
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
-                    
+                                print(" len resNodesPath ", len(path))
                                 if G.node[nd]['labelType'] == dstType:
                                     #get node neighbor for specific number
                                     nbs = G[nd]  
                                     tmpCnt = 0
                                     j = prevj
-                                    #print ("type: ", type(nbs))
                                     nbsLst= list(nbs.keys())
+                                    print ("type: ", type(nbs), len(nbsLst))
+                                    timeOut = time.time()
                                     while (j < len(nbsLst)):
                                         nb = nbsLst[j]
                                         if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
@@ -231,13 +236,14 @@ class ClsSubgraphExtraction(object):
             directoryPath = outputDir + "dataGraphEdgeList" + str(rationofNodes)
             if not os.path.exists(directoryPath):
                 os.makedirs(directoryPath)
-            outFile =  directoryPath + "/edgeListPart" + str(rationofNodes)
-            os.remove(outFile) if os.path.exists(outFile) else None
+            outFileEdgeLst =  directoryPath + "/edgeListPart" + str(rationofNodes)
+            
+            os.remove(outFileEdgeLst) if os.path.exists(outFileEdgeLst) else None
             #fh=open(outFile,'wb')
             #nx.write_edgelist(G, fh)
-            os.remove(outFile) if os.path.exists(outFile) else None
+            os.remove(outFileEdgeLst) if os.path.exists(outFileEdgeLst) else None
             
-            fd = open(outFile,'a')
+            fd = open(outFileEdgeLst,'a')
             for edge in subG.edges_iter(data='edgeHierDistance', default=1):
                 #print ("edge: ", edge)
                 if edge[2] == 0:
