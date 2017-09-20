@@ -63,7 +63,6 @@ class ClsSubgraphExtraction(object):
         
         queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
         dstTypeIndex = 0              #which query node type
-        timeOut  = 0
         for src in startNodeSet:
             #breakFlag = False
             for dst in endNodeSet:
@@ -101,7 +100,6 @@ class ClsSubgraphExtraction(object):
                                     j = prevj
                                     nbsLst= list(nbs.keys())
                                     print ("type: ", type(nbs), len(nbsLst))
-                                    timeOut = time.time()
                                     while (j < len(nbsLst)):
                                         nb = nbsLst[j]
                                         if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
@@ -206,16 +204,17 @@ class ClsSubgraphExtraction(object):
             
 
 
-    #get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100%
-    def subgraphFromDatagraph(self, G, rationofNodes):
+    #get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100% 
+    #accumulate rationode, including previous node set
+    def subgraphFromDatagraph(self, G, rationofNodes, prevNodeSet):
         #get random number of nodes
-        numberNodes = int(len(G)*rationofNodes)
-        print ("G numberNodes: ", numberNodes)
-        numberNodesLst = sample(G.nodes(), numberNodes)
+        numberIncreaseNodes = int(len(G)*rationofNodes) - len(prevNodeSet)
+        print ("G numberNodes: ", numberIncreaseNodes)
+        numberNodesLst = prevNodeSet + sample(G.nodes(), numberIncreaseNodes)
         #get subgraph
         subGraph = G.subgraph(numberNodesLst)    
         
-        return subGraph
+        return subGraph, numberNodesLst
 
 
     #extract subgraph from data graph
@@ -228,9 +227,10 @@ class ClsSubgraphExtraction(object):
         
         print ("G: ", len(G))
         rationofNodesLst= [0.1, 0.2, 0.5, 0.8, 1.0]
-        
+        prevNodeSet = []
         for rationofNodes in rationofNodesLst: 
-            subG = self.subgraphFromDatagraph(G, rationofNodes)
+            subG, numberNodesLst = self.subgraphFromDatagraph(G, rationofNodes, prevNodeSet)
+            prevNodeSet = numberNodesLst
             #write out file
             directoryPath = outputDir + "dataGraphInfo" + str(rationofNodes)
             if not os.path.exists(directoryPath):
@@ -271,7 +271,8 @@ class ClsSubgraphExtraction(object):
                 elif edgeStr == -1:
                     edgeStr = "lower"
                     writeListRowToFileWriterTsv(fdEdge, [edge[0], edge[1], edgeStr], '\t')                    
-            
+
+
 #main 
 def main():
     #query graph subtraction
@@ -289,13 +290,13 @@ def main():
     #data graph subtraction
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-    subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
+    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
     
     
-    inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-    inputEdgeListFile = "output/dblpDataGraphExtractOut/dataGraphEdgeList0.1/edgeListPart0.1"   
+    inputDblpNodeInfo01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
+    inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
     outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-    #subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfoFile, inputEdgeListFile, outFile)             #extract query graph from data graph
+    subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
     
     
 if __name__== "__main__":
