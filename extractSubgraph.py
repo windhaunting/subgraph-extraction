@@ -243,29 +243,35 @@ class ClsSubgraphExtraction(object):
             #nx.write_edgelist(G, fh)
             os.remove(outFileEdgeLst) if os.path.exists(outFileEdgeLst) else None
             
-            fd = open(outFileEdgeLst,'a')
+            fdEdge = open(outFileEdgeLst,'a')
+            fdInfo = open(outFileNodeInfo,'a')
+            
             for edge in subG.edges_iter(data='edgeHierDistance', default=1):
                 #print ("edge: ", edge)
-                node1 = int(edge(0))
-                node2 = int(edge(1))
+                nodeId1 = int(edge(0))
+                node1LabelType = G.node[nodeId1]['labelType']       #G[nolabelType(0)
+                node1LabelName = G.node[nodeId1]['labelName']  
                 
-                node1LabelType = labelType(0)
-                node1LabelName = labelType(1)
-                
+                nodeInfoLst1 = [node1LabelName + "+++" + node1LabelType, nodeId1]
+                writeListRowToFileWriterTsv(fdInfo, nodeInfoLst1, '\t')
+                    
+                nodeId2 = int(edge(1))
+                node2LabelType = G.node[nodeId2]['labelType']       #G[nolabelType(0)
+                node2LabelName = G.node[nodeId2]['labelName']  
+                nodeInfoLst2 = [node2LabelName + "+++" + node2LabelType, nodeId2]
+                writeListRowToFileWriterTsv(fdInfo, nodeInfoLst2, '\t')
                 
                 if edge[2] == 0:
                     edgeStr = "same"
-                    writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
-                    
+                    writeListRowToFileWriterTsv(fdEdge, [edge[0], edge[1], edgeStr], '\t')
                 elif edge[2] == 1:
                     edgeStr = "higher"
-                    writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
+                    writeListRowToFileWriterTsv(fdEdge, [edge[0], edge[1], edgeStr], '\t')
                 elif edgeStr == -1:
                     edgeStr = "lower"
-                    writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')                    
+                    writeListRowToFileWriterTsv(fdEdge, [edge[0], edge[1], edgeStr], '\t')                    
             
  
-           
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
     ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
