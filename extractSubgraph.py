@@ -246,6 +246,13 @@ class ClsSubgraphExtraction(object):
             fd = open(outFileEdgeLst,'a')
             for edge in subG.edges_iter(data='edgeHierDistance', default=1):
                 #print ("edge: ", edge)
+                node1 = int(edge(0))
+                node2 = int(edge(1))
+                
+                node1LabelType = labelType(0)
+                node1LabelName = labelType(1)
+                
+                
                 if edge[2] == 0:
                     edgeStr = "same"
                     writeListRowToFileWriterTsv(fd, [edge[0], edge[1], edgeStr], '\t')
