@@ -232,7 +232,7 @@ class ClsSubgraphExtraction(object):
         for rationofNodes in rationofNodesLst: 
             subG = self.subgraphFromDatagraph(G, rationofNodes)
             #write out file
-            directoryPath = outputDir + "dataGraphEdgeList" + str(rationofNodes)
+            directoryPath = outputDir + "dataGraphInfo" + str(rationofNodes)
             if not os.path.exists(directoryPath):
                 os.makedirs(directoryPath)
             outFileEdgeLst =  directoryPath + "/edgeListPart" + str(rationofNodes)
@@ -253,13 +253,13 @@ class ClsSubgraphExtraction(object):
                 node1LabelType = G.node[nodeId1]['labelType']       #G[nolabelType(0)
                 node1LabelName = G.node[nodeId1]['labelName']  
                 
-                nodeInfoLst1 = [node1LabelName + "+++" + node1LabelType, nodeId1]
+                nodeInfoLst1 = [node1LabelName + "+++" + str(node1LabelType), nodeId1]
                 writeListRowToFileWriterTsv(fdInfo, nodeInfoLst1, '\t')
                     
                 nodeId2 = int(edge[1])
                 node2LabelType = G.node[nodeId2]['labelType']       #G[nolabelType(0)
                 node2LabelName = G.node[nodeId2]['labelName']  
-                nodeInfoLst2 = [node2LabelName + "+++" + node2LabelType, nodeId2]
+                nodeInfoLst2 = [node2LabelName + "+++" + str(node2LabelType), nodeId2]
                 writeListRowToFileWriterTsv(fdInfo, nodeInfoLst2, '\t')
                 
                 if edge[2] == 0:
