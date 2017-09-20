@@ -121,10 +121,8 @@ class ClsSubgraphExtraction(object):
                                     
     
     #extract product data query graph   entry    
-    def funcExecuteExtractProduct(self):
-        ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
-        ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
-        
+    def funcExecuteExtractProduct(self, ciscoNodeInfoFile, ciscoAdjacentListFile):
+ 
         G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
         
         #nodeLst = G.nodes()
@@ -259,10 +257,14 @@ class ClsSubgraphExtraction(object):
            
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
-    #subgraphExtractionObj.funcExecuteExtractProduct()
+    ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
+    ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+    
+    # ciscoAdjacentListFile0.1
+    subgraphExtractionObj.funcExecuteExtractProduct(ciscoNodeInfoFile, ciscoAdjacentListFile)             #extract query graph from data graph
     
     #subgraphExtractionObj.funcExecuteExtractDblp()
-    subgraphExtractionObj.executeSubgraphExtractFromDatagraph()
+    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph()
     
     
 if __name__== "__main__":
