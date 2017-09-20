@@ -118,7 +118,6 @@ class ClsSubgraphExtraction(object):
                                             
     
                                     
-                                    
     
     #extract product data query graph   entry    
     def funcExecuteExtractProduct(self, ciscoNodeInfoFile, ciscoAdjacentListFile):
@@ -147,7 +146,7 @@ class ClsSubgraphExtraction(object):
         
         outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphOutput/ciscoDataExtractQueryGraph01"
         os.remove(outFile) if os.path.exists(outFile) else None
-    
+        
         fd = open(outFile,'a')
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
@@ -168,7 +167,6 @@ class ClsSubgraphExtraction(object):
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
     
     
-
     #extract dblp data query graph entry
     def funcExecuteExtractQueryDblp(self, dblpNodeInfoFile, edgeListFile, outFile):
         
@@ -202,6 +200,7 @@ class ClsSubgraphExtraction(object):
             writeListRowToFileWriterTsv(fd, writeLst, '\t')   
             
 
+
     #get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100%
     def subgraphFromDatagraph(self, G, rationofNodes):
         #get random number of nodes
@@ -212,7 +211,8 @@ class ClsSubgraphExtraction(object):
         subGraph = G.subgraph(numberNodesLst)    
         
         return subGraph
-    
+
+
     #extract subgraph from data graph
     def executeSubgraphExtractFromDatagraph(self):
         #10%, 20%, 50%, 80%, 100
@@ -275,5 +275,4 @@ def main():
     
 if __name__== "__main__":
   main()
-
-()
+  
