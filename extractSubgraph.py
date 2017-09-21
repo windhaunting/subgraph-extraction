@@ -72,7 +72,9 @@ class ClsSubgraphExtraction(object):
                     #print(" xxxx dddddd", src, dst)
                     print ("nx.all_simple_paths: ")
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
-                    for path in nx.all_simple_paths(G, src, dst, cutoff= 10):
+                    #timeBegin = time.time()
+                    
+                    for path in nx.all_simple_paths(G, src, dst, cutoff= 11):
                         #check how many product inside the path
                         #check how many has product type in the path
                         #print(" path aaaaa", len(path))
