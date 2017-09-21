@@ -59,21 +59,21 @@ class ClsSubgraphExtraction(object):
             else:
                 divideSpecNodeNum.append(divider)
         
-        print ("divideSpecNodeNum, : ", divideSpecNodeNum)
+        #print ("divideSpecNodeNum, : ", divideSpecNodeNum)
         
         queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
         dstTypeIndex = 0              #which query node type
         for src in startNodeSet:
             #breakFlag = False
             for dst in endNodeSet:
-                print(" xxxx ", src, dst)
+                #print(" xxxx ", src, dst)
                 if src != dst:
                     #get all path
-                    print(" xxxx dddddd", src, dst)
+                    #print(" xxxx dddddd", src, dst)
                     for path in nx.all_simple_paths(G, src, dst):
                         #check how many product inside the path
                         #check how many has product type in the path
-                        print(" path aaaaa", len(path))
+                        #print(" path aaaaa", len(path))
                         prodNodes = []
                         tmpTargetIndex = 0
                         for nodeId in path:
@@ -86,20 +86,20 @@ class ClsSubgraphExtraction(object):
                         if len(prodNodes) >= queryNodeNum:
                            # breakFlag = True
                             #get the 
-                            print(" resNodesPath ", path)
+                            #print(" resNodesPath ", path)
                             cntQueryNum = 0
                             prevj = 0
                             for nd in path:
                                 innerLst = []
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
-                                print(" len resNodesPath ", len(path))
+                                #print(" len resNodesPath ", len(path))
                                 if G.node[nd]['labelType'] == dstType:
                                     #get node neighbor for specific number
                                     nbs = G[nd]  
                                     tmpCnt = 0
                                     j = prevj
                                     nbsLst= list(nbs.keys())
-                                    print ("type: ", type(nbs), len(nbsLst))
+                                    #print ("type: ", type(nbs), len(nbsLst))
                                     while (j < len(nbsLst)):
                                         nb = nbsLst[j]
                                         if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
@@ -110,7 +110,7 @@ class ClsSubgraphExtraction(object):
                                             elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
                                                 cntQueryNum += 1
                                                 queryGraphLst.append(innerLst)
-                                                print(" dstTypeIndex aa ", dstTypeIndex)
+                                                #print(" dstTypeIndex aa ", dstTypeIndex)
                                                 dstTypeIndex += 1    #change next dstType index 
                                                 if cntQueryNum >= queryNodeNum:
                                                     #print(" queryGraphLst ", queryGraphLst)
@@ -290,13 +290,13 @@ def main():
     #data graph subtraction
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
+    subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
     
     
     inputDblpNodeInfo01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
     inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
     outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-    subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+    #subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
     
     
 if __name__== "__main__":
