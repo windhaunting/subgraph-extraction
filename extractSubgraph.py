@@ -70,7 +70,8 @@ class ClsSubgraphExtraction(object):
                 if src != dst:
                     #get all path
                     #print(" xxxx dddddd", src, dst)
-                    print ("nx.all_simple_paths: ", list(nx.all_simple_paths(G, src, dst)))
+                    print ("nx.all_simple_paths: ")
+                    print (" ", list(nx.all_simple_paths(G, src, dst)))
                     for path in nx.all_simple_paths(G, src, dst):
                         #check how many product inside the path
                         #check how many has product type in the path
