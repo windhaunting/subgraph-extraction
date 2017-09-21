@@ -290,13 +290,14 @@ def main():
     #data graph subtraction
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-    subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
+    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
     
     
+    #query graph subtraction from data subgraph
     inputDblpNodeInfo01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
     inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
     outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-    #subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+    subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
     
     
 if __name__== "__main__":
