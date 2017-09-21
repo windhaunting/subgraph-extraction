@@ -70,7 +70,7 @@ class ClsSubgraphExtraction(object):
                 if src != dst:
                     #get all path
                     #print(" xxxx dddddd", src, dst)
-                    print ("nx.all_simple_paths: ")
+                    #print ("nx.all_simple_paths: ")
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
                     
@@ -91,11 +91,11 @@ class ClsSubgraphExtraction(object):
                            # breakFlag = True
                             #get the 
                             #print(" resNodesPath ", path)
-                            cntQueryNum = 0
+                            #cntQueryNum = 0
                             prevj = 0
                             for nd in path:
                                 innerLst = []
-                                print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex)
+                                #print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
                                 if G.node[nd]['labelType'] == dstType:
                                     #get node neighbor for specific number
@@ -111,12 +111,12 @@ class ClsSubgraphExtraction(object):
                                             tmpCnt += 1
                                             if innerLst in queryGraphLst:
                                                 innerLst.pop()
-                                            elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[cntQueryNum]:  #safisfy specific number
-                                                cntQueryNum += 1
+                                            elif innerLst not in queryGraphLst and tmpCnt >= divideSpecNodeNum[dstTypeIndex]:  #safisfy specific number
+                                                #cntQueryNum += 1
                                                 queryGraphLst.append(innerLst)
                                                 #print(" dstTypeIndex aa ", dstTypeIndex)
                                                 dstTypeIndex += 1    #change next dstType index 
-                                                if cntQueryNum >= queryNodeNum:
+                                                if dstTypeIndex >= queryNodeNum:
                                                     #print(" queryGraphLst ", queryGraphLst)
                                                     return path, queryGraphLst
                                                 break
@@ -184,7 +184,7 @@ class ClsSubgraphExtraction(object):
                 peopleNodeSet.add(n)
         print ("peopleNodeSet: ", len(peopleNodeSet))
          
-        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         os.remove(outFile) if os.path.exists(outFile) else None
     
         fd = open(outFile,'a')
