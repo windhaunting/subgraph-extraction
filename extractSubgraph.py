@@ -96,7 +96,7 @@ class ClsSubgraphExtraction(object):
                             for nd in path:
                                 innerLst = []
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
-                                print(" len resNodesPath ", len(path))
+                                #print(" len resNodesPath ", len(path))
                                 if G.node[nd]['labelType'] == dstType:
                                     #get node neighbor for specific number
                                     nbs = G[nd]  
@@ -149,7 +149,7 @@ class ClsSubgraphExtraction(object):
        # specNodeNum = 13
        # queryNodeNum = 10
         
-        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         
         outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphOutput/ciscoDataExtractQueryGraph01"
         os.remove(outFile) if os.path.exists(outFile) else None
