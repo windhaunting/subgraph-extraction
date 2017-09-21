@@ -66,10 +66,11 @@ class ClsSubgraphExtraction(object):
         for src in startNodeSet:
             #breakFlag = False
             for dst in endNodeSet:
-                #print(" xxxx ", src, dst)
+                print(" xxxx ", src, dst)
                 if src != dst:
                     #get all path
                     #print(" xxxx dddddd", src, dst)
+                    print ("nx.all_simple_paths: ", list(nx.all_simple_paths(G, src, dst)))
                     for path in nx.all_simple_paths(G, src, dst):
                         #check how many product inside the path
                         #check how many has product type in the path
@@ -92,7 +93,7 @@ class ClsSubgraphExtraction(object):
                             for nd in path:
                                 innerLst = []
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
-                                #print(" len resNodesPath ", len(path))
+                                print(" len resNodesPath ", len(path))
                                 if G.node[nd]['labelType'] == dstType:
                                     #get node neighbor for specific number
                                     nbs = G[nd]  
