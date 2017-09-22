@@ -200,7 +200,7 @@ def readAnimalGraph(adjacentListFile, nodeInfoFile1):
 6	product site
 '''
 
-# read cisco product data graph
+# read cisco product data graph adjacency list
 def readCiscoDataGraph(adjacentListFile, ciscoNodeInfoFile):
 
     NodeNameMap = {}
@@ -293,7 +293,7 @@ def readCiscoDataGraph(adjacentListFile, ciscoNodeInfoFile):
     return G
 
 
-#read dblp data graph
+#read dblp data graph edge list
 
 def readdblpDataGraph(edgeListFile, dblpNodeInfoFile):
 

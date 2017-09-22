@@ -127,10 +127,8 @@ class ClsSubgraphExtraction(object):
                                     
     
     #extract product data query graph   entry    
-    def funcExecuteExtractQueryProduct(self, ciscoNodeInfoFile, ciscoAdjacentListFile, outFile):
- 
-        G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
-        
+    def funcExecuteExtractQueryProduct(self, G, outFile):
+         
         #nodeLst = G.nodes()
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
         
@@ -279,7 +277,8 @@ def main():
     ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
     ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
     outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/ciscoDataExtractQueryGraph01"
-    #subgraphExtractionObj.funcExecuteExtractQueryProduct(ciscoNodeInfoFile, ciscoAdjacentListFile)             #extract query graph from data graph
+    #G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
+    #subgraphExtractionObj.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
     
     dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
     edgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
@@ -314,11 +313,12 @@ def main():
         
 
     #query graph extraction from cisco data graph ( all ratios of data graph)
-    inputDblpNodeInfo01File = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
-    inputEdgeList01File = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
+    inputProductNodeInfo01File = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
+    inputProductEdgeList01File = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
     outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
+    G = readdblpDataGraph(inputProductEdgeList01File, inputProductNodeInfo01File)
 
-    subgraphExtractionObj.funcExecuteExtractQueryProduct(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+    subgraphExtractionObj.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
     
         
     
