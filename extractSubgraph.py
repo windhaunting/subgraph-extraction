@@ -315,8 +315,8 @@ def main():
     #query graph extraction from cisco data graph ( all ratios of data graph)
     inputProductNodeInfo01File = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
     inputProductEdgeList01File = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
-    outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-    G = readdblpDataGraph(inputProductEdgeList01File, inputProductNodeInfo01File)
+    outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/subDatagraphExtract/ciscoProductsData01ExtractQueryGraph.tsv"
+    G = readdblpDataGraph(inputProductEdgeList01File, inputProductNodeInfo01File)       #here use readdblpdatagraph, because it's edge list file, not adjcency list file
 
     subgraphExtractionObj.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
     
