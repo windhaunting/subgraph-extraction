@@ -184,7 +184,7 @@ class ClsSubgraphExtraction(object):
                 peopleNodeSet.add(n)
         print ("peopleNodeSet: ", len(peopleNodeSet))
          
-        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst = [(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         os.remove(outFile) if os.path.exists(outFile) else None
     
         fd = open(outFile,'a')
@@ -222,13 +222,9 @@ class ClsSubgraphExtraction(object):
 
 
     #extract subgraph from data graph
-    def executeSubgraphExtractFromDatagraph(self, inputDblpNodeInfoFile, inputEdgeListFile):
+    def executeSubgraphExtractFromDatagraph(self, G, outputDir):
         #10%, 20%, 50%, 80%, 100
-        outputDir = "output/dblpDataGraphExtractOut/"       #output directory
-        
-
-        G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
-        
+      
         print ("G: ", len(G))
         rationofNodesLst= [0.1, 0.2, 0.5, 0.8, 1.0]
         prevNodeSet = []
@@ -291,17 +287,33 @@ def main():
     #subgraphExtractionObj.funcExecuteExtractQueryDblp(dblpNodeInfoFile, edgeListFile, outFile)
     
     
-    #data graph subtraction
+    #data graph subtraction For dblp data
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(inputDblpNodeInfoFile, inputEdgeListFile)
+    outputDir = "output/dblpDataGraphExtractOut/"       #output directory
+    #G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
+    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
     
     
     #query graph subtraction from data subgraph
     inputDblpNodeInfo01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
     inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
     outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-    subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+
+    #subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+    
+    
+    
+    #data graph subtraction For cisco data
+    ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
+    ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+    
+    G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
+    outputDir = "output/dblpDataGraphExtractOut/"       #output directory
+    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
+        
+
+        
     
     
 if __name__== "__main__":

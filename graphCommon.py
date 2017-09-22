@@ -510,8 +510,8 @@ def drawtopKRelatedGraph(G, allvisitedNodeForDraw, outJsonFile):
 
 def testFution():
     
-    ciscoNodeInfoFile = "/home/fubao/workDir/ResearchProjects/hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
-    ciscoAdjacentListFile = "/home/fubao/workDir/ResearchProjects/hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+    ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
+    ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
     
     G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
     statistGraphInfo(G)
