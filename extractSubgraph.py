@@ -252,17 +252,18 @@ class ClsSubgraphExtraction(object):
                 node1LabelName = G.node[nodeId1]['labelName']  
                 
                 nodeInfoLst1 = [node1LabelName + "+++" + str(node1LabelType), nodeId1]
-                if nodeInfoLst1 not in nodeInfoLstCheckMap:
-                    writeListRowToFileWriterTsv(fdInfo, nodeInfoLst1, '\t')
-                    nodeInfoLstCheckMap[nodeInfoLst1] = 1
                 
+                if nodeId1 not in nodeInfoLstCheckMap:
+                    writeListRowToFileWriterTsv(fdInfo, nodeInfoLst1, '\t')
+                    nodeInfoLstCheckMap[nodeId1] = 1
+                    
                 nodeId2 = int(edge[1])
                 node2LabelType = G.node[nodeId2]['labelType']       #G[nolabelType(0)
                 node2LabelName = G.node[nodeId2]['labelName']
                 nodeInfoLst2 = [node2LabelName + "+++" + str(node2LabelType), nodeId2]
-                if nodeInfoLst2 not in nodeInfoLstCheckMap:
+                if nodeId2 not in nodeInfoLstCheckMap:
                     writeListRowToFileWriterTsv(fdInfo, nodeInfoLst2, '\t')
-                    nodeInfoLstCheckMap[nodeInfoLst2] = 1
+                    nodeInfoLstCheckMap[nodeId2] = 1
 
                 if edge[2] == 0:
                     edgeStr = "same"
