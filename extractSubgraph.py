@@ -210,13 +210,13 @@ class ClsSubgraphExtraction(object):
     def subgraphFromDatagraph(self, G, rationofNodes, prevNodeSet):
         #get random number of nodes
         numberIncreaseNodes = int(len(G)*rationofNodes) - len(prevNodeSet)
-        print ("G numberNodes: ", numberIncreaseNodes)
+        print ("G numberNodes: ", len(prevNodeSet) + numberIncreaseNodes)
         
-        leftNodes = set(G.nodes)
+        leftNodes = set(G.nodes()) - set(prevNodeSet)
         numberNodesLst = prevNodeSet + sample(leftNodes, numberIncreaseNodes)
         #get subgraph
         subGraph = G.subgraph(numberNodesLst)    
-        
+        print ("G numberNodes222: ", len(prevNodeSet) + numberIncreaseNodes)
         return subGraph, numberNodesLst
 
 
@@ -241,7 +241,7 @@ class ClsSubgraphExtraction(object):
 
             #fh=open(outFile,'wb')
             #nx.write_edgelist(G, fh)
-            os.remove(outFileEdgeLst) if os.path.exists(outFileEdgeLst) else None
+            #os.remove(outFileEdgeLst) if os.path.exists(outFileEdgeLst) else None
             
             fdEdge = open(outFileEdgeLst,'a')
             fdInfo = open(outFileNodeInfo,'a')
@@ -267,10 +267,11 @@ class ClsSubgraphExtraction(object):
                 elif edge[2] == 1:
                     edgeStr = "higher"
                     writeListRowToFileWriterTsv(fdEdge, [edge[0], edge[1], edgeStr], '\t')
-                elif edgeStr == -1:
+                elif edge[2] == -1:
                     edgeStr = "lower"
                     writeListRowToFileWriterTsv(fdEdge, [edge[0], edge[1], edgeStr], '\t')                    
-
+            fdEdge.close()
+            fdInfo.close()
 
 #main 
 def main():
