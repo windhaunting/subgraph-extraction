@@ -297,8 +297,8 @@ def main():
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
     outputDir = "output/dblpDataGraphExtractOut/"       #output directory
-    #G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
-    #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
+    G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
+    subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
     
     
     #query graph subtraction from data subgraph
@@ -313,9 +313,9 @@ def main():
     ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
     ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
 
-    G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
-    outputDir = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/"
-    subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
+    # G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
+    # outputDir = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/"
+    # subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
         
 
     #query graph extraction from cisco data graph ( all ratios of data graph)
