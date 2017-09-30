@@ -297,7 +297,7 @@ def main():
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
     outputDir = "output/dblpDataGraphExtractOut/"       #output directory
-    G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
+    #G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
     #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
     
     
