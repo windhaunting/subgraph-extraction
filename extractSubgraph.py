@@ -35,6 +35,7 @@ import time
 5	workgroup
 6	product site
 '''
+#extract ratio of subgraph from data graph
 
 class ClsSubgraphExtraction(object):
 
