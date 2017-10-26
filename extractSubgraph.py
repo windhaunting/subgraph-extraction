@@ -9,7 +9,7 @@ Created on Thu Aug 10 14:20:09 2017
 
 import csv
 import os
-from collections import OrderedDict
+from collections import defaultdict
 from random import sample
 from random import choice
 
@@ -19,7 +19,7 @@ from hierarchicalQueryPython.CommonFiles.commons  import  appendStringRowToFileW
 
 
 from hierarchicalQueryPython.graphCommon import readCiscoDataGraph
-from hierarchicalQueryPython.graphCommon import readdblpDataGraph
+from hierarchicalQueryPython.graphCommon import readEdgeListToGraph
 from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
 
 
@@ -177,7 +177,7 @@ class ClsSubgraphExtraction(object):
     #extract dblp data query graph entry
     def funcExecuteExtractQueryDblp(self, dblpNodeInfoFile, edgeListFile, outFile):
         
-        G = readdblpDataGraph(edgeListFile, dblpNodeInfoFile)
+        G = readEdgeListToGraph(edgeListFile, dblpNodeInfoFile)
         peopleNodeSet = set()
         for n, d in G.nodes_iter(data=True):
             if d['labelType'] == 1:
@@ -302,12 +302,12 @@ def funcMainStarQueryExatractCiscoProduct():
     '''
     
     
-    totalHierarchicalNodes = 3
+    totalExpectedExtractedHierarchicalNodes = 3             #how many specific nodes expected to extract
     totalHierarchicalNodesTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
     
     totalNonHierarchicalNodes = 1
     nonHierarchicalNodeTypesLst = [PRODUCTDATATYPE.BUGID.value, PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
-    hopsVisited = 2
+    hopsVisited = 3
     hierarchicalLevelType = PRODUCTDATATYPE.PRODUCT.value
 
     ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
@@ -315,7 +315,11 @@ def funcMainStarQueryExatractCiscoProduct():
     
     G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
     
-    #get nodes with hierarchical levels; e.g. product type
+    subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes)
+         
+
+def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes):
+        #get nodes with hierarchical levels; e.g. product type
     hierNodeSet = getTypeNodeSet(G, hierarchicalLevelType)
     print ("funcMainStarQueryExatract: , G len ", len(G), hierarchicalLevelType, len(hierNodeSet))
     
@@ -347,11 +351,12 @@ def funcMainStarQueryExatractCiscoProduct():
             # continue to search the hierarchical inheritance nodes; search the neighbor nodes again.
             #nodesLst = single_source_shortest_path(G, node, hopsVisited)          #time complexity is high
             answerNodes = getFixedHopsNodes(G, node, hierarchicalLevelType, totalHierarchicalNodesTypeLst[0] , hopsVisited)
-            if len(answerNodes) > totalHierarchicalNodes:           #find all the answers
+            if len(set(answerNodes)) > totalExpectedExtractedHierarchicalNodes:           #find all the answers
                 break
         i += 1
     print ("funcMainStarQueryExatract answerNodes: ", answerNodes)
-    return answerNodes
+    return set(answerNodes)
+
 
 
 #get the path from sourceNode with fixed hops and has the nodeType for all the nodes in the path; use BFS search
@@ -385,7 +390,7 @@ def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited
     return answerNodes
 
 
-#main function extract subgraph as query graph
+#main function extract subgraph as generic query graph
 def funcMainEntryExecuteExtract():
     ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
     ciscoAdjacentListFile = "../inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
