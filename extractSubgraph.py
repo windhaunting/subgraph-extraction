@@ -22,6 +22,8 @@ from hierarchicalQueryPython.graphCommon import readCiscoDataGraph
 from hierarchicalQueryPython.graphCommon import readEdgeListToGraph
 from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
 
+from hierarchicalQueryPython.graphCommon import SYNTHETICGRAPHNODETYPE
+
 
 import networkx as nx
 #extractSubGraph from data graph
@@ -295,12 +297,8 @@ def getTypeNodeSet(G, nodeType):
 #extract subgraph as star query here from cisco data graph
 def funcMainStarQueryExatractCiscoProduct():
     '''
-    1)specific node number in total
-    2)hierarchical inheritance node number in total
-    3)non-hierarchical inheritance node number in total
-    4)hops of hierarchical node from query node to specific node
+    extract star query graph from cisco data graph;   specific nodes number
     '''
-    
     
     totalExpectedExtractedHierarchicalNodes = 3             #how many specific nodes expected to extract
     totalHierarchicalNodesTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
@@ -315,11 +313,38 @@ def funcMainStarQueryExatractCiscoProduct():
     
     G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
     
-    subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes)
-         
+    subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
+      
+    
+#extract subgraph as star query here from cisco data graph
+def funcMainStarQueryExatractSyntheticGraph():
+    '''
+    extract star query graph from synthetic data graph;   specific nodes number
+    '''
+    totalExpectedExtractedHierarchicalNodes = 3             #how many specific nodes expected to extract
+    totalHierarchicalNodesTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]
+    
+    totalNonHierarchicalNodes = 1
+    nonHierarchicalNodeTypesLst = [SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
+    hopsVisited = 3
+    hierarchicalLevelType = SYNTHETICGRAPHNODETYPE.TYPE0HIER.value
+    
+    syntheticGraphEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
+    syntheticGraphNodeInfo = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
+    G = readEdgeListToGraph(syntheticGraphEdgeListFile, syntheticGraphNodeInfo)
+    
+    subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
 
-def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes):
-        #get nodes with hierarchical levels; e.g. product type
+
+def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited):
+    '''
+    1)specific node number in total
+    2)hierarchical inheritance node number in total
+    3)non-hierarchical inheritance node number in total
+    4)hops of hierarchical node from query node to specific node
+    '''
+    
+    #get nodes with hierarchical levels; e.g. product type
     hierNodeSet = getTypeNodeSet(G, hierarchicalLevelType)
     print ("funcMainStarQueryExatract: , G len ", len(G), hierarchicalLevelType, len(hierNodeSet))
     
@@ -499,8 +524,9 @@ def subgraphExtractRatiosExecute():
 def main():
     #subgraphForQueryExecute()
     #subgraphExtractRatiosExecute()
-    funcMainStarQueryExatractCiscoProduct()
     
+    #funcMainStarQueryExatractCiscoProduct()            
+    funcMainStarQueryExatractSyntheticGraph()
     
 if __name__== "__main__":
   main()
