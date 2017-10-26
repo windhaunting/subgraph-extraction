@@ -11,22 +11,22 @@ import csv
 import os
 from collections import OrderedDict
 from random import sample
-import random import choice
+from random import choice
 
-from CommonFiles.commons import mycsv_reader
-from CommonFiles.commons import writeListRowToFileWriterTsv
-from CommonFiles.commons import  appendStringRowToFileWriterTsv
+from hierarchicalQueryPython.CommonFiles.commons  import mycsv_reader
+from hierarchicalQueryPython.CommonFiles.commons  import writeListRowToFileWriterTsv
+from hierarchicalQueryPython.CommonFiles.commons  import  appendStringRowToFileWriterTsv
 
-from graphCommon import readCiscoDataGraph
-from graphCommon import readdblpDataGraph
-from graphCommon import PRODUCTDATATYPE
+
+from hierarchicalQueryPython.graphCommon import readCiscoDataGraph
+from hierarchicalQueryPython.graphCommon import readdblpDataGraph
+from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
 
 
 import networkx as nx
 #extractSubGraph from data graph
 
 from math import floor
-import time
 
 '''
 0	product
@@ -292,8 +292,8 @@ def getTypeNodeSet(G, nodeType):
                  
     return nodeSet
 
-#extract subgraph as star query here
-def funcMainStarQueryExatract():
+#extract subgraph as star query here from cisco data graph
+def funcMainStarQueryExatractCiscoProduct():
     '''
     1)specific node number in total
     2)hierarchical inheritance node number in total
@@ -330,7 +330,7 @@ def funcMainStarQueryExatract():
         node = choice(list(hierNodeSet))
         hierNodeSet.remove(node)
         
-        print ("funcMainStarQueryExatract node:  ", node)
+        #print ("funcMainStarQueryExatract node:  ", node)
         #find non-hierarchical inherited nodes first
         #check node neighbor
         for nb in G[node]:
@@ -494,7 +494,7 @@ def subgraphExtractRatiosExecute():
 def main():
     #subgraphForQueryExecute()
     #subgraphExtractRatiosExecute()
-    funcMainStarQueryExatract()
+    funcMainStarQueryExatractCiscoProduct()
     
     
 if __name__== "__main__":
