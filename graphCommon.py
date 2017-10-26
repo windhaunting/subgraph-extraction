@@ -12,11 +12,22 @@ import matplotlib.pyplot as plt
 from networkx.readwrite import json_graph;
 import json
 import webbrowser
+from enum import Enum
 
 #from preprocessCiscoData import  readCiscoNodesInfo
 
 #read Graph
 
+#product database node types
+class PRODUCTDATATYPE(Enum):
+    PRODUCT = 0
+    VULNERABILITY = 1
+    BUGID = 2
+    WORKAROUND = 3
+    TECHNOLOGY = 4
+    WORKGROUP = 5
+    PRODUCTSITE = 6
+    
 '''
 def readGraph(adjacentListFile, nodeInfoFile1, nodeInfoFile2):
     

@@ -11,6 +11,7 @@ import csv
 import os
 from collections import OrderedDict
 from random import sample
+import random import choice
 
 from CommonFiles.commons import mycsv_reader
 from CommonFiles.commons import writeListRowToFileWriterTsv
@@ -18,6 +19,7 @@ from CommonFiles.commons import  appendStringRowToFileWriterTsv
 
 from graphCommon import readCiscoDataGraph
 from graphCommon import readdblpDataGraph
+from graphCommon import PRODUCTDATATYPE
 
 
 import networkx as nx
@@ -278,8 +280,164 @@ class ClsSubgraphExtraction(object):
             fdEdge.close()
             fdInfo.close()
 
-#main 
-def main():
+
+
+                                        
+#get nodes with a specific node type
+def getTypeNodeSet(G, nodeType):
+    nodeSet = set()
+    for n, d in G.nodes_iter(data=True):
+        if d['labelType'] == nodeType:
+            nodeSet.add(n)
+                 
+    return nodeSet
+
+#extract subgraph as star query here
+def funcMainStarQueryExatract():
+    '''
+    1)specific node number in total
+    2)hierarchical inheritance node number in total
+    3)non-hierarchical inheritance node number in total
+    4)hops of hierarchical node from query node to specific node
+    '''
+    
+    
+    totalHierarchicalNodes = 3
+    totalHierarchicalNodesTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
+    
+    totalNonHierarchicalNodes = 1
+    nonHierarchicalNodeTypesLst = [PRODUCTDATATYPE.BUGID.value, PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
+    hopsVisited = 2
+    hierarchicalLevelType = PRODUCTDATATYPE.PRODUCT.value
+
+    ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
+    ciscoAdjacentListFile = "../inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+    
+    G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
+    
+    #get nodes with hierarchical levels; e.g. product type
+    hierNodeSet = getTypeNodeSet(G, hierarchicalLevelType)
+    print ("funcMainStarQueryExatract: , G len ", len(G), hierarchicalLevelType, len(hierNodeSet))
+    
+    answerNodes = []
+    
+    i = 0
+    #random visit a node
+    flagCurrentNode = True
+    resNodeQueryLst = []
+    while (i < len(hierNodeSet)):
+        #random get node
+        node = choice(list(hierNodeSet))
+        hierNodeSet.remove(node)
+        
+        print ("funcMainStarQueryExatract node:  ", node)
+        #find non-hierarchical inherited nodes first
+        #check node neighbor
+        for nb in G[node]:
+            if G.node[nb]['labelType'] in nonHierarchicalNodeTypesLst:
+                resNodeQueryLst.append(nb)
+                if len(resNodeQueryLst) >= totalNonHierarchicalNodes:
+                    break
+        if len(resNodeQueryLst) < totalNonHierarchicalNodes:         #no neighbor nodes of node satifying requirement                     
+            flagCurrentNode = False
+        if not flagCurrentNode:
+            flagCurrentNode = True
+            continue                 #continue 
+        else:
+            # continue to search the hierarchical inheritance nodes; search the neighbor nodes again.
+            #nodesLst = single_source_shortest_path(G, node, hopsVisited)          #time complexity is high
+            answerNodes = getFixedHopsNodes(G, node, hierarchicalLevelType, totalHierarchicalNodesTypeLst[0] , hopsVisited)
+            if len(answerNodes) > totalHierarchicalNodes:           #find all the answers
+                break
+        i += 1
+    print ("funcMainStarQueryExatract answerNodes: ", answerNodes)
+    return answerNodes
+
+
+#get the path from sourceNode with fixed hops and has the nodeType for all the nodes in the path; use BFS search
+def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited):
+    
+    answerNodes = []
+    queue = [(sourceNode, 0)] #nodeId, level 0 
+    explored = defaultdict()
+    while queue:
+        #pop
+        nodeInfo = queue.pop(0)
+        nodeId = nodeInfo[0]
+        nodeLevel = nodeInfo[1]
+        if nodeLevel == hopsVisited and nodeLastType== G.node[nodeId]['labelType']:          #get the answer node
+            explored[nodeId] = True              #level arrived
+            answerNodes.append(nodeId)
+        elif nodeLevel > hopsVisited:
+            print ("getFixedHopsNodes node level: ", len(answerNodes), nodeLevel)
+            break
+        
+        if G.node[nodeId]['labelType'] != nodeIntermedType:
+            explored[nodeId] = True          #mark as explored
+            
+        if nodeId not in explored:
+            # add node to list of checked nodes
+            explored[nodeId] = True
+            nbs = G[nodeId]   #get neighbors
+            for neighbour in nbs:
+                queue.append((neighbour, nodeLevel+1))
+ 
+    return answerNodes
+
+
+#main function extract subgraph as query graph
+def funcMainEntryExecuteExtract():
+    ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
+    ciscoAdjacentListFile = "../inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+    
+    G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
+    
+    #nodeLst = G.nodes()
+    
+    #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
+    
+    productNodeSet = set()
+    vulnerNodeSet = set()
+    for n, d in G.nodes_iter(data=True):
+        if d['labelType'] == 0:
+            productNodeSet.add(n)
+        if d['labelType'] == 1:
+            vulnerNodeSet.add(n)
+
+    print ("productNodeSet: ", len(productNodeSet))
+    #workgroup = ((u,v) for u,v,d in G.nodes_iter(data=True) if d['labelType']==5)
+    
+    
+   # specNodeNum = 13
+   # queryNodeNum = 10
+
+    specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+    
+    outFile = "../hierarchicalQueryPython/output/extractSubgraphOutput/ciscoDataExtractQueryGraph"
+    os.remove(outFile) if os.path.exists(outFile) else None
+
+    fd = open(outFile,'a')
+    
+    for tpls in specNodesQueryNodesLst:
+        specNodeNum = tpls[0]
+        queryNodeNum = tpls[1]
+        path, queryGraphLst = extractSubGraph(G, productNodeSet, specNodeNum, queryNodeNum)
+
+        writeLst = []              #format: x,x;x,x;    x,x;,x,x....
+        for specNumLst in queryGraphLst:
+            inputStr = ""
+            for tpl in specNumLst[:-1]:
+            
+                inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+            inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
+            writeLst.append(inputStr)  
+            
+        writeListRowToFileWriterTsv(fd, writeLst, '\t')
+    
+
+
+
+def subgraphForQueryExecute():
     #query graph subtraction
     subgraphExtractionObj = ClsSubgraphExtraction()
     ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
@@ -293,6 +451,9 @@ def main():
     outFile = "output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
     #subgraphExtractionObj.funcExecuteExtractQueryDblp(dblpNodeInfoFile, edgeListFile, outFile)
     
+    
+    
+def subgraphExtractRatiosExecute():
     
     #data graph subtraction for dblp data
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
@@ -327,7 +488,13 @@ def main():
 
    # subgraphExtractionObj.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
     
+
         
+#main 
+def main():
+    #subgraphForQueryExecute()
+    #subgraphExtractRatiosExecute()
+    funcMainStarQueryExatract()
     
     
 if __name__== "__main__":
