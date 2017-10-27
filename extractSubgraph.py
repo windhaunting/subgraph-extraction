@@ -13,6 +13,8 @@ from collections import defaultdict
 from random import sample
 from random import choice
 
+sys.path.append("../")
+
 from hierarchicalQueryPython.CommonFiles.commons  import mycsv_reader
 from hierarchicalQueryPython.CommonFiles.commons  import writeListRowToFileWriterTsv
 from hierarchicalQueryPython.CommonFiles.commons  import  appendStringRowToFileWriterTsv
@@ -23,7 +25,6 @@ from hierarchicalQueryPython.graphCommon import readEdgeListToGraph
 from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
 
 from hierarchicalQueryPython.graphCommon import SYNTHETICGRAPHNODETYPE
-
 
 
 import networkx as nx
