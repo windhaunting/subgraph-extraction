@@ -6,7 +6,7 @@ Created on Thu Aug 10 14:20:09 2017
 @author: fubao
 """
 
-
+import sys
 import csv
 import os
 from collections import defaultdict
@@ -23,6 +23,7 @@ from hierarchicalQueryPython.graphCommon import readEdgeListToGraph
 from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
 
 from hierarchicalQueryPython.graphCommon import SYNTHETICGRAPHNODETYPE
+
 
 
 import networkx as nx
@@ -383,7 +384,7 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
         
     resSpecificNodesLst = []                      #final result list (specific node, nodeType)
     for nodeId in resNodeQueryLst:
-         resSpecificNodesLst.append(nodeId, G.node[nodeId]['labelType'])
+         resSpecificNodesLst.append((nodeId, G.node[nodeId]['labelType']))
          
     print ("funcMainStarQueryExatract answerNodes: ", resSpecificNodesLst)
     return resSpecificNodesLst
