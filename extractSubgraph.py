@@ -377,10 +377,16 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
             #nodesLst = single_source_shortest_path(G, node, hopsVisited)          #time complexity is high
             answerNodes = getFixedHopsNodes(G, node, hierarchicalLevelType, totalHierarchicalNodesTypeLst[0] , hopsVisited)
             if len(set(answerNodes)) > totalExpectedExtractedHierarchicalNodes:           #find all the answers
+                resNodeQueryLst += list(set(answerNodes))
                 break
         i += 1
-    print ("funcMainStarQueryExatract answerNodes: ", answerNodes)
-    return set(answerNodes)
+        
+    resSpecificNodesLst = []                      #final result list (specific node, nodeType)
+    for nodeId in resNodeQueryLst:
+         resSpecificNodesLst.append(nodeId, G.node[nodeId]['labelType'])
+         
+    print ("funcMainStarQueryExatract answerNodes: ", resSpecificNodesLst)
+    return resSpecificNodesLst
 
 
 
@@ -399,7 +405,7 @@ def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited
             explored[nodeId] = True              #level arrived
             answerNodes.append(nodeId)
         elif nodeLevel > hopsVisited:
-            print ("getFixedHopsNodes node level: ", len(answerNodes), nodeLevel)
+            #print ("getFixedHopsNodes node level: ", len(answerNodes), nodeLevel)
             break
         
         if G.node[nodeId]['labelType'] != nodeIntermedType:
