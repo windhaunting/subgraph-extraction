@@ -318,7 +318,7 @@ def funcMainStarQueryExatractCiscoProduct():
     subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
       
     
-#extract subgraph as star query here from cisco data graph
+#extract subgraph as star query here from synthetic data graph
 def funcMainStarQueryExatractSyntheticGraph():
     '''
     extract star query graph from synthetic data graph;   specific nodes number
@@ -472,8 +472,6 @@ def funcMainEntryExecuteExtract():
             
         writeListRowToFileWriterTsv(fd, writeLst, '\t')
     
-
-
 
 def subgraphForQueryExecute():
     #query graph subtraction
