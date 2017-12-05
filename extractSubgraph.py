@@ -387,7 +387,7 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
     for nodeId in resNodeQueryLst:
          resSpecificNodesLst.append((nodeId, G.node[nodeId]['labelType']))
          
-    print ("funcMainStarQueryExatract answerNodes: ", resSpecificNodesLst)
+    print ("funcMainStarQueryExatract specific query nodes: ", resSpecificNodesLst)
     return resSpecificNodesLst
 
 
