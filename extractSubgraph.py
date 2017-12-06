@@ -328,7 +328,7 @@ def funcMainStarQueryExatractSyntheticGraph():
     
     totalNonHierarchicalNodes = 1
     nonHierarchicalNodeTypesLst = [SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
-    hopsVisited = 3
+    hopsVisited = 2
     hierarchicalLevelType = SYNTHETICGRAPHNODETYPE.TYPE0HIER.value
     
     syntheticGraphEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
