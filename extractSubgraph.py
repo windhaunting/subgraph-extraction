@@ -323,10 +323,10 @@ def funcMainStarQueryExatractSyntheticGraph():
     '''
     extract star query graph from synthetic data graph;   specific nodes number
     '''
-    totalExpectedExtractedHierarchicalNodes = 3             #how many specific nodes expected to extract
+    totalExpectedExtractedHierarchicalNodes = 4             #how many specific nodes expected to extract
     totalHierarchicalNodesTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]
     
-    totalNonHierarchicalNodes = 1
+    totalNonHierarchicalNodes = 0
     nonHierarchicalNodeTypesLst = [SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
     hopsVisited = 2
     hierarchicalLevelType = SYNTHETICGRAPHNODETYPE.TYPE0HIER.value
@@ -366,11 +366,12 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
         #check node neighbor
         for nb in G[node]:
             if G.node[nb]['labelType'] in nonHierarchicalNodeTypesLst:
-                resNodeQueryLst.append(nb)
                 if len(resNodeQueryLst) >= totalNonHierarchicalNodes:
                     break
+                resNodeQueryLst.append(nb)
+
         if len(resNodeQueryLst) < totalNonHierarchicalNodes:         #no neighbor nodes of node satifying requirement                     
-            flagCurrentNode = False
+            flagCurrentNode = True
         if not flagCurrentNode:
             flagCurrentNode = True
             continue                 #continue 
