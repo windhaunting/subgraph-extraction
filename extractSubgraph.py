@@ -307,7 +307,7 @@ def funcMainStarQueryExatractCiscoProduct():
     
     totalNonHierarchicalNodes = 1
     nonHierarchicalNodeTypesLst = [PRODUCTDATATYPE.BUGID.value, PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
-    hopsVisited = 3
+    hopsVisited = 2
     hierarchicalLevelType = PRODUCTDATATYPE.PRODUCT.value
 
     ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
@@ -328,7 +328,7 @@ def funcMainStarQueryExatractSyntheticGraph():
     
     totalNonHierarchicalNodes = 0
     nonHierarchicalNodeTypesLst = [SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
-    hopsVisited = 2
+    hopsVisited = 1
     hierarchicalLevelType = SYNTHETICGRAPHNODETYPE.TYPE0HIER.value
     
     syntheticGraphEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
