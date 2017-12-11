@@ -302,10 +302,10 @@ def funcMainStarQueryExatractCiscoProduct():
     extract star query graph from cisco data graph;   specific nodes number
     '''
     
-    totalExpectedExtractedHierarchicalNodes = 3             #how many specific nodes expected to extract
+    totalExpectedExtractedHierarchicalNodes = 4             #how many specific nodes expected to extract
     totalHierarchicalNodesTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
     
-    totalNonHierarchicalNodes = 1
+    totalNonHierarchicalNodes = 0
     nonHierarchicalNodeTypesLst = [PRODUCTDATATYPE.BUGID.value, PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
     hopsVisited = 2
     hierarchicalLevelType = PRODUCTDATATYPE.PRODUCT.value
@@ -323,7 +323,7 @@ def funcMainStarQueryExatractSyntheticGraph():
     '''
     extract star query graph from synthetic data graph;   specific nodes number
     '''
-    totalExpectedExtractedHierarchicalNodes = 4             #how many specific nodes expected to extract
+    totalExpectedExtractedHierarchicalNodes = 10             #how many specific nodes expected to extract
     totalHierarchicalNodesTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]
     
     totalNonHierarchicalNodes = 0
@@ -532,8 +532,8 @@ def main():
     #subgraphForQueryExecute()
     #subgraphExtractRatiosExecute()
     
-    #funcMainStarQueryExatractCiscoProduct()            
-    funcMainStarQueryExatractSyntheticGraph()
+    funcMainStarQueryExatractCiscoProduct()            
+    #funcMainStarQueryExatractSyntheticGraph()
     
 if __name__== "__main__":
   main()
