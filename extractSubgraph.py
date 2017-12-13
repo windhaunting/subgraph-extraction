@@ -304,20 +304,6 @@ def getTypeNodeSet(G, nodeType):
                  
     return nodeSet
 
-
-
- = 1
-    PAPER = 2
-    TOPIC = 3
-    TIME = 4
-    ARTICLE = 5
-    BOOK = 6
-    INCOLLECTION =7
-    INPROCEEDINGS = 8
-    MASTERSTHESIS = 9
-    PHDTHESIS = 10
-    PROCEEDINGS = 11
-    WWW = 12
     
 def funcMainStarQueryExatractDblpProduct():
     '''
@@ -336,6 +322,13 @@ def funcMainStarQueryExatractDblpProduct():
                               DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value, DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
     
     
+    dblpGraphEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
+    dblpGraphNodeInfo = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
+    G = readEdgeListToGraph(dblpGraphEdgeListFile, dblpGraphNodeInfo)
+    
+    subFunctionStarQueryExtract(G, hierarchicalLevelTypes, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
+
+
 def funcMainStarQueryExatractCiscoProduct():
     '''
     extract star query graph from cisco data graph;   specific nodes number
@@ -347,7 +340,7 @@ def funcMainStarQueryExatractCiscoProduct():
     totalNonHierarchicalNodes = 0
     nonHierarchicalNodeTypesLst = [PRODUCTDATATYPE.BUGID.value, PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
     hopsVisited = 2
-    hierarchicalLevelType = PRODUCTDATATYPE.PRODUCT.value
+    hierarchicalLevelType = [PRODUCTDATATYPE.PRODUCT.value]
 
     ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
     ciscoAdjacentListFile = "../inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
@@ -368,16 +361,16 @@ def funcMainStarQueryExatractSyntheticGraph():
     totalNonHierarchicalNodes = 0
     nonHierarchicalNodeTypesLst = [SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
     hopsVisited = 1
-    hierarchicalLevelType = SYNTHETICGRAPHNODETYPE.TYPE0HIER.value
+    hierarchicalLevelTypes = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]
     
     syntheticGraphEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
     syntheticGraphNodeInfo = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
     G = readEdgeListToGraph(syntheticGraphEdgeListFile, syntheticGraphNodeInfo)
     
-    subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
+    subFunctionStarQueryExtract(G, hierarchicalLevelTypes, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
+    
 
-
-def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited):
+def subFunctionStarQueryExtract(G, hierarchicalLevelTypes, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited):
     '''
     1)specific node number in total
     2)hierarchical inheritance node number in total
@@ -386,8 +379,10 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
     '''
     
     #get nodes with hierarchical levels; e.g. product type
-    hierNodeSet = getTypeNodeSet(G, hierarchicalLevelType)
-    print ("funcMainStarQueryExatract: , G len ", len(G), hierarchicalLevelType, len(hierNodeSet))
+    hierNodeSet = set()
+    for hierarchicalLevelType in hierarchicalLevelTypes:
+       hierNodeSet |= getTypeNodeSet(G, hierarchicalLevelType)
+    print ("funcMainStarQueryExatract: , G len ", len(G), hierarchicalLevelTypes, len(hierNodeSet))
     
     answerNodes = []
     
@@ -417,7 +412,7 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
         else:
             # continue to search the hierarchical inheritance nodes; search the neighbor nodes again.
             #nodesLst = single_source_shortest_path(G, node, hopsVisited)          #time complexity is high
-            answerNodes = getFixedHopsNodes(G, node, hierarchicalLevelType, totalHierarchicalNodesTypeLst[0] , hopsVisited)
+            answerNodes = getFixedHopsNodes(G, node, hierarchicalLevelTypes, totalHierarchicalNodesTypeLst[0] , hopsVisited)
             if len(set(answerNodes)) > totalExpectedExtractedHierarchicalNodes:           #find all the answers
                 resNodeQueryLst += list(set(answerNodes))
                 break
@@ -432,7 +427,7 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
 
 
 
-def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited):
+def getFixedHopsNodes(G, sourceNode, nodeIntermedTypes, nodeLastType, hopsVisited):
     '''
     get the path from sourceNode with fixed hops and has the nodeType for all the nodes in the path; 
     use BFS search
@@ -452,7 +447,7 @@ def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited
             #print ("getFixedHopsNodes node level: ", len(answerNodes), nodeLevel)
             break
         
-        if G.node[nodeId]['labelType'] != nodeIntermedType:
+        if G.node[nodeId]['labelType'] not in nodeIntermedTypes:
             explored[nodeId] = True          #mark as explored
             
         if nodeId not in explored:
@@ -577,6 +572,9 @@ def main():
     
     funcMainStarQueryExatractCiscoProduct()            
     #funcMainStarQueryExatractSyntheticGraph()
+    
+    funcMainStarQueryExatractDblpProduct()
+
     
 if __name__== "__main__":
   main()
