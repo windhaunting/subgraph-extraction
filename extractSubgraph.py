@@ -23,9 +23,8 @@ from hierarchicalQueryPython.CommonFiles.commons  import  appendStringRowToFileW
 from hierarchicalQueryPython.graphCommon import readCiscoDataGraph
 from hierarchicalQueryPython.graphCommon import readEdgeListToGraph
 from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
-
 from hierarchicalQueryPython.graphCommon import SYNTHETICGRAPHNODETYPE
-
+from hierarchicalQueryPython.graphCommon import DBLPDATATYPE
 
 import networkx as nx
 #extractSubGraph from data graph
@@ -306,14 +305,35 @@ def getTypeNodeSet(G, nodeType):
     return nodeSet
 
 
+
+ = 1
+    PAPER = 2
+    TOPIC = 3
+    TIME = 4
+    ARTICLE = 5
+    BOOK = 6
+    INCOLLECTION =7
+    INPROCEEDINGS = 8
+    MASTERSTHESIS = 9
+    PHDTHESIS = 10
+    PROCEEDINGS = 11
+    WWW = 12
+    
 def funcMainStarQueryExatractDblpProduct():
     '''
     #extract subgraph as star query here from dblp data graph
     '''
-     totalExpectedExtractedHierarchicalNodes = 4             #how many specific nodes expected to extract
-    totalHierarchicalNodesTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
+    totalExpectedExtractedHierarchicalNodes = 4             #how many specific nodes expected to extract
+    totalHierarchicalNodesTypeLst = [DBLPDATATYPE.TOPIC.value]
     
     totalNonHierarchicalNodes = 0
+    nonHierarchicalNodeTypesLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
+                             DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
+                             DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
+
+    hopsVisited = 2
+    hierarchicalLevelTypes = [DBLPDATATYPE.PAPER.value, DBLPDATATYPE.ARTICLE.value, DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, 
+                              DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value, DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
     
     
 def funcMainStarQueryExatractCiscoProduct():
