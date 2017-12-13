@@ -48,11 +48,12 @@ class ClsSubgraphExtraction(object):
     def __init__(self):
       pass
     
-    #extract query graph for experiments.
-    #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
-    #startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
     def funcExtractSubGraph(self, G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
-        
+        '''
+        extract query graph for experiments.
+        query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
+        startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
+        '''
         #find path of , 
         #get the specNodeNum
         divider = floor(specNodeNum/queryNodeNum)
@@ -132,10 +133,10 @@ class ClsSubgraphExtraction(object):
                                             
     
                                     
-    
-    #extract product data query graph   entry    
     def funcExecuteExtractQueryProduct(self, G, outFile):
-         
+        '''
+        extract product data query graph  entry    
+        '''
         #nodeLst = G.nodes()
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
         
@@ -178,9 +179,10 @@ class ClsSubgraphExtraction(object):
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
     
     
-    #extract dblp data query graph entry
     def funcExecuteExtractQueryDblp(self, dblpNodeInfoFile, edgeListFile, outFile):
-        
+        '''
+        extract dblp data query graph entry
+        '''
         G = readEdgeListToGraph(edgeListFile, dblpNodeInfoFile)
         peopleNodeSet = set()
         for n, d in G.nodes_iter(data=True):
@@ -212,9 +214,11 @@ class ClsSubgraphExtraction(object):
             
 
 
-    #get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100% 
-    #accumulate rationode, including previous node set
     def subgraphFromDatagraph(self, G, rationofNodes, prevNodeSet):
+        '''
+        get subgraph from datagraph,  get 10% of data; 10%, 20%, 50, 80%, 100% 
+        accumulate rationode, including previous node set
+        '''
         #get random number of nodes
         numberIncreaseNodes = int(len(G)*rationofNodes) - len(prevNodeSet)
         print ("G numberNodes: ", len(prevNodeSet) + numberIncreaseNodes)
@@ -226,8 +230,11 @@ class ClsSubgraphExtraction(object):
         return subGraph, numberNodesLst
 
 
-    #extract subgraph from data graph
+    
     def executeSubgraphExtractFromDatagraph(self, G, outputDir):
+        '''
+        #extract subgraph from data graph
+        '''
         #10%, 20%, 50%, 80%, 100
       
         print ("G: ", len(G))
@@ -287,8 +294,10 @@ class ClsSubgraphExtraction(object):
 
 
                                         
-#get nodes with a specific node type
 def getTypeNodeSet(G, nodeType):
+    '''
+    get nodes with a specific node type
+    '''
     nodeSet = set()
     for n, d in G.nodes_iter(data=True):
         if d['labelType'] == nodeType:
@@ -296,7 +305,17 @@ def getTypeNodeSet(G, nodeType):
                  
     return nodeSet
 
-#extract subgraph as star query here from cisco data graph
+
+def funcMainStarQueryExatractDblpProduct():
+    '''
+    #extract subgraph as star query here from dblp data graph
+    '''
+     totalExpectedExtractedHierarchicalNodes = 4             #how many specific nodes expected to extract
+    totalHierarchicalNodesTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
+    
+    totalNonHierarchicalNodes = 0
+    
+    
 def funcMainStarQueryExatractCiscoProduct():
     '''
     extract star query graph from cisco data graph;   specific nodes number
@@ -393,9 +412,11 @@ def subFunctionStarQueryExtract(G, hierarchicalLevelType, totalExpectedExtracted
 
 
 
-#get the path from sourceNode with fixed hops and has the nodeType for all the nodes in the path; use BFS search
 def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited):
-    
+    '''
+    get the path from sourceNode with fixed hops and has the nodeType for all the nodes in the path; 
+    use BFS search
+    '''
     answerNodes = []
     queue = [(sourceNode, 0)] #nodeId, level 0 
     explored = defaultdict()
@@ -424,15 +445,16 @@ def getFixedHopsNodes(G, sourceNode, nodeIntermedType, nodeLastType, hopsVisited
     return answerNodes
 
 
-#main function extract subgraph as generic query graph
 def funcMainEntryExecuteExtract():
+    '''
+    main function extract subgraph as generic query graph
+    '''
     ciscoNodeInfoFile = "../inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
     ciscoAdjacentListFile = "../inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
     
     G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
     
     #nodeLst = G.nodes()
-    
     #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
     
     productNodeSet = set()
@@ -445,7 +467,6 @@ def funcMainEntryExecuteExtract():
 
     print ("productNodeSet: ", len(productNodeSet))
     #workgroup = ((u,v) for u,v,d in G.nodes_iter(data=True) if d['labelType']==5)
-    
     
    # specNodeNum = 13
    # queryNodeNum = 10
@@ -475,7 +496,9 @@ def funcMainEntryExecuteExtract():
     
 
 def subgraphForQueryExecute():
-    #query graph subtraction
+    '''
+    query graph subtraction
+    '''
     subgraphExtractionObj = ClsSubgraphExtraction()
     ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
     ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
@@ -491,8 +514,9 @@ def subgraphForQueryExecute():
     
     
 def subgraphExtractRatiosExecute():
-    
-    #data graph subtraction for dblp data
+    '''
+    data graph subtraction for dblp data
+    '''
     inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
     inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
     outputDir = "output/dblpDataGraphExtractOut/"       #output directory
@@ -505,7 +529,6 @@ def subgraphExtractRatiosExecute():
     inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
     outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
     subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
-    
     
     
     #data graph subtraction for cisco data
