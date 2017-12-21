@@ -149,7 +149,10 @@ class ClsSubgraphExtraction(object):
         for tpls in specNodesGeneralQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst = [0]*queryNodeNum
+            #generated dstTypeLst randomly
+            dstTypeLst = [0]             #first fixe at 0: TYPE0HIER
+            randomLst = [1, 2, 3]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
+            dstTypeLst =                  #[0]*queryNodeNum
         
                        
     def funcExecuteExtractQueryProduct(self, G, outFile):
