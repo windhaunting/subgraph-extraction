@@ -59,7 +59,7 @@ class ClsSubgraphExtraction(object):
         residual = specNodeNum % queryNodeNum
         
         divideSpecNodeNum = []
-        for i in range(queryNodeNum):              #assign specNodeNum size for each queryNodeNum
+        for i in range(queryNodeNum):              #assign specNodeNum size for each queryNodeNum (i.e. each star query size)
             if residual != 0:
                 divideSpecNodeNum.append(divider + 1)           
                 residual -= 1
