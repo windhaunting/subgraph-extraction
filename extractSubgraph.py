@@ -137,7 +137,7 @@ class ClsSubgraphExtraction(object):
         '''
     
     
-    def  funcExtractSubGraphHopped(self, G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopVisited)
+    def  funcExtractSubGraphHopped(self, G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopsVisited)
         '''
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
@@ -196,7 +196,14 @@ class ClsSubgraphExtraction(object):
                                 #print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
                                 if G.node[nd]['labelType'] == dstType:
+                                    
+                                    #get hopvisited length list of set
+                                    sourceNode = nd
+                                    nodeLastTypes = 
+                                    getFixedHopsNodes(G, sourceNode, nodeLastTypes, hopsVisited)
+                                    
                                     #get node neighbor for specific number
+                                    '''
                                     nbs = G[nd]  
                                     tmpCnt = 0
                                     j = prevj
@@ -220,7 +227,8 @@ class ClsSubgraphExtraction(object):
                                                 break
                                         j += 1
                                     prevj = j
-    
+                                    '''
+                                    
         
     def funcExecuteExtractQuerySynthetic(self, G, outFile):
         '''
@@ -230,6 +238,8 @@ class ClsSubgraphExtraction(object):
         #get
         specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         #clear output file first
+        hopsVisited = 2
+        
         os.remove(outFile) if os.path.exists(outFile) else None
         fd = open(outFile,'a')
         for tpls in specNodesGeneralQueryNodesLst:
@@ -244,7 +254,7 @@ class ClsSubgraphExtraction(object):
             startNodSet = getTypeNodeSet(G, dstType[0]) 
             endNodeSet = getTypeNodeSet(G, dstType[-1])
             
-            self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopVisited)
+            self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopsVisited)
     
                        
     def funcExecuteExtractQueryProduct(self, G, outFile):

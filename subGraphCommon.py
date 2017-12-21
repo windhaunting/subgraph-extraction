@@ -22,10 +22,13 @@ def getTypeNodeSet(G, nodeType):
 
 
 
-def getFixedHopsNodes(G, sourceNode, nodeIntermedTypes, nodeLastType, hopsVisited):
+def getFixedHopsNodes(G, sourceNode, nodeLastTypes, hopsVisited):
     '''
     get the path from sourceNode with fixed hops and has the nodeType for all the nodes in the path; 
     use BFS search
+    
+    nodeLastTypes as the last level node type
+    
     '''
     answerNodes = []
     queue = [(sourceNode, 0)] #nodeId, level 0 
@@ -35,15 +38,15 @@ def getFixedHopsNodes(G, sourceNode, nodeIntermedTypes, nodeLastType, hopsVisite
         nodeInfo = queue.pop(0)
         nodeId = nodeInfo[0]
         nodeLevel = nodeInfo[1]
-        if nodeLevel == hopsVisited and nodeLastType== G.node[nodeId]['labelType']:          #get the answer node
-            explored[nodeId] = True              #level arrived
+        if nodeLevel == hopsVisited and G.node[nodeId]['labelType'] in nodeLastTypes:          #get the answer node
+            explored[nodeId] = True              #added into explored list;  level arrived
             answerNodes.append(nodeId)
         elif nodeLevel > hopsVisited:
             #print ("getFixedHopsNodes node level: ", len(answerNodes), nodeLevel)
             break
         
-        if G.node[nodeId]['labelType'] not in nodeIntermedTypes:
-            explored[nodeId] = True          #mark as explored
+        #if G.node[nodeId]['labelType'] not in nodeIntermedTypes:
+        #    explored[nodeId] = True          #mark as explored
             
         if nodeId not in explored:
             # add node to list of checked nodes
