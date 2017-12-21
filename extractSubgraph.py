@@ -201,38 +201,34 @@ class ClsSubgraphExtraction(object):
                                     #get hopvisited length list of set
                                     sourceNode = nd
                                     lastNodeTypes = copy.deepcopy(wholeTypeLst)
-                                    lastNodeTypes.remove(dstType)
+                                    lastNodeTypes.remove(dstType)         #last level node types in hopvisited level
                                     
-                                    nodeLastTypes = whole
-                                    getFixedHopsNodes(G, sourceNode, nodeLastTypes, lastNodeTypes, hopsVisited)
+                                    answerNodes = getFixedHopsNodes(G, sourceNode, nodeLastTypes, lastNodeTypes, hopsVisited)
                                     
-                                    #get node neighbor for specific number
-                                    '''
-                                    nbs = G[nd]  
-                                    tmpCnt = 0
                                     j = prevj
-                                    nbsLst= list(nbs.keys())
-                                    #print ("type: ", type(nbs), len(nbsLst))
-                                    while (j < len(nbsLst)):
-                                        nb = nbsLst[j]
-                                        if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
+                                    tmpCnt = 0       #check specific node number
+                                    while (j < len(answerNodes)):
+                                        newNd = nbsLst[j]
+                                        if G.node[nb]['labelType'] != dstType and (newNd, G.node[newNd]['labelType']) not in innerLst:
                                             innerLst.append((nb, G.node[nb]['labelType']))
                                             tmpCnt += 1
-                                            if innerLst in queryGraphLst:
-                                                innerLst.pop()
-                                            elif innerLst not in queryGraphLst and tmpCnt >= StarQuerySpecNodes[dstTypeIndex]:  #safisfy specific number
-                                                #cntQueryNum += 1
-                                                queryGraphLst.append(innerLst)
-                                                #print(" dstTypeIndex aa ", dstTypeIndex)
-                                                dstTypeIndex += 1    #change next dstType index 
-                                                if dstTypeIndex >= queryNodeNum:
-                                                    #print(" queryGraphLst ", queryGraphLst)
-                                                    return path, queryGraphLst
-                                                break
+                                        if innerLst in queryGraphLst:
+                                            innerLst.pop()
+                                        elif innerLst not in queryGraphLst and tmpCnt >= StarQuerySpecNodes[dstTypeIndex]:  #safisfy specific number
+                                            queryGraphLst.append(innerLst)
+                                             #print(" dstTypeIndex aa ", dstTypeIndex)
+                                            dstTypeIndex += 1          #change next dstType index
+                                            if dstTypeIndex >= queryNodeNum:
+                                                #print(" queryGraphLst ", queryGraphLst)
+                                                return (path, queryGraphLst)
+                                            break            # break because tmpCnt >= StarQuerySpecNodes[dstTypeIndex]
                                         j += 1
-                                    prevj = j
-                                    '''
                                     
+                                    prevj = j
+                                    
+                                 
+        return ([], [])
+                            
         
     def funcExecuteExtractQuerySynthetic(self, G, outFile):
         '''
@@ -245,6 +241,10 @@ class ClsSubgraphExtraction(object):
         hopsVisited = 2
         
         os.remove(outFile) if os.path.exists(outFile) else None
+    
+        wholeTypeLst =  [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value, SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, 
+                         SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
+  
         fd = open(outFile,'a')
         for tpls in specNodesGeneralQueryNodesLst:
             specNodeNum = tpls[0]
@@ -257,7 +257,7 @@ class ClsSubgraphExtraction(object):
             
             startNodSet = getTypeNodeSet(G, dstType[0]) 
             endNodeSet = getTypeNodeSet(G, dstType[-1])
-            
+             
             self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
                        
@@ -597,6 +597,9 @@ class ClsSubgraphExtraction(object):
         '''
         query graph subtraction
         '''
+        
+        
+        '''
         ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
         ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
         outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/ciscoDataExtractQueryGraph01"
@@ -607,7 +610,7 @@ class ClsSubgraphExtraction(object):
         edgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         outFile = "output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
         #subgraphExtractionObj.funcExecuteExtractQueryDblp(dblpNodeInfoFile, edgeListFile, outFile)
-        
+        '''
         
         
     def subgraphExtractRatiosExecute(self):
@@ -658,7 +661,9 @@ def main():
     #funcMainStarQueryExatractDblpProduct()
 
     subgraphExtractionObj = ClsSubgraphExtraction()
-
+    subgraphExtractionObj.subgraphForQueryExecute()
+    
+    
 if __name__== "__main__":
   main()
   
