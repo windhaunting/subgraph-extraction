@@ -11,6 +11,7 @@ import csv
 import os
 from random import sample
 from random import choice
+import copy
 
 sys.path.append("../")
 
@@ -137,7 +138,7 @@ class ClsSubgraphExtraction(object):
         '''
     
     
-    def  funcExtractSubGraphHopped(self, G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopsVisited)
+    def  funcExtractSubGraphHopped(self, G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
         '''
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
@@ -199,8 +200,11 @@ class ClsSubgraphExtraction(object):
                                     
                                     #get hopvisited length list of set
                                     sourceNode = nd
-                                    nodeLastTypes = 
-                                    getFixedHopsNodes(G, sourceNode, nodeLastTypes, hopsVisited)
+                                    lastNodeTypes = copy.deepcopy(wholeTypeLst)
+                                    lastNodeTypes.remove(dstType)
+                                    
+                                    nodeLastTypes = whole
+                                    getFixedHopsNodes(G, sourceNode, nodeLastTypes, lastNodeTypes, hopsVisited)
                                     
                                     #get node neighbor for specific number
                                     '''
@@ -254,7 +258,7 @@ class ClsSubgraphExtraction(object):
             startNodSet = getTypeNodeSet(G, dstType[0]) 
             endNodeSet = getTypeNodeSet(G, dstType[-1])
             
-            self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopsVisited)
+            self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
                        
     def funcExecuteExtractQueryProduct(self, G, outFile):
