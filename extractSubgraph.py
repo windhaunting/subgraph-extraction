@@ -137,12 +137,14 @@ class ClsSubgraphExtraction(object):
         '''
     
     
-    def  funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopVisited)
+    def  funcExtractSubGraphHopped(self, G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopVisited)
         '''
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
         #startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
         # hopVisited: how many hops at least from specific node to query node
+        specNodeNum: total specific node number for general query graph
+        queryNodeNum: total query node number for general query graph
         '''
          #get the specNodeNum
         divider = floor(specNodeNum/queryNodeNum)
@@ -173,16 +175,17 @@ class ClsSubgraphExtraction(object):
                         #check how many product inside the path
                         #check how many has product type in the path
                         #print(" path aaaaa", len(path))
-                        prodNodes = []
+                        queryNodesStarQuery = []               #result query node set for each star query
                         tmpTargetIndex = 0
                         for nodeId in path:
                             if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
                                 #print ("xxxxxxx: ", node)
-                                prodNodes.append(nodeId)
+                                queryNodesStarQuery.append(nodeId)
                                 tmpTargetIndex += 1
-                                if len(prodNodes) >= queryNodeNum:
+                                if len(queryNodesStarQuery) >= queryNodeNum:
                                     break
-                        if len(prodNodes) >= queryNodeNum:
+                        
+                        if len(queryNodesStarQuery) >= queryNodeNum:
                            # breakFlag = True
                             #get the 
                             #print(" resNodesPath ", path)
