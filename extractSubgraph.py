@@ -151,12 +151,73 @@ class ClsSubgraphExtraction(object):
         StarQuerySpecNodes = []            #each star query Specific node
         for i in range(queryNodeNum):              #assign specNodeNum size for each queryNodeNum (i.e. each star query size)
             if residual != 0:
-                divideSpecNodeNum.append(divider + 1)           
+                StarQuerySpecNodes.append(divider + 1)           
                 residual -= 1
             else:
-                divideSpecNodeNum.append(divider)
+                StarQuerySpecNodes.append(divider)
         
-        
+        queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
+        dstTypeIndex = 0              #which query node type
+        for src in startNodeSet:
+            #breakFlag = False
+            for dst in endNodeSet:
+                print(" xxxx ", src, dst)
+                if src != dst:
+                    #get all path
+                    #print(" xxxx dddddd", src, dst)
+                    #print ("nx.all_simple_paths: ")
+                    #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
+                    #timeBegin = time.time()
+                    
+                    for path in nx.all_simple_paths(G, src, dst, cutoff= 11):
+                        #check how many product inside the path
+                        #check how many has product type in the path
+                        #print(" path aaaaa", len(path))
+                        prodNodes = []
+                        tmpTargetIndex = 0
+                        for nodeId in path:
+                            if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
+                                #print ("xxxxxxx: ", node)
+                                prodNodes.append(nodeId)
+                                tmpTargetIndex += 1
+                                if len(prodNodes) >= queryNodeNum:
+                                    break
+                        if len(prodNodes) >= queryNodeNum:
+                           # breakFlag = True
+                            #get the 
+                            #print(" resNodesPath ", path)
+                            #cntQueryNum = 0
+                            prevj = 0
+                            for nd in path:
+                                innerLst = []
+                                #print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
+                                dstType = dstTypeLst[dstTypeIndex]               #get query node type
+                                if G.node[nd]['labelType'] == dstType:
+                                    #get node neighbor for specific number
+                                    nbs = G[nd]  
+                                    tmpCnt = 0
+                                    j = prevj
+                                    nbsLst= list(nbs.keys())
+                                    #print ("type: ", type(nbs), len(nbsLst))
+                                    while (j < len(nbsLst)):
+                                        nb = nbsLst[j]
+                                        if G.node[nb]['labelType'] != dstType and (nb, G.node[nb]['labelType']) not in innerLst:
+                                            innerLst.append((nb, G.node[nb]['labelType']))
+                                            tmpCnt += 1
+                                            if innerLst in queryGraphLst:
+                                                innerLst.pop()
+                                            elif innerLst not in queryGraphLst and tmpCnt >= StarQuerySpecNodes[dstTypeIndex]:  #safisfy specific number
+                                                #cntQueryNum += 1
+                                                queryGraphLst.append(innerLst)
+                                                #print(" dstTypeIndex aa ", dstTypeIndex)
+                                                dstTypeIndex += 1    #change next dstType index 
+                                                if dstTypeIndex >= queryNodeNum:
+                                                    #print(" queryGraphLst ", queryGraphLst)
+                                                    return path, queryGraphLst
+                                                break
+                                        j += 1
+                                    prevj = j
+    
         
     def funcExecuteExtractQuerySynthetic(self, G, outFile):
         '''
