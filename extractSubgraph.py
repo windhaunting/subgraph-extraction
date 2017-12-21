@@ -131,10 +131,15 @@ class ClsSubgraphExtraction(object):
                                     prevj = j
                                             
     
-                                    
     def funcExecuteExtractQueryProduct(self, G, outFile):
         '''
-        extract product data query graph  entry    
+        extract synthetic data query graph for decomposed star queries   
+        '''
+                     
+                       
+    def funcExecuteExtractQueryProduct(self, G, outFile):
+        '''
+        extract product data query graph for decomposed star queries   
         '''
         #nodeLst = G.nodes()
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
@@ -180,7 +185,7 @@ class ClsSubgraphExtraction(object):
     
     def funcExecuteExtractQueryDblp(self, dblpNodeInfoFile, edgeListFile, outFile):
         '''
-        extract dblp data query graph entry
+        extract dblp data query graph for decomposed star queries 
         '''
         G = readEdgeListToGraph(edgeListFile, dblpNodeInfoFile)
         peopleNodeSet = set()
