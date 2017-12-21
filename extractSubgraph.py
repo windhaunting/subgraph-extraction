@@ -148,7 +148,15 @@ class ClsSubgraphExtraction(object):
         divider = floor(specNodeNum/queryNodeNum)
         residual = specNodeNum % queryNodeNum
         
-        divideSpecNodeNum = []
+        StarQuerySpecNodes = []            #each star query Specific node
+        for i in range(queryNodeNum):              #assign specNodeNum size for each queryNodeNum (i.e. each star query size)
+            if residual != 0:
+                divideSpecNodeNum.append(divider + 1)           
+                residual -= 1
+            else:
+                divideSpecNodeNum.append(divider)
+        
+        
         
     def funcExecuteExtractQuerySynthetic(self, G, outFile):
         '''
