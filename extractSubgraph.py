@@ -50,12 +50,12 @@ class ClsSubgraphExtraction(object):
     def __init__(self):
       pass
     
-    
+        '''
     def funcExtractSubGraph(self, G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
         '''
-        extract query graph for experiments.
-        query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
-        startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
+        #extract query graph for experiments.
+        #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
+        #startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
         '''
         #find path of , 
         #get the specNodeNum
@@ -134,14 +134,28 @@ class ClsSubgraphExtraction(object):
                                         j += 1
                                     prevj = j
     
+        '''
     
+    
+    def  funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopVisited)
+        '''
+        #extract query graph for experiments.
+        #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
+        #startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
+        # hopVisited: how many hops at least from specific node to query node
+        '''
+         #get the specNodeNum
+        divider = floor(specNodeNum/queryNodeNum)
+        residual = specNodeNum % queryNodeNum
+        
+        divideSpecNodeNum = []
+        
     def funcExecuteExtractQuerySynthetic(self, G, outFile):
         '''
         extract synthetic data query graph for decomposed star queries   
         '''
         
         #get
-        
         specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         #clear output file first
         os.remove(outFile) if os.path.exists(outFile) else None
@@ -152,8 +166,14 @@ class ClsSubgraphExtraction(object):
             #generated dstTypeLst randomly
             dstTypeLst = [0]             #first fixe at 0: TYPE0HIER
             randomLst = [1, 2, 3]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
-            dstTypeLst =                  #[0]*queryNodeNum
-        
+            for i in len(dstTypeLst[1::]):
+                dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
+            
+            startNodSet = getTypeNodeSet(G, dstType[0]) 
+            endNodeSet = getTypeNodeSet(G, dstType[-1])
+            
+            self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, hopVisited)
+    
                        
     def funcExecuteExtractQueryProduct(self, G, outFile):
         '''
