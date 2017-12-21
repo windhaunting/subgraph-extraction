@@ -26,8 +26,8 @@ from hierarchicalQueryPython.graphCommon import PRODUCTDATATYPE
 from hierarchicalQueryPython.graphCommon import SYNTHETICGRAPHNODETYPE
 from hierarchicalQueryPython.graphCommon import DBLPDATATYPE
 
-from subGraphcommon import getTypeNodeSet
-from subGraphcommon import getFixedHopsNodes
+from subGraphCommon import getTypeNodeSet
+from subGraphCommon import getFixedHopsNodes
 
 
 import networkx as nx
@@ -51,14 +51,14 @@ class ClsSubgraphExtraction(object):
     def __init__(self):
       pass
     
-        '''
+    '''
     def funcExtractSubGraph(self, G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst):
-        '''
+    
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
         #startNodeSet indicates the set with the node type of query node starting; endNodeSet indicates the node type of query node ending
-        '''
-        #find path of , 
+        
+        #find path of 
         #get the specNodeNum
         divider = floor(specNodeNum/queryNodeNum)
         residual = specNodeNum % queryNodeNum
@@ -135,10 +135,10 @@ class ClsSubgraphExtraction(object):
                                         j += 1
                                     prevj = j
     
-        '''
+    '''
     
     
-    def  funcExtractSubGraphHopped(self, G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+    def  funcExtractSubGraphHopped(self, G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
@@ -203,14 +203,14 @@ class ClsSubgraphExtraction(object):
                                     lastNodeTypes = copy.deepcopy(wholeTypeLst)
                                     lastNodeTypes.remove(dstType)         #last level node types in hopvisited level
                                     
-                                    answerNodes = getFixedHopsNodes(G, sourceNode, nodeLastTypes, lastNodeTypes, hopsVisited)
+                                    answerNodes = getFixedHopsNodes(G, sourceNode, lastNodeTypes, hopsVisited)
                                     
                                     j = prevj
                                     tmpCnt = 0       #check specific node number
                                     while (j < len(answerNodes)):
-                                        newNd = nbsLst[j]
-                                        if G.node[nb]['labelType'] != dstType and (newNd, G.node[newNd]['labelType']) not in innerLst:
-                                            innerLst.append((nb, G.node[nb]['labelType']))
+                                        newNd = answerNodes[j]
+                                        if G.node[newNd]['labelType'] != dstType and (newNd, G.node[newNd]['labelType']) not in innerLst:
+                                            innerLst.append((newNd, G.node[newNd]['labelType']))
                                             tmpCnt += 1
                                         if innerLst in queryGraphLst:
                                             innerLst.pop()
@@ -234,13 +234,12 @@ class ClsSubgraphExtraction(object):
         '''
         extract synthetic data query graph for decomposed star queries   
         '''
-        
+        os.remove(outFile) if os.path.exists(outFile) else None
+
         #get
         specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         #clear output file first
         hopsVisited = 2
-        
-        os.remove(outFile) if os.path.exists(outFile) else None
     
         wholeTypeLst =  [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value, SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, 
                          SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
@@ -250,17 +249,28 @@ class ClsSubgraphExtraction(object):
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
             #generated dstTypeLst randomly
-            dstTypeLst = [0]             #first fixe at 0: TYPE0HIER
-            randomLst = [1, 2, 3]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
+            dstTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]             #first fixe at 0: TYPE0HIER
+            randomLst = [SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
             for i in len(dstTypeLst[1::]):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
-            startNodSet = getTypeNodeSet(G, dstType[0]) 
-            endNodeSet = getTypeNodeSet(G, dstType[-1])
+            startNodSet = getTypeNodeSet(G, dstTypeLst[0]) 
+            endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
              
-            self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
-                       
+            writeLst = []              #format: x,x;x,x;    x,x;,x,x....
+            for specNumLst in queryGraphLst:
+                inputStr = ""
+                for tpl in specNumLst[:-1]:
+                    inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+                    
+                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
+                writeLst.append(inputStr)  
+                
+            writeListRowToFileWriterTsv(fd, writeLst, '\t')
+            
+            
     def funcExecuteExtractQueryProduct(self, G, outFile):
         '''
         extract product data query graph for decomposed star queries   
@@ -597,7 +607,14 @@ class ClsSubgraphExtraction(object):
         '''
         query graph subtraction
         '''
+        inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
+        inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
+        G = readEdgeListToGraph(inputEdgeListfilePath, inputNodeInfoFilePath)
+        outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generateQuerygraphInput"
+        
+        self.funcExecuteExtractQuerySynthetic(G, outFile)
+    
         
         '''
         ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
