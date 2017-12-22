@@ -238,7 +238,7 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
 
         #get
-        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   #[(2, 1),(4, 2), (6,3)]
         #clear output file first
         hopsVisited = 2
     
@@ -267,7 +267,7 @@ class ClsSubgraphExtraction(object):
                 for tpl in specNumLst[:-1]:
                     inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
                 
-                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + dstTypeLst[i]
+                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
                 writeLst.append(inputStr)  
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
