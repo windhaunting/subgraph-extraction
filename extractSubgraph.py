@@ -255,10 +255,10 @@ class ClsSubgraphExtraction(object):
             for i in dstTypeLst[1::]:
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
-            startNodSet = getTypeNodeSet(G, dstTypeLst[0]) 
+            startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
             endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
              
-            (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
             for specNumLst in queryGraphLst:
@@ -271,7 +271,7 @@ class ClsSubgraphExtraction(object):
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
             
-            
+
     def funcExecuteExtractQueryProduct(self, G, outFile):
         '''
         extract product data query graph for decomposed star queries   
