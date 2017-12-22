@@ -251,7 +251,8 @@ class ClsSubgraphExtraction(object):
             #generated dstTypeLst randomly
             dstTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]             #first fixe at 0: TYPE0HIER
             randomLst = [SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
-            for i in len(dstTypeLst[1::]):
+            
+            for i in dstTypeLst[1::]:
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
             startNodSet = getTypeNodeSet(G, dstTypeLst[0]) 
@@ -264,7 +265,7 @@ class ClsSubgraphExtraction(object):
                 inputStr = ""
                 for tpl in specNumLst[:-1]:
                     inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
-                    
+                
                 inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
                 writeLst.append(inputStr)  
                 
