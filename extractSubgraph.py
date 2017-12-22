@@ -177,6 +177,7 @@ class ClsSubgraphExtraction(object):
                         #check how many has product type in the path
                         #print(" path aaaaa", len(path))
                         queryNodesStarQuery = []               #result query node set for each star query
+                        
                         tmpTargetIndex = 0
                         for nodeId in path:
                             if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
@@ -186,7 +187,7 @@ class ClsSubgraphExtraction(object):
                                 if len(queryNodesStarQuery) >= queryNodeNum:
                                     break
                         
-                        if len(queryNodesStarQuery) >= queryNodeNum:
+                        if len(queryNodesStarQuery) >= queryNodeNum:        #make sure the path has enough node number satifying query nodeNum
                            # breakFlag = True
                             #get the 
                             #print(" resNodesPath ", path)
@@ -252,7 +253,7 @@ class ClsSubgraphExtraction(object):
             dstTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]             #first fixe at 0: TYPE0HIER
             randomLst = [SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
             
-            for i in dstTypeLst[1::]:
+            for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
             startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
@@ -260,13 +261,13 @@ class ClsSubgraphExtraction(object):
              
             (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
-            writeLst = []              #format: x,x;x,x;    x,x;,x,x....
-            for specNumLst in queryGraphLst:
+            writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
+            for i, specNumLst in enumerate(queryGraphLst):
                 inputStr = ""
                 for tpl in specNumLst[:-1]:
                     inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
                 
-                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
+                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + dstTypeLst[i]
                 writeLst.append(inputStr)  
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
@@ -306,7 +307,7 @@ class ClsSubgraphExtraction(object):
     
             path, queryGraphLst = self.funcExtractSubGraph(G, productNodeSet, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
     
-            writeLst = []              #format: x,x;x,x;    x,x;,x,x....
+            writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for specNumLst in queryGraphLst:
                 inputStr = ""
                 for tpl in specNumLst[:-1]:
@@ -612,7 +613,7 @@ class ClsSubgraphExtraction(object):
         inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
         G = readEdgeListToGraph(inputEdgeListfilePath, inputNodeInfoFilePath)
-        outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generateQuerygraphInput"
+        outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
         
         self.funcExecuteExtractQuerySynthetic(G, outFile)
     
