@@ -238,7 +238,7 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
 
         #get
-        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   #[(2, 1),(4, 2), (6,3)]
+        specNodesGeneralQueryNodesLst =  [6, 3]   #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
         #clear output file first
         hopsVisited = 2
     
@@ -251,7 +251,7 @@ class ClsSubgraphExtraction(object):
             queryNodeNum = tpls[1]
             #generated dstTypeLst randomly
             dstTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]             #first fixe at 0: TYPE0HIER
-            randomLst = [SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
+            randomLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value, SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
             
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
