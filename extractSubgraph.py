@@ -238,9 +238,9 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
 
         #get
-        specNodesGeneralQueryNodesLst =  [6, 3]   #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
+        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5)]  #    #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
         #clear output file first
-        hopsVisited = 2
+        hopsVisited = 1
     
         wholeTypeLst =  [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value, SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, 
                          SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
