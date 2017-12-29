@@ -250,7 +250,7 @@ class ClsSubgraphExtraction(object):
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
             #generated dstTypeLst randomly
-            dstTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]             #first fixe at 0: TYPE0HIER
+            dstTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value]             #first fixed at 0: TYPE0HIER
             randomLst = [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value, SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value]        #TYPE1HIER	1; TYPE0INHERIT	2; TYPE1INHERIT	3  
             
             for i in range(0, queryNodeNum-1):
@@ -279,6 +279,7 @@ class ClsSubgraphExtraction(object):
         '''
         #nodeLst = G.nodes()
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
+        os.remove(outFile) if os.path.exists(outFile) else None
         
         productNodeSet = set()
         #vulnerNodeSet = set()
@@ -294,18 +295,29 @@ class ClsSubgraphExtraction(object):
         
        # specNodeNum = 13
        # queryNodeNum = 10
+        wholeTypeLst =  [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.BUGID.value, 
+                         PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.TECHNOLOGY.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
+      
         
         specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
-        
-        os.remove(outFile) if os.path.exists(outFile) else None
+        hopsVisited = 1
         
         fd = open(outFile,'a')
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst = [0]*queryNodeNum
-    
-            path, queryGraphLst = self.funcExtractSubGraph(G, productNodeSet, productNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
+            #generated dstTypeLst randomly
+             
+            dstTypeLst = [PRODUCTDATATYPE.PRODUCT.value]           # first one  [0]*queryNodeNum
+            randomLst = [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
+
+            for i in range(0, queryNodeNum-1):
+                dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
+            
+            startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
+            endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
+            
+            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for specNumLst in queryGraphLst:
@@ -313,17 +325,16 @@ class ClsSubgraphExtraction(object):
                 for tpl in specNumLst[:-1]:
                     inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
                     
-                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])
+                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
                 writeLst.append(inputStr)  
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
     
     
-    def funcExecuteExtractQueryDblp(self, dblpNodeInfoFile, edgeListFile, outFile):
+    def funcExecuteExtractQueryDblp(self, G, outFile):
         '''
         extract dblp data query graph for decomposed star queries 
         '''
-        G = readEdgeListToGraph(edgeListFile, dblpNodeInfoFile)
         peopleNodeSet = set()
         for n, d in G.nodes_iter(data=True):
             if d['labelType'] == 1:
@@ -337,7 +348,7 @@ class ClsSubgraphExtraction(object):
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst = [1]*queryNodeNum
+            dstTypeLst =     [1]*queryNodeNum
     
             path, queryGraphLst = self.funcExtractSubGraph(G, peopleNodeSet, peopleNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
             
@@ -621,10 +632,8 @@ class ClsSubgraphExtraction(object):
         
         ciscoNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
         ciscoEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
-        outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/ciscoDataExtractQueryGraph01"
+        outFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/inputQueryGraph/ciscoDataExtractNonStarQueryGraph00"
         
-        
-        outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/ciscoDataExtractQueryGraph01"
         G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
         
@@ -632,9 +641,11 @@ class ClsSubgraphExtraction(object):
         '''
         
         dblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-        edgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
+        dblpEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
+        G = readEdgeListToGraph(dblpEdgeListFile, dblpNodeInfoFile)
+        
         outFile = "output/extractDblpQuerySizeGraph/dblpDataExtractQueryGraph.tsv"
-        #subgraphExtractionObj.funcExecuteExtractQueryDblp(dblpNodeInfoFile, edgeListFile, outFile)
+        #subgraphExtractionObj.funcExecuteExtractQueryDblp(G, outFile)
         '''
         
         
