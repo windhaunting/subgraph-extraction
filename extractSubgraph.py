@@ -281,23 +281,11 @@ class ClsSubgraphExtraction(object):
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
         os.remove(outFile) if os.path.exists(outFile) else None
         
-        productNodeSet = set()
-        #vulnerNodeSet = set()
-        for n, d in G.nodes_iter(data=True):
-            if d['labelType'] == 0:
-                productNodeSet.add(n)
-            #if d['labelType'] == 1:
-            #    vulnerNodeSet.add(n)
-    
-        print ("productNodeSet: ", len(productNodeSet))
-        #workgroup = ((u,v) for u,v,d in G.nodes_iter(data=True) if d['labelType']==5)
-        
         
        # specNodeNum = 13
        # queryNodeNum = 10
         wholeTypeLst =  [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.BUGID.value, 
                          PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.TECHNOLOGY.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
-      
         
         specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         hopsVisited = 1
@@ -316,7 +304,8 @@ class ClsSubgraphExtraction(object):
             
             startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
             endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
-            
+            print ("startNodeSet endNodeSet: ", len(startNodeSet), len(endNodeSet))
+        
             path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
@@ -341,6 +330,10 @@ class ClsSubgraphExtraction(object):
                 peopleNodeSet.add(n)
         print ("peopleNodeSet: ", len(peopleNodeSet))
          
+         wholeTypeLst =  [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
+                                 DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
+                                 DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
+        
         specNodesQueryNodesLst = [6, 3] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         os.remove(outFile) if os.path.exists(outFile) else None
     
@@ -348,8 +341,12 @@ class ClsSubgraphExtraction(object):
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst =     [1]*queryNodeNum
-    
+            dstTypeLst =  [DBLPDATATYPE.PEOPLE.value] #  [1]*queryNodeNum
+            randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
+                                
+            for i in range(0, queryNodeNum-1):
+                dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
+            
             path, queryGraphLst = self.funcExtractSubGraph(G, peopleNodeSet, peopleNodeSet, specNodeNum, queryNodeNum, dstTypeLst)
             
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
@@ -384,7 +381,7 @@ class ClsSubgraphExtraction(object):
     
     def executeSubgraphExtractFromDatagraph(self, G, outputDir):
         '''
-        #extract subgraph from data graph
+        #extract subgraph from any data graph
         '''
         #10%, 20%, 50%, 80%, 100
       
