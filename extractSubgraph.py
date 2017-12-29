@@ -609,6 +609,7 @@ class ClsSubgraphExtraction(object):
         '''
         query graph subtraction
         '''
+        '''
         inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
         inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
@@ -618,11 +619,13 @@ class ClsSubgraphExtraction(object):
         self.funcExecuteExtractQuerySynthetic(G, outFile)
         '''
         
-        '''
-        ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
-        ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
+        ciscoNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
+        ciscoEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
         outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/ciscoDataExtractQueryGraph01"
-        G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
+        
+        
+        outFile = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/extractSubgraphQueryOutput/ciscoDataExtractQueryGraph01"
+        G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
         
         
