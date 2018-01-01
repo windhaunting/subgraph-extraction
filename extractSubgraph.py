@@ -330,7 +330,7 @@ class ClsSubgraphExtraction(object):
                 peopleNodeSet.add(n)
         print ("peopleNodeSet: ", len(peopleNodeSet))
          
-         wholeTypeLst =  [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
+        wholeTypeLst =  [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
                                  DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
                                  DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
         
