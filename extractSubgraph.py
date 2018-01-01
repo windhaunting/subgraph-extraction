@@ -195,7 +195,7 @@ class ClsSubgraphExtraction(object):
                             prevj = 0
                             for nd in path:
                                 innerLst = []
-                                #print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
+                                print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
                                 dstType = dstTypeLst[dstTypeIndex]               #get query node type
                                 if G.node[nd]['labelType'] == dstType:
                                     
