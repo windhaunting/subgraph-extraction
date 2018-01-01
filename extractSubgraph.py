@@ -287,7 +287,7 @@ class ClsSubgraphExtraction(object):
         wholeTypeLst =  [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.BUGID.value, 
                          PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.TECHNOLOGY.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
         
-        specNodesQueryNodesLst = [(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst = [(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         hopsVisited = 1
         
         fd = open(outFile,'a')
@@ -304,7 +304,7 @@ class ClsSubgraphExtraction(object):
             
             startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
             endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
-            print ("startNodeSet endNodeSet: ", len(startNodeSet), len(endNodeSet))
+            print ("startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
         
             path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
