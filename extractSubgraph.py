@@ -190,7 +190,7 @@ class ClsSubgraphExtraction(object):
                         if len(queryNodesStarQuery) >= queryNodeNum:        #make sure the path has enough node number satifying query nodeNum
                            # breakFlag = True
                             #get the 
-                            #print(" resNodesPath ", path)
+                            print(" resNodesPath queryNodeNum ", queryNodeNum)
                             #cntQueryNum = 0
                             prevj = 0
                             for nd in path:
