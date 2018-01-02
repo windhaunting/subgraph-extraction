@@ -177,9 +177,9 @@ class ClsSubgraphExtraction(object):
                         #check how many has product type in the path
                         print(" path aaaaa", len(path))
                         queryNodesStarQuery = []               #result query node set for each star query
-                        
                         tmpTargetIndex = 0
                         for nodeId in path:
+                            print(" path bbbbbbbb", len(path), nodeId, len(queryNodesStarQuery))
                             if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
                                 #print ("aaaaaaaaaa: ", nodeId)
                                 queryNodesStarQuery.append(nodeId)
