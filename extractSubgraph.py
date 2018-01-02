@@ -358,7 +358,7 @@ class ClsSubgraphExtraction(object):
             path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
             
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
-            for specNumLst in queryGraphLst:
+            for i, specNumLst in enumerate(queryGraphLst):
                 inputStr = ""
                 for tpl in specNumLst[:-1]:
                     inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
