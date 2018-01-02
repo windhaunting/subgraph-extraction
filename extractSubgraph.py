@@ -175,7 +175,7 @@ class ClsSubgraphExtraction(object):
                     for path in nx.all_simple_paths(G, src, dst, cutoff= 100):
                         #check how many product inside the path
                         #check how many has product type in the path
-                        #print(" path aaaaa", len(path))
+                        print(" path aaaaa", len(path))
                         queryNodesStarQuery = []               #result query node set for each star query
                         
                         tmpTargetIndex = 0
