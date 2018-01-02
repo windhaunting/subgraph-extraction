@@ -172,7 +172,7 @@ class ClsSubgraphExtraction(object):
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
                     
-                    for path in nx.all_simple_paths(G, src, dst, cutoff= 11):
+                    for path in nx.all_simple_paths(G, src, dst, cutoff= 100):
                         #check how many product inside the path
                         #check how many has product type in the path
                         #print(" path aaaaa", len(path))
@@ -181,7 +181,7 @@ class ClsSubgraphExtraction(object):
                         tmpTargetIndex = 0
                         for nodeId in path:
                             if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
-                                print ("xxxxxxx: ", nodeId)
+                                #print ("aaaaaaaaaa: ", nodeId)
                                 queryNodesStarQuery.append(nodeId)
                                 tmpTargetIndex += 1
                                 if len(queryNodesStarQuery) >= queryNodeNum:
@@ -190,7 +190,7 @@ class ClsSubgraphExtraction(object):
                         if len(queryNodesStarQuery) >= queryNodeNum:        #make sure the path has enough node number satifying query nodeNum
                            # breakFlag = True
                             #get the 
-                            print(" resNodesPath queryNodeNum ", queryNodeNum)
+                            #print(" resNodesPath queryNodeNum ", queryNodeNum)
                             #cntQueryNum = 0
                             prevj = 0
                             for nd in path:
@@ -309,7 +309,7 @@ class ClsSubgraphExtraction(object):
             path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
-            for specNumLst in queryGraphLst:
+            for i, specNumLst in enumerate(queryGraphLst):
                 inputStr = ""
                 for tpl in specNumLst[:-1]:
                     inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
