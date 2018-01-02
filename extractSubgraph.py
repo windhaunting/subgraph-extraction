@@ -181,7 +181,7 @@ class ClsSubgraphExtraction(object):
                         tmpTargetIndex = 0
                         for nodeId in path:
                             if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
-                                #print ("xxxxxxx: ", node)
+                                print ("xxxxxxx: ", nodeId)
                                 queryNodesStarQuery.append(nodeId)
                                 tmpTargetIndex += 1
                                 if len(queryNodesStarQuery) >= queryNodeNum:
