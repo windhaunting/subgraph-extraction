@@ -35,6 +35,7 @@ import networkx as nx
 
 from math import floor
 import signal
+import multiprocessing
 
 
 '''
@@ -173,36 +174,12 @@ class ClsSubgraphExtraction(object):
                     #print ("nx.all_simple_paths: ")
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
-                    restartFlag = False
-
-            
-                    def handler(signum, frame):
-                        print ("TimeoutException command timed out.")
-                        restartFlag = True
-                        raise
-                    
-                    signal.signal(signal.SIGALRM, handler)
-                    
-                    signal.alarm(10)
-                    
-                    # This try/except loop ensures that you'll catch TimeoutException when it's sent.
-                    try:
-                        paths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-                    except  Exception, exc: :
-                        print ("TimeoutException s timed out.")
-                        restartFlag = True
-                        
-                    # Reset the alarm stuff.
-                    signal.alarm(0)
-                    
-                    if restartFlag:
-                        restartFlag = False
-                        continue
-                        
-                    #paths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-                    print(" 176 paths ", len(list(paths)))
                    
-                    for path in paths:
+                    allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    print(" 176 paths ",  len(list(allPaths)))
+                   
+                    #for path in paths:
+                    for path in allPaths:
                         #check how many product inside the path
                         #check how many has product type in the path
                         print(" path aaaaa", len(path))
@@ -376,7 +353,7 @@ class ClsSubgraphExtraction(object):
                          DBLPDATATYPE.PROCEEDINGS.value]
                                 
             for i in range(0, queryNodeNum-1):
-                dstTypeLst.append(randomLst[0])                         #choice(randomLst))       #[0]*queryNodeNum
+                dstTypeLst.append(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
             startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
             endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
