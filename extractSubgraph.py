@@ -318,17 +318,18 @@ class ClsSubgraphExtraction(object):
                 writeLst.append(inputStr)  
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
-    
-    
+        fd.close()
+        
     def funcExecuteExtractQueryDblp(self, G, outFile):
         '''
         extract dblp data query graph for decomposed star queries 
         '''
         os.remove(outFile) if os.path.exists(outFile) else None
         
-        wholeTypeLst =  [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
-                                 DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
-                                 DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
+        wholeTypeLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value,
+                         DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.PROCEEDINGS.value] # [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
+                                 #DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
+                                 #DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
         
         specNodesQueryNodesLst = [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
@@ -340,8 +341,7 @@ class ClsSubgraphExtraction(object):
             queryNodeNum = tpls[1]
             dstTypeLst =  [DBLPDATATYPE.PEOPLE.value] #  [1]*queryNodeNum
             randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value,
-                         DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
-                         DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
+                         DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.PROCEEDINGS.value]
                                 
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
@@ -637,7 +637,6 @@ class ClsSubgraphExtraction(object):
         
         G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
-        
         
         '''
         
