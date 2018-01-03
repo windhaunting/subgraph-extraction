@@ -34,6 +34,8 @@ import networkx as nx
 #extractSubGraph from data graph
 
 from math import floor
+import signal
+
 
 '''
 0	product
@@ -171,8 +173,33 @@ class ClsSubgraphExtraction(object):
                     #print ("nx.all_simple_paths: ")
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
+                    restartFlag = False
+
+            
+                    def handler(signum, frame):
+                        print ("TimeoutException command timed out.")
+                        restartFlag = True
+                        raise
                     
-                    paths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    signal.signal(signal.SIGALRM, handler)
+                    
+                    signal.alarm(10)
+                    
+                    # This try/except loop ensures that you'll catch TimeoutException when it's sent.
+                    try:
+                        paths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    except  Exception, exc: :
+                        print ("TimeoutException s timed out.")
+                        restartFlag = True
+                        
+                    # Reset the alarm stuff.
+                    signal.alarm(0)
+                    
+                    if restartFlag:
+                        restartFlag = False
+                        continue
+                        
+                    #paths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
                     print(" 176 paths ", len(list(paths)))
                    
                     for path in paths:
