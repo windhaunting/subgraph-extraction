@@ -11,6 +11,8 @@ import csv
 import os
 from random import sample
 from random import choice
+from random import shuffle
+
 import copy
 
 sys.path.append("../")
@@ -141,7 +143,7 @@ class ClsSubgraphExtraction(object):
     '''
     
     
-    def  funcExtractSubGraphHopped(self, G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
+    def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
@@ -164,9 +166,12 @@ class ClsSubgraphExtraction(object):
         
         queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
         dstTypeIndex = 0              #which query node type
-        for src in startNodeSet:
+        
+        shuffle(startNodeLst)
+        shuffle(endNodeLst)
+        for src in startNodeLst:
             #breakFlag = False
-            for dst in endNodeSet:
+            for dst in endNodeLst:
                 print(" xxxx ", src, dst)
                 if src != dst:
                     #get all path
@@ -263,10 +268,10 @@ class ClsSubgraphExtraction(object):
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
-            startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
-            endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
+            startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
+            endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
              
-            (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for i, specNumLst in enumerate(queryGraphLst):
@@ -309,11 +314,11 @@ class ClsSubgraphExtraction(object):
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
-            startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
-            endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
-            print ("funcExecuteExtractQueryProduct startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
+            startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
+            endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
+            print ("funcExecuteExtractQueryProduct startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
-            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for i, specNumLst in enumerate(queryGraphLst):
@@ -349,17 +354,16 @@ class ClsSubgraphExtraction(object):
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
             dstTypeLst =  [DBLPDATATYPE.PEOPLE.value] #  [1]*queryNodeNum
-            randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value,
-                         DBLPDATATYPE.PROCEEDINGS.value]
+            randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
                                 
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
-            startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
-            endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
-            print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
+            startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
+            endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
+            print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
-            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
             
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
             for i, specNumLst in enumerate(queryGraphLst):
