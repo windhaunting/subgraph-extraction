@@ -51,6 +51,36 @@ import multiprocessing
 '''
 #extract ratio of subgraph from data graph
 
+class TimeLimitExpired(Exception): 
+    pass
+
+def timelimit(timeout, func, args=(), kwargs={}):
+    """ Run func with the given timeout. If func didn't finish running
+        within the timeout, raise TimeLimitExpired
+    """
+    import threading
+    class FuncThread(threading.Thread):
+        def __init__(self):
+            threading.Thread.__init__(self)
+            self.result = None
+
+        def run(self):
+            self.result = func(*args, **kwargs)
+
+        def _stop(self):
+            if self.isAlive():
+                threading.Thread._Thread__stop(self)
+
+    it = FuncThread()
+    it.start()
+    it.join(timeout)
+    if it.isAlive():
+        print ("78 timeout here: ")
+        #it._stop()
+        raise TimeLimitExpired()
+    else:
+        return it.result
+    
 class ClsSubgraphExtraction(object):
 
     def __init__(self):
@@ -180,7 +210,10 @@ class ClsSubgraphExtraction(object):
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
                    
-                    allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    
+                    allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
+                    
                     print(" 176 paths ",  len(list(allPaths)))
                    
                     #for path in paths:
