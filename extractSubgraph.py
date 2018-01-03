@@ -304,7 +304,7 @@ class ClsSubgraphExtraction(object):
             
             startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
             endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
-            print ("startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
+            print ("funcExecuteExtractQueryProduct startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
         
             path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
@@ -324,18 +324,13 @@ class ClsSubgraphExtraction(object):
         '''
         extract dblp data query graph for decomposed star queries 
         '''
-        peopleNodeSet = set()
-        for n, d in G.nodes_iter(data=True):
-            if d['labelType'] == 1:
-                peopleNodeSet.add(n)
-        print ("peopleNodeSet: ", len(peopleNodeSet))
-         
+        os.remove(outFile) if os.path.exists(outFile) else None
+        
         wholeTypeLst =  [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.TIME.value, DBLPDATATYPE.ARTICLE.value,
                                  DBLPDATATYPE.BOOK.value, DBLPDATATYPE.INCOLLECTION.value, DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.MASTERSTHESIS.value,
                                  DBLPDATATYPE.PHDTHESIS.value, DBLPDATATYPE.PROCEEDINGS.value, DBLPDATATYPE.WWW.value]
         
         specNodesQueryNodesLst = [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
-        os.remove(outFile) if os.path.exists(outFile) else None
     
         hopsVisited = 1
 
@@ -353,7 +348,7 @@ class ClsSubgraphExtraction(object):
             
             startNodeSet = getTypeNodeSet(G, dstTypeLst[0]) 
             endNodeSet = getTypeNodeSet(G, dstTypeLst[-1])
-            print ("startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
+            print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeSet), len(endNodeSet))
         
             path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeSet, endNodeSet, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
             
@@ -367,7 +362,7 @@ class ClsSubgraphExtraction(object):
                 writeLst.append(inputStr)  
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')   
-            
+        fd.close()
 
 
     def subgraphFromDatagraph(self, G, rationofNodes, prevNodeSet):
