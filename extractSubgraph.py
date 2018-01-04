@@ -210,9 +210,9 @@ class ClsSubgraphExtraction(object):
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
                    
-                    #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 50)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
                     
-                    allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
+                    #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
                     
                     print(" 176 paths ",  len(list(allPaths)))
                    
