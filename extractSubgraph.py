@@ -191,10 +191,18 @@ class ClsSubgraphExtraction(object):
         if cutoff < 1:
             return []
         visited = [src]
-        stack = [(v for u,v in G.edges(src)[:numberDegree])]          #limit numberDegree
+        que = [src]         #limit numberDegree
         cntNumPath = 0
         resPathsLst = []
-        while stack:
+        dstTypeTmpIndex = 0
+        while (len(que) != 0):
+            print ("198 enter here", que[-1])
+            #pop queue
+            ndId = que.pop()
+            if ndId = [dstTypeTmpIndex]
+            #get neighbor
+            
+            
             children = stack[-1]
             child = next(children, None)
             if child is None:
