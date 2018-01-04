@@ -173,6 +173,44 @@ class ClsSubgraphExtraction(object):
     '''
     
     
+    def getRequiredPaths(G, src, dst, numberPaths, numberDegree, cutoff):
+        '''
+        from src to dst
+        numberPaths: the maximum number of paths required
+        numberDegree: the maximum degree of each node visited
+        cutoff: limited length of path
+        get the simple paths with limited number and the required node type
+        '''
+        if src not in G:
+            raise nx.NetworkXError('source node %s not in graph'%source)
+        if dst not in G:
+            raise nx.NetworkXError('target node %s not in graph'%target)
+        if cutoff is None:
+            cutoff = len(G)-1
+        if cutoff < 1:
+            return []
+        visited = [src]
+        stack = [(v for u,v in G.edges(src))][:numberDegree]             #limit numberDegree
+        while stack:
+            children = stack[-1]
+            child = next(children, None)
+            if child is None:
+                stack.pop()
+                visited.pop()
+            elif len(visited) < cutoff:
+                if child == target:
+                    yield visited + [target]
+                elif child not in visited:
+                    visited.append(child)
+                    stack.append((v for u,v in G.edges(child)))
+            else: #len(visited) == cutoff:
+                count = ([child]+list(children)).count(target)
+                for i in range(count):
+                    yield visited + [target]
+                stack.pop()
+                visited.pop()
+            
+        
     def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
