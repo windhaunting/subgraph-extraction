@@ -173,7 +173,7 @@ class ClsSubgraphExtraction(object):
     '''
     
     
-    def getRequiredPaths(G, src, dst, numberPaths, numberDegree, cutoff):
+    def getRequiredPaths(self, G, src, dst, numberPaths, numberDegree, dstTypeLst, cutoff=None):
         '''
         from src to dst
         numberPaths: the maximum number of paths required
@@ -190,7 +190,7 @@ class ClsSubgraphExtraction(object):
         if cutoff < 1:
             return []
         visited = [src]
-        stack = [(v for u,v in G.edges(src)[:numberDegree]   )]          #limit numberDegree
+        stack = [(v for u,v in G.edges(src)[:numberDegree])]          #limit numberDegree
         while stack:
             children = stack[-1]
             child = next(children, None)
@@ -249,7 +249,7 @@ class ClsSubgraphExtraction(object):
                     #timeBegin = time.time()
                    
                     #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-                    allPaths = self.getRequiredPaths(G, src, dst, 10, 10, cutoff=20)
+                    allPaths = self.getRequiredPaths(G, src, dst, 10, 10, 20)
                     
                     #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
                     
@@ -271,6 +271,7 @@ class ClsSubgraphExtraction(object):
                                 if len(queryNodesStarQuery) >= queryNodeNum:
                                     break
                         
+                        dstTypeIndex = 0
                         if len(queryNodesStarQuery) >= queryNodeNum:        #make sure the path has enough node number satifying query nodeNum
                            # breakFlag = True
                             #get the 
