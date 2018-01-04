@@ -173,7 +173,7 @@ class ClsSubgraphExtraction(object):
     '''
     
     
-    def getRequiredPaths(self, G, src, dst, numberPaths, numberDegree, dstTypeLst, cutoff=None):
+    def getRequiredPaths(self, G, src, dst, numberPaths, numberDegree, cutoff=None):
         '''
         from src to dst
         numberPaths: the maximum number of paths required
@@ -191,6 +191,8 @@ class ClsSubgraphExtraction(object):
             return []
         visited = [src]
         stack = [(v for u,v in G.edges(src)[:numberDegree])]          #limit numberDegree
+        cntNumPath = 0
+        resPathsLst = []
         while stack:
             children = stack[-1]
             child = next(children, None)
@@ -199,18 +201,26 @@ class ClsSubgraphExtraction(object):
                 visited.pop()
             elif len(visited) < cutoff:
                 if child == dst:
-                    yield visited + [dst]
+                    resPathsLst.append(visited + [dst])
+                    cntNumPath += 1
+                    if cntNumPath >= numberPaths:
+                        return resPathsLst
+                    
                 elif child not in visited:
                     visited.append(child)
                     stack.append((v for u,v in G.edges(child)[:numberDegree]))
             else: #len(visited) == cutoff:
                 count = ([child]+list(children)).count(dst)
                 for i in range(count):
-                    yield visited + [dst]
+                    resPathsLst.append(visited + [dst])
+                    cntNumPath += 1
+                    if cntNumPath >= numberPaths:
+                        return resPathsLst
                 stack.pop()
                 visited.pop()
             
-        
+        return resPathsLst
+
     def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
