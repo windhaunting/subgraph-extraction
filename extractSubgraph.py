@@ -190,7 +190,7 @@ class ClsSubgraphExtraction(object):
         if cutoff < 1:
             return []
         visited = [src]
-        stack = [(v for u,v in G.edges(src))][:numberDegree]             #limit numberDegree
+        stack = [(v for u,v in G.edges(src)[:numberDegree]   )]          #limit numberDegree
         while stack:
             children = stack[-1]
             child = next(children, None)
@@ -202,7 +202,7 @@ class ClsSubgraphExtraction(object):
                     yield visited + [dst]
                 elif child not in visited:
                     visited.append(child)
-                    stack.append((v for u,v in G.edges(child)))
+                    stack.append((v for u,v in G.edges(child)[:numberDegree]))
             else: #len(visited) == cutoff:
                 count = ([child]+list(children)).count(dst)
                 for i in range(count):
@@ -248,7 +248,8 @@ class ClsSubgraphExtraction(object):
                     #print (" ", list(nx.all_simple_paths(G, src, dst, cutoff= 100)))
                     #timeBegin = time.time()
                    
-                    allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
+                    allPaths = self.getRequiredPaths(G, src, dst, 10, 10, cutoff=20)
                     
                     #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
                     
