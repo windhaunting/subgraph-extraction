@@ -182,9 +182,9 @@ class ClsSubgraphExtraction(object):
         get the simple paths with limited number and the required node type
         '''
         if src not in G:
-            raise nx.NetworkXError('source node %s not in graph'%source)
+            raise nx.NetworkXError('source node %s not in graph'%src)
         if dst not in G:
-            raise nx.NetworkXError('target node %s not in graph'%target)
+            raise nx.NetworkXError('target node %s not in graph'%dst)
         if cutoff is None:
             cutoff = len(G)-1
         if cutoff < 1:
@@ -198,15 +198,15 @@ class ClsSubgraphExtraction(object):
                 stack.pop()
                 visited.pop()
             elif len(visited) < cutoff:
-                if child == target:
-                    yield visited + [target]
+                if child == dst:
+                    yield visited + [dst]
                 elif child not in visited:
                     visited.append(child)
                     stack.append((v for u,v in G.edges(child)))
             else: #len(visited) == cutoff:
-                count = ([child]+list(children)).count(target)
+                count = ([child]+list(children)).count(dst)
                 for i in range(count):
-                    yield visited + [target]
+                    yield visited + [dst]
                 stack.pop()
                 visited.pop()
             
