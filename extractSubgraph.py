@@ -174,11 +174,10 @@ class ClsSubgraphExtraction(object):
     '''
     
     
-    def getRequiredPaths(self, G, src, levelLengthCutoff,  numberPaths, numberDegree, dstTypeLst):
+    def getRequiredPaths(self, G, src, levelLengthCutoff, numberDegree, dstTypeLst):
         '''
         from src to dst
         levelLengthCutoff: the level of node visited along the path  >= len(dstTypeLst)
-        numberPaths: the maximum number of paths required
         numberDegree: the maximum degree of each node visited
         cutoff: limited length of path
         get the simple paths with limited number and the required node type
@@ -260,7 +259,7 @@ class ClsSubgraphExtraction(object):
             #timeBegin = time.time()
            
             #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-            queryNodesStarQuery = self.getRequiredPaths(G, src, 100, 10, 50, dstTypeLst)
+            queryNodesStarQuery = self.getRequiredPaths(G, src, 100, 50, dstTypeLst)
             
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
             if queryNodesStarQuery is None:
@@ -439,7 +438,7 @@ class ClsSubgraphExtraction(object):
         
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
             
-            print("395 len queryGraphLst ", len(queryGraphLst))
+            print("395 len queryGraphLst ", queryGraphLst)
             if queryGraphLst is not None:
                 writeLst = []              #format: x,x;x,x;    x,x;,x,x....
                 for i, specNumLst in enumerate(queryGraphLst):
