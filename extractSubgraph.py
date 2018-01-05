@@ -191,17 +191,19 @@ class ClsSubgraphExtraction(object):
         if cutoff < 1:
             return []
         visited = [src]
-        que = [src]         #limit numberDegree
+        que = [(src, 0)]         # (nodeId, level)
         cntNumPath = 0
         resPathsLst = []
         dstTypeTmpIndex = 0
+        resQueryNodesEachStarQuery = []                  #get each star query query node    
         while (len(que) != 0):
             print ("198 enter here", que[-1])
             #pop queue
             ndId = que.pop()
-            if ndId = [dstTypeTmpIndex]
-            #get neighbor
-            
+            if G.node[ndId]['labelType'] == dstTypeLst[dstTypeTmpIndex]:
+                #get neighbor
+                resQueryNodesEachStarQuery.append(ndId)
+                
             
             children = stack[-1]
             child = next(children, None)
@@ -231,7 +233,7 @@ class ClsSubgraphExtraction(object):
             '''
             
         return resPathsLst
-
+    
     def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
