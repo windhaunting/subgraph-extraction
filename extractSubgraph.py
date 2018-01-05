@@ -197,7 +197,7 @@ class ClsSubgraphExtraction(object):
         explored = defaultdict()
         currentLevelWithdstTypeNode = -1
         while (len(que) != 0):
-            print ("198 enter here", que[-1])
+            #print ("198 enter here", que[-1])
             #pop queue
             ndIdInfo = que.pop()
             ndId = ndIdInfo[0]
@@ -247,6 +247,8 @@ class ClsSubgraphExtraction(object):
         shuffle(startNodeLst)
         shuffle(endNodeLst)
         for src in startNodeLst:
+            print(" xxxx ", src)
+
         #breakFlag = False
         #for dst in endNodeLst:
             #print(" xxxx ", src)
@@ -258,7 +260,7 @@ class ClsSubgraphExtraction(object):
             #timeBegin = time.time()
            
             #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-            queryNodesStarQuery = self.getRequiredPaths(G, src, 20, 10, 10, dstTypeLst)
+            queryNodesStarQuery = self.getRequiredPaths(G, src, 100, 10, 50, dstTypeLst)
             
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
             if queryNodesStarQuery is None:
@@ -308,8 +310,7 @@ class ClsSubgraphExtraction(object):
                         prevj = j
                                 
                                  
-        return ([], [])
-     
+        return None
         
 
                        
@@ -391,16 +392,18 @@ class ClsSubgraphExtraction(object):
         
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
-            writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
-            for i, specNumLst in enumerate(queryGraphLst):
-                inputStr = ""
-                for tpl in specNumLst[:-1]:
-                    inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+            print("395 len queryGraphLst ", len(queryGraphLst))
+            if queryGraphLst is not None:
+                writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
+                for i, specNumLst in enumerate(queryGraphLst):
+                    inputStr = ""
+                    for tpl in specNumLst[:-1]:
+                        inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+                        
+                    inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
+                    writeLst.append(inputStr)  
                     
-                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
-                writeLst.append(inputStr)  
-                
-            writeListRowToFileWriterTsv(fd, writeLst, '\t')
+                writeListRowToFileWriterTsv(fd, writeLst, '\t')
         fd.close()
         
     def funcExecuteExtractQueryDblp(self, G, outFile):
