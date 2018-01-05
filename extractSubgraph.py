@@ -31,6 +31,7 @@ from hierarchicalQueryPython.graphCommon import DBLPDATATYPE
 from subGraphCommon import getTypeNodeSet
 from subGraphCommon import getFixedHopsNodes
 
+from collections import defaultdict
 
 import networkx as nx
 #extractSubGraph from data graph
@@ -173,10 +174,10 @@ class ClsSubgraphExtraction(object):
     '''
     
     
-    def getRequiredPaths(self, G, src, lengthPath,  numberPaths, numberDegree, cutoff=None):
+    def getRequiredPaths(self, G, src, levelLengthCutoff,  numberPaths, numberDegree, dstTypeLst):
         '''
         from src to dst
-        lengthPath: the number of node in the path
+        levelLengthCutoff: the level of node visited along the path  >= len(dstTypeLst)
         numberPaths: the maximum number of paths required
         numberDegree: the maximum degree of each node visited
         cutoff: limited length of path
@@ -186,54 +187,39 @@ class ClsSubgraphExtraction(object):
             raise nx.NetworkXError('source node %s not in graph'%src)
         #if dst not in G:
         #    raise nx.NetworkXError('target node %s not in graph'%dst)
-        if cutoff is None:
-            cutoff = len(G)-1
-        if cutoff < 1:
+        if levelLengthCutoff is None:
+            levelLengthCutoff = len(G)-1
+        if levelLengthCutoff < 1:
             return []
-        visited = [src]
         que = [(src, 0)]         # (nodeId, level)
-        cntNumPath = 0
-        resPathsLst = []
         dstTypeTmpIndex = 0
-        resQueryNodesEachStarQuery = []                  #get each star query query node    
+        resQueryNodesEachStarQuery = []             #get each star query query node  
+        explored = defaultdict()
+        currentLevelWithdstTypeNode = -1
         while (len(que) != 0):
             print ("198 enter here", que[-1])
             #pop queue
-            ndId = que.pop()
-            if G.node[ndId]['labelType'] == dstTypeLst[dstTypeTmpIndex]:
-                #get neighbor
+            ndIdInfo = que.pop()
+            ndId = ndIdInfo[0]
+            level = ndIdInfo[1]
+            
+            if G.node[ndId]['labelType'] == dstTypeLst[dstTypeTmpIndex] and level != currentLevelWithdstTypeNode != level:
                 resQueryNodesEachStarQuery.append(ndId)
+                dstTypeTmpIndex += 1
+                currentLevelWithdstTypeNode = level
+                if dstTypeTmpIndex >= len(dstTypeLst):
+                    return resQueryNodesEachStarQuery
                 
-            
-            children = stack[-1]
-            child = next(children, None)
-            if child is None:
-                stack.pop()
-                visited.pop()
-            elif len(visited) < cutoff:
-                    if len(visited) >= lengthPath:
-                        resPathsLst.append(visited)
-                        cntNumPath += 1
-                        if cntNumPath >= numberPaths:
-                            return resPathsLst
-                    visited.append(child)
-                    stack.append((v for u,v in G.edges(child)[:numberDegree]))
-            '''
-            else: #len(visited) == cutoff:
-                count = ([child]+list(children)).count(dst)
-                for i in range(count):
-                    if len(visited) >= lengthPath:
-                        resPathsLst.append(visited)
-                        cntNumPath += 1
-                        if cntNumPath >= numberPaths:
-                            return resPathsLst
-
-                stack.pop()
-                visited.pop()
-            '''
-            
-        return resPathsLst
+            if ndId not in explored:
+                explored[ndId] = True              #added into explored list;  level arrived
+                #get neighbor
+                nbs = G[ndId]   #get neighbors
+                que += [(nb, level+1) for nb in list(nbs)[:numberDegree]]
+            if  level >= levelLengthCutoff:         #terminate
+                return None
     
+
+
     def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
@@ -272,72 +258,61 @@ class ClsSubgraphExtraction(object):
             #timeBegin = time.time()
            
             #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-            allPaths = self.getRequiredPaths(G, src, 20, 10, 10, 20)
+            queryNodesStarQuery = self.getRequiredPaths(G, src, 20, 10, 10, dstTypeLst)
             
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
-            
-            print(" 176 paths ",  len(list(allPaths)))
+            if queryNodesStarQuery is None:
+                continue
+            print(" 176 paths ",  len(list(queryNodesStarQuery)))
            
             #for path in paths:
-            for path in allPaths:
-                #check how many product inside the path
-                #check how many has product type in the path
-                print(" path aaaaa", len(path))
-                queryNodesStarQuery = []               #result query node set for each star query
-                tmpTargetIndex = 0
-                for nodeId in path:
-                    print(" path bbbbbbbb", len(path), nodeId, len(queryNodesStarQuery))
-                    if G.node[nodeId]['labelType'] == dstTypeLst[tmpTargetIndex]:
-                        #print ("aaaaaaaaaa: ", nodeId)
-                        queryNodesStarQuery.append(nodeId)
-                        tmpTargetIndex += 1
-                        if len(queryNodesStarQuery) >= queryNodeNum:
-                            break
-                
-                dstTypeIndex = 0
-                if len(queryNodesStarQuery) >= queryNodeNum:        #make sure the path has enough node number satifying query nodeNum
-                   # breakFlag = True
-                    #get the 
-                    #print(" resNodesPath queryNodeNum ", queryNodeNum)
-                    #cntQueryNum = 0
-                    prevj = 0
-                    for nd in path:
-                        innerLst = []
-                        print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
-                        dstType = dstTypeLst[dstTypeIndex]               #get query node type
-                        if G.node[nd]['labelType'] == dstType:
-                            
-                            #get hopvisited length list of set
-                            sourceNode = nd
-                            lastNodeTypes = copy.deepcopy(wholeTypeLst)
-                            lastNodeTypes.remove(dstType)         #last level node types in hopvisited level
-                            
-                            answerNodes = getFixedHopsNodes(G, sourceNode, lastNodeTypes, hopsVisited)
-                            
-                            j = prevj
-                            tmpCnt = 0       #check specific node number
-                            while (j < len(answerNodes)):
-                                newNd = answerNodes[j]
-                                if G.node[newNd]['labelType'] != dstType and (newNd, G.node[newNd]['labelType']) not in innerLst:
-                                    innerLst.append((newNd, G.node[newNd]['labelType']))
-                                    tmpCnt += 1
-                                if innerLst in queryGraphLst:
-                                    innerLst.pop()
-                                elif innerLst not in queryGraphLst and tmpCnt >= StarQuerySpecNodes[dstTypeIndex]:  #safisfy specific number
-                                    queryGraphLst.append(innerLst)
-                                     #print(" dstTypeIndex aa ", dstTypeIndex)
-                                    dstTypeIndex += 1          #change next dstType index
-                                    if dstTypeIndex >= queryNodeNum:
-                                        #print(" queryGraphLst ", queryGraphLst)
-                                        return (path, queryGraphLst)
-                                    break            # break because tmpCnt >= StarQuerySpecNodes[dstTypeIndex]
-                                j += 1
-                            
-                            prevj = j
+            dstTypeIndex = 0
+            if len(queryNodesStarQuery) >= queryNodeNum:        #make sure the path has enough node number satifying query nodeNum
+               # breakFlag = True
+                #get the 
+                #print(" resNodesPath queryNodeNum ", queryNodeNum)
+                #cntQueryNum = 0
+                prevj = 0
+                for nd in queryNodesStarQuery:
+                    innerLst = []
+                    print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
+                    dstType = dstTypeLst[dstTypeIndex]               #get query node type
+                    if G.node[nd]['labelType'] == dstType:
+                        
+                        #get hopvisited length list of set
+                        sourceNode = nd
+                        lastNodeTypes = copy.deepcopy(wholeTypeLst)
+                        lastNodeTypes.remove(dstType)         #last level node types in hopvisited level
+                        
+                        answerNodes = getFixedHopsNodes(G, sourceNode, lastNodeTypes, hopsVisited)
+                        
+                        j = prevj
+                        tmpCnt = 0       #check specific node number
+                        while (j < len(answerNodes)):
+                            newNd = answerNodes[j]
+                            if G.node[newNd]['labelType'] != dstType and (newNd, G.node[newNd]['labelType']) not in innerLst:
+                                innerLst.append((newNd, G.node[newNd]['labelType']))
+                                tmpCnt += 1
+                            if innerLst in queryGraphLst:
+                                innerLst.pop()
+                            elif innerLst not in queryGraphLst and tmpCnt >= StarQuerySpecNodes[dstTypeIndex]:  #safisfy specific number
+                                queryGraphLst.append(innerLst)
+                                 #print(" dstTypeIndex aa ", dstTypeIndex)
+                                dstTypeIndex += 1          #change next dstType index
+                                if dstTypeIndex >= queryNodeNum:
+                                    #print(" queryGraphLst ", queryGraphLst)
+                                    return queryGraphLst
+                                break            # break because tmpCnt >= StarQuerySpecNodes[dstTypeIndex]
+                            j += 1
+                        
+                        prevj = j
                                 
                                  
         return ([], [])
-                            
+     
+        
+
+                       
         
     def funcExecuteExtractQuerySynthetic(self, G, outFile):
         '''
@@ -367,7 +342,7 @@ class ClsSubgraphExtraction(object):
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
              
-            (path, queryGraphLst) = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for i, specNumLst in enumerate(queryGraphLst):
@@ -414,7 +389,7 @@ class ClsSubgraphExtraction(object):
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
             print ("funcExecuteExtractQueryProduct startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
-            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for i, specNumLst in enumerate(queryGraphLst):
@@ -459,7 +434,7 @@ class ClsSubgraphExtraction(object):
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
             print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
-            path, queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
             
             writeLst = []              #format: x,x;x,x;    x,x;,x,x....
             for i, specNumLst in enumerate(queryGraphLst):
