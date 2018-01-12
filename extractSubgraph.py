@@ -247,7 +247,7 @@ class ClsSubgraphExtraction(object):
         shuffle(startNodeLst)
         shuffle(endNodeLst)
         for src in startNodeLst:
-            print(" xxxx ", src)
+            #print(" xxxx ", src)
 
         #breakFlag = False
         #for dst in endNodeLst:
@@ -297,6 +297,8 @@ class ClsSubgraphExtraction(object):
                                     if G.node[newNd]['labelType'] in specificNdTypeLst:
                                         innerLst.append((newNd, G.node[newNd]['labelType']))
                                         tmpCnt += 1
+                                        print(" 300 src = ", src)
+
                                 else:
                                     innerLst.append((newNd, G.node[newNd]['labelType']))
                                     tmpCnt += 1
@@ -429,18 +431,18 @@ class ClsSubgraphExtraction(object):
         
         specNodesQueryNodesLst = [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-        hopsVisited = 2
+        hopsVisited = 3
 
         fd = open(outFile,'a')
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst =  [DBLPDATATYPE.PEOPLE.value]          #  [1]*queryNodeNum
+            dstTypeLst =  [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PEOPLE.value]          #  [1]*queryNodeNum
             randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
              
             specificNdTypeLst = [DBLPDATATYPE.TOPIC.value]
                    
-            for i in range(0, queryNodeNum-1):
+            for i in range(0, queryNodeNum-2):
                 dstTypeLst.append(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
@@ -449,7 +451,7 @@ class ClsSubgraphExtraction(object):
         
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
             
-            print("395 len queryGraphLst ", queryGraphLst)
+            print("395 len queryGraphLst ", queryGraphLst, dstTypeLst)
             if queryGraphLst is not None:
                 writeLst = []              #format: x,x;x,x;    x,x;,x,x....
                 for i, specNumLst in enumerate(queryGraphLst):
