@@ -265,7 +265,7 @@ class ClsSubgraphExtraction(object):
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
             if queryNodesStarQuery is None:
                 continue
-            print(" 176 paths ",  len(list(queryNodesStarQuery)))
+            #print(" 176 paths ",  len(list(queryNodesStarQuery)))
            
             #for path in paths:
             dstTypeIndex = 0
@@ -277,7 +277,7 @@ class ClsSubgraphExtraction(object):
                 prevj = 0
                 for nd in queryNodesStarQuery:
                     innerLst = []
-                    print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
+                    #print(" len dstTypeLst ", len(dstTypeLst), dstTypeIndex, specNodeNum, queryNodeNum)
                     dstType = dstTypeLst[dstTypeIndex]               #get query node type
                     if G.node[nd]['labelType'] == dstType:
                         
@@ -429,7 +429,7 @@ class ClsSubgraphExtraction(object):
         
         specNodesQueryNodesLst = [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-        hopsVisited = 1
+        hopsVisited = 2
 
         fd = open(outFile,'a')
         for tpls in specNodesQueryNodesLst:
