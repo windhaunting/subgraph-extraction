@@ -243,6 +243,7 @@ class ClsSubgraphExtraction(object):
         queryGraphLst = []            # every element is a list [(nodeId, nodeId type)...]
         dstTypeIndex = 0              #which query node type
         
+        
         shuffle(startNodeLst)
         shuffle(endNodeLst)
         for src in startNodeLst:
@@ -426,7 +427,7 @@ class ClsSubgraphExtraction(object):
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst =  [DBLPDATATYPE.PEOPLE.value] #  [1]*queryNodeNum
+            dstTypeLst =  [DBLPDATATYPE.PEOPLE.value]          #  [1]*queryNodeNum
             randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
                                 
             for i in range(0, queryNodeNum-1):
@@ -434,7 +435,7 @@ class ClsSubgraphExtraction(object):
             
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
-            print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
+            print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ", dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
             
