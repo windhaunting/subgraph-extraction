@@ -219,7 +219,7 @@ class ClsSubgraphExtraction(object):
     
 
 
-    def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited):
+    def  funcExtractSubGraphHopped(self, G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited):
         '''
         #extract query graph for experiments.
         #query graph size definition: specific node number-spn,  unknown query nodes- qn;      (spn, qn)
@@ -328,7 +328,8 @@ class ClsSubgraphExtraction(object):
     
         wholeTypeLst =  [SYNTHETICGRAPHNODETYPE.TYPE0HIER.value, SYNTHETICGRAPHNODETYPE.TYPE1HIER.value, SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value, 
                          SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
-  
+        specificNdTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value]
+        
         fd = open(outFile,'a')
         for tpls in specNodesGeneralQueryNodesLst:
             specNodeNum = tpls[0]
@@ -343,7 +344,7 @@ class ClsSubgraphExtraction(object):
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
              
-            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
     
             writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
             for i, specNumLst in enumerate(queryGraphLst):
@@ -383,6 +384,8 @@ class ClsSubgraphExtraction(object):
             dstTypeLst = [PRODUCTDATATYPE.PRODUCT.value]           # first one  [0]*queryNodeNum
             randomLst = [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.TECHNOLOGY.value]
 
+            specificNdTypeLst = [PRODUCTDATATYPE.VULNERABILITY.value]
+            
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))       #[0]*queryNodeNum
             
@@ -390,7 +393,7 @@ class ClsSubgraphExtraction(object):
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
             print ("funcExecuteExtractQueryProduct startNodeSet endNodeSet: ",dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
-            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
     
             print("395 len queryGraphLst ", len(queryGraphLst))
             if queryGraphLst is not None:
@@ -429,7 +432,9 @@ class ClsSubgraphExtraction(object):
             queryNodeNum = tpls[1]
             dstTypeLst =  [DBLPDATATYPE.PEOPLE.value]          #  [1]*queryNodeNum
             randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
-                                
+             
+            specificNdTypeLst = [DBLPDATATYPE.TOPIC.value]
+                   
             for i in range(0, queryNodeNum-1):
                 dstTypeLst.append(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
@@ -437,7 +442,7 @@ class ClsSubgraphExtraction(object):
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
             print ("funcExecuteExtractQueryDblp startNodeSet endNodeSet: ", dstTypeLst[0], dstTypeLst[-1], len(startNodeLst), len(endNodeLst))
         
-            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, dstTypeLst, wholeTypeLst, hopsVisited)
+            queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
             
             print("395 len queryGraphLst ", queryGraphLst)
             if queryGraphLst is not None:
