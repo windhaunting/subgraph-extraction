@@ -293,8 +293,14 @@ class ClsSubgraphExtraction(object):
                         while (j < len(answerNodes)):
                             newNd = answerNodes[j]
                             if G.node[newNd]['labelType'] != dstType and (newNd, G.node[newNd]['labelType']) not in innerLst:
-                                innerLst.append((newNd, G.node[newNd]['labelType']))
-                                tmpCnt += 1
+                                if len(queryGraphLst) == 0:
+                                    if G.node[newNd]['labelType'] in specificNdTypeLst:
+                                        innerLst.append((newNd, G.node[newNd]['labelType']))
+                                        tmpCnt += 1
+                                else:
+                                    innerLst.append((newNd, G.node[newNd]['labelType']))
+                                    tmpCnt += 1
+                                        
                             if innerLst in queryGraphLst:
                                 innerLst.pop()
                             elif innerLst not in queryGraphLst and tmpCnt >= StarQuerySpecNodes[dstTypeIndex]:  #safisfy specific number
@@ -308,8 +314,7 @@ class ClsSubgraphExtraction(object):
                             j += 1
                         
                         prevj = j
-                                
-                                 
+                                                                 
         return None
         
 
