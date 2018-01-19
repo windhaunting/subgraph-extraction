@@ -357,7 +357,7 @@ class ClsSubgraphExtraction(object):
             
             if queryGraphLst is not None:
                 writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
-                for i, specNumLst in enumerate(queryGraphLst[:(len(dstTypeLst)-1)]):
+                for i, specNumLst in enumerate(queryGraphLst[:(len(dstTypeLst))]):
                     inputStr = ""
                     for tpl in specNumLst[:-1]:         #except last element
                         inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
