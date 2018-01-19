@@ -364,8 +364,8 @@ class ClsSubgraphExtraction(object):
                     inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
                     writeLst.append(inputStr)  
                 
-            writeListRowToFileWriterTsv(fd, writeLst, '\t')
-            
+                writeListRowToFileWriterTsv(fd, writeLst, '\t')
+        fd.close()
 
     def funcExecuteExtractQueryProduct(self, G, outFile):
         '''
