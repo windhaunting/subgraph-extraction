@@ -353,15 +353,16 @@ class ClsSubgraphExtraction(object):
              
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
 
-            print("356 len queryGraphLst ", len(queryGraphLst))
+            print("356 len queryGraphLst ", len(dstTypeLst), len(queryGraphLst))
+            
             if queryGraphLst is not None:
                 writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
-                for i, specNumLst in enumerate(queryGraphLst):
+                for i, specNumLst in enumerate(queryGraphLst[:(len(dstTypeLst)-1)]):
                     inputStr = ""
-                    for tpl in specNumLst[:-1]:
+                    for tpl in specNumLst[:-1]:         #except last element
                         inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
                     
-                    inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
+                    inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])         #add last element
                     writeLst.append(inputStr)  
                 
                 writeListRowToFileWriterTsv(fd, writeLst, '\t')
