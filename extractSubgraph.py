@@ -329,7 +329,7 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
 
         #get
-        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,5)]  #    #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
+        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,6), (8, 8), (10,10)]  #    #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
         #clear output file first
         hopsVisited = 1
     
@@ -352,15 +352,17 @@ class ClsSubgraphExtraction(object):
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
              
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
-    
-            writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
-            for i, specNumLst in enumerate(queryGraphLst):
-                inputStr = ""
-                for tpl in specNumLst[:-1]:
-                    inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
-                
-                inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
-                writeLst.append(inputStr)  
+
+            print("356 len queryGraphLst ", len(queryGraphLst))
+            if queryGraphLst is not None:
+                writeLst = []               #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
+                for i, specNumLst in enumerate(queryGraphLst):
+                    inputStr = ""
+                    for tpl in specNumLst[:-1]:
+                        inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
+                    
+                    inputStr += str(specNumLst[-1][0]) + "," + str(specNumLst[-1][1])  + ";" + str(dstTypeLst[i])
+                    writeLst.append(inputStr)  
                 
             writeListRowToFileWriterTsv(fd, writeLst, '\t')
             
@@ -721,7 +723,7 @@ class ClsSubgraphExtraction(object):
         '''
         query graph subtraction
         '''
-        '''
+        
         inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
         inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
@@ -729,7 +731,7 @@ class ClsSubgraphExtraction(object):
         outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
         
         self.funcExecuteExtractQuerySynthetic(G, outFile)
-        '''
+        
         
         '''
         ciscoNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
@@ -738,7 +740,7 @@ class ClsSubgraphExtraction(object):
         
         G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
-        
+        '''
         '''
         
         dblpNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
@@ -749,6 +751,7 @@ class ClsSubgraphExtraction(object):
 
         self.funcExecuteExtractQueryDblp(G, outFile)
         
+        '''
         
         
     def subgraphExtractRatiosExecute(self):
