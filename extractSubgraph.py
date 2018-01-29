@@ -431,9 +431,9 @@ class ClsSubgraphExtraction(object):
                         #[DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value,
                         # DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.PROCEEDINGS.value] 
         
-        specNodesQueryNodesLst = [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6, 3), (6,5), (7,6), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-        hopsVisited = 3
+        hopsVisited = 1
 
         fd = open(outFile,'a')
         for tpls in specNodesQueryNodesLst:
@@ -456,7 +456,7 @@ class ClsSubgraphExtraction(object):
             print("395 len queryGraphLst ", queryGraphLst, dstTypeLst)
             if queryGraphLst is not None:
                 writeLst = []              #format: x,x;x,x;    x,x;,x,x....
-                for i, specNumLst in enumerate(queryGraphLst):
+                for i, specNumLst in enumerate(queryGraphLst[:(len(dstTypeLst))]): # if generated queryGraphLst more than the dstTypeLst
                     inputStr = ""
                     for tpl in specNumLst[:-1]:
                         inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
@@ -734,6 +734,7 @@ class ClsSubgraphExtraction(object):
         self.funcExecuteExtractQuerySynthetic(G, outFile)
         '''
         
+        '''
         ciscoNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
         ciscoEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
         outFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
@@ -741,16 +742,17 @@ class ClsSubgraphExtraction(object):
         G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
 
-        '''        
+        '''
+        
         dblpNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         dblpEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         G = readEdgeListToGraph(dblpEdgeListFile, dblpNodeInfoFile)
 
-        outFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/inputDblpQueryGraph/dblpDataExtractNonStarQueryGraph00"
+        outFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/inputDblpQueryGraph/generalQueryGraph/generateQuerygraphInput"
 
         self.funcExecuteExtractQueryDblp(G, outFile)
         
-        '''
+       
         
         
     def subgraphExtractRatiosExecute(self):
