@@ -317,7 +317,7 @@ class ClsSubgraphExtraction(object):
                         
                         prevj = j
                                                                  
-        return None
+        return []
         
 
                        
@@ -376,13 +376,12 @@ class ClsSubgraphExtraction(object):
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
         os.remove(outFile) if os.path.exists(outFile) else None
         
-        
        # specNodeNum = 13
        # queryNodeNum = 10
         wholeTypeLst =  [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.BUGID.value, 
                          PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.TECHNOLOGY.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
         
-        specNodesQueryNodesLst = [(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,6), (8, 8), (10,10)] #[(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         hopsVisited = 1
         
         fd = open(outFile,'a')
@@ -405,10 +404,10 @@ class ClsSubgraphExtraction(object):
         
             queryGraphLst = self.funcExtractSubGraphHopped(G, startNodeLst, endNodeLst, specNodeNum, queryNodeNum, specificNdTypeLst, dstTypeLst, wholeTypeLst, hopsVisited)
     
-            print("395 len queryGraphLst ", len(queryGraphLst))
+            print("395 len queryGraphLst ", len(queryGraphLst), len(dstTypeLst))
             if queryGraphLst is not None:
                 writeLst = []              #format: node11, node11Type;node12, node12Type;dsttype1    node21, node21Type;node22, node22Type;dsttype2....
-                for i, specNumLst in enumerate(queryGraphLst):
+                for i, specNumLst in enumerate(queryGraphLst[:(len(dstTypeLst))]):
                     inputStr = ""
                     for tpl in specNumLst[:-1]:
                         inputStr += str(tpl[0]) + "," + str(tpl[1]) + ";"
@@ -737,7 +736,7 @@ class ClsSubgraphExtraction(object):
         
         ciscoNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
         ciscoEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
-        outFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/inputQueryGraph/ciscoDataExtractNonStarQueryGraph00"
+        outFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
         
         G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
