@@ -725,6 +725,7 @@ class ClsSubgraphExtraction(object):
         query graph subtraction
         '''
         
+        '''
         inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
         inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
@@ -732,18 +733,16 @@ class ClsSubgraphExtraction(object):
         outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
         
         self.funcExecuteExtractQuerySynthetic(G, outFile)
-        
-        
         '''
+        
         ciscoNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
         ciscoEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
         outFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/inputQueryGraph/ciscoDataExtractNonStarQueryGraph00"
         
         G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         self.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
-        '''
-        '''
-        
+
+        '''        
         dblpNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         dblpEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         G = readEdgeListToGraph(dblpEdgeListFile, dblpNodeInfoFile)
