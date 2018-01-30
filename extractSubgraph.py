@@ -433,7 +433,7 @@ class ClsSubgraphExtraction(object):
         
         specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6, 3), (6,5), (7,6), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-        hopsVisited = 2
+        hopsVisited = 3
 
         fd = open(outFile,'a')
         for tpls in specNodesQueryNodesLst:
