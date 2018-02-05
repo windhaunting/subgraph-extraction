@@ -329,7 +329,7 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
 
         #get
-        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,6), (8, 8), (10,10)]  #    #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
+        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,7), (8, 8), (10,10)]  #    #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
         #clear output file first
         hopsVisited = 1
     
@@ -381,7 +381,7 @@ class ClsSubgraphExtraction(object):
         wholeTypeLst =  [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.BUGID.value, 
                          PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.TECHNOLOGY.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
         
-        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,6), (8, 8), (10,10)] #[(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,7), (8, 8), (10,10)] #[(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         hopsVisited = 1
         
         fd = open(outFile,'a')
@@ -431,7 +431,7 @@ class ClsSubgraphExtraction(object):
                         #[DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value,
                         # DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.PROCEEDINGS.value] 
         
-        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6, 3), (6,5), (7,6), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
         hopsVisited = 3
 
