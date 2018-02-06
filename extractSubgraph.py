@@ -445,7 +445,7 @@ class ClsSubgraphExtraction(object):
             specificNdTypeLst = [DBLPDATATYPE.TOPIC.value]
                    
             for i in range(0, queryNodeNum-1):
-                dstTypeLst.append(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
+                dstTypeLst.append(DBLPDATATYPE.PEOPLE.value)    #(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
