@@ -488,6 +488,7 @@ class ClsSubgraphExtraction(object):
     def executeSubgraphExtractFromDatagraph(self, G, outputDir):
         '''
         #extract subgraph from any data graph
+        # then write into file  with edge list format
         '''
         #10%, 20%, 50%, 80%, 100
       
