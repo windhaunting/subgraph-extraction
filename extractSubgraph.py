@@ -760,9 +760,19 @@ class ClsSubgraphExtraction(object):
         '''
         data graph subtraction for dblp data
         '''
+        
+        #data graph subtraction for synthetic  data
+        syntheticDataEdgeListFile = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
+        syntheticDataNodeInfoFile = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
+        
+        G = readEdgeListToGraph(syntheticDataEdgeListFile, syntheticDataNodeInfoFile)
+
+        outputDir = "output/syntheticDataGraphExtractOut/"         # output directory
+        #self.executeSubgraphExtractFromDatagraph(G, outputDir)
+        
         inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
-        outputDir = "output/dblpDataGraphExtractOut/"       #output directory
+        #outputDir = "output/dblpDataGraphExtractOut/"       #output directory
         #G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
         #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
         
@@ -770,17 +780,17 @@ class ClsSubgraphExtraction(object):
         #query graph subtraction from data subgraph
         inputDblpNodeInfo01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
         inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
-        outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-        subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+        #outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
+        #subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
         
         
         #data graph subtraction for cisco data
-        ciscoNodeInfoFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphNodeInfo"
-        ciscoAdjacentListFile = "../../../hierarchicalNetworkQuery/inputData/ciscoProductVulnerability/newCiscoGraphAdjacencyList"
-    
-        # G = readCiscoDataGraph(ciscoAdjacentListFile, ciscoNodeInfoFile)
-        # outputDir = "../../../hierarchicalNetworkQuery/hierarchicalQueryPython/output/ciscoProductDataGraphExtractOut/"
-        # subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
+        ciscoEdgeListFile = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
+        ciscoNodeInfoFile  = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
+        
+        #G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
+        #outputDir = "output/ciscoDataGraphExtractOut/"         # output directory
+        #self.executeSubgraphExtractFromDatagraph(G, outputDir)
             
     
         #query graph extraction from cisco data graph ( all ratios of data graph)
@@ -795,16 +805,17 @@ class ClsSubgraphExtraction(object):
         
 #main 
 def main():
-    #subgraphForQueryExecute()
-    #subgraphExtractRatiosExecute()
+    subgraphExtractionObj = ClsSubgraphExtraction()
+    subgraphExtractionObj.subgraphExtractRatiosExecute()
     
+
     #funcMainStarQueryExatractCiscoProduct()            
     #funcMainStarQueryExatractSyntheticGraph()
     
     #funcMainStarQueryExatractDblpProduct()
 
-    subgraphExtractionObj = ClsSubgraphExtraction()
-    subgraphExtractionObj.subgraphForQueryExecute()
+    #subgraphExtractionObj = ClsSubgraphExtraction()
+    #subgraphExtractionObj.subgraphForQueryExecute()
     
     
 if __name__== "__main__":
