@@ -611,7 +611,8 @@ class ClsSubgraphExtraction(object):
         
         self.subFunctionStarQueryExtract(G, hierarchicalLevelTypes, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited)
         
-    
+
+        
     def subFunctionStarQueryExtract(self, G, hierarchicalLevelTypes, totalExpectedExtractedHierarchicalNodes, totalHierarchicalNodesTypeLst, nonHierarchicalNodeTypesLst, totalNonHierarchicalNodes, hopsVisited):
         '''
         1)specific node number in total
@@ -722,7 +723,7 @@ class ClsSubgraphExtraction(object):
     
     def subgraphForQueryExecute(self):
         '''
-        query graph subtraction
+        query graph subtraction      nonstar query including star query graph
         '''
         
         '''
@@ -745,15 +746,27 @@ class ClsSubgraphExtraction(object):
 
         '''
         
+        '''
         dblpNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         dblpEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         G = readEdgeListToGraph(dblpEdgeListFile, dblpNodeInfoFile)
 
         outFile = "../../GraphQuerySearchRelatedPractice/Data/dblpParserGraph/output/inputDblpQueryGraph/generalQueryGraph/generateQuerygraphInput"
-
         self.funcExecuteExtractQueryDblp(G, outFile)
-        
+        '''
        
+        
+        # query graph from subgraph of data graph  10%, 20,... 80% subgraph
+        
+        inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
+        inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
+        
+        G = readEdgeListToGraph(inputEdgeListfilePath, inputNodeInfoFilePath)
+        outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
+        
+        self.funcExecuteExtractQuerySynthetic(G, outFile)
+        
+        
         
         
     def subgraphExtractRatiosExecute(self):
@@ -801,7 +814,7 @@ class ClsSubgraphExtraction(object):
     
        # subgraphExtractionObj.funcExecuteExtractQueryProduct(G, outFile)             #extract query graph from data graph
         
-
+       
         
 #main 
 def main():
