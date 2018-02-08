@@ -762,13 +762,13 @@ class ClsSubgraphExtraction(object):
         '''
         
         #data graph subtraction for synthetic  data
-        syntheticDataEdgeListFile = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
-        syntheticDataNodeInfoFile = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
+        syntheticDataEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
+        syntheticDataNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
         G = readEdgeListToGraph(syntheticDataEdgeListFile, syntheticDataNodeInfoFile)
 
         outputDir = "output/syntheticDataGraphExtractOut/"         # output directory
-        #self.executeSubgraphExtractFromDatagraph(G, outputDir)
+        self.executeSubgraphExtractFromDatagraph(G, outputDir)
         
         inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
@@ -785,8 +785,8 @@ class ClsSubgraphExtraction(object):
         
         
         #data graph subtraction for cisco data
-        ciscoEdgeListFile = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
-        ciscoNodeInfoFile  = "/home/fubao/workDir/ResearchProjects/GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
+        ciscoEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/edgeListPart1.0"
+        ciscoNodeInfoFile  = "../../GraphQuerySearchRelatedPractice/Data/ciscoDataGraph/ciscoDataGraphInfo1.0/nodeInfoPart1.0"
         
         #G = readEdgeListToGraph(ciscoEdgeListFile, ciscoNodeInfoFile)
         #outputDir = "output/ciscoDataGraphExtractOut/"         # output directory
