@@ -329,7 +329,7 @@ class ClsSubgraphExtraction(object):
         os.remove(outFile) if os.path.exists(outFile) else None
 
         #get
-        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,7), (8, 8), (10,10)]  #    #[(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
+        specNodesGeneralQueryNodesLst = [(2, 1),(4, 2), (6,3)]   #  [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,7), (8, 8), (10,10)]  #    [(2, 1),(4, 2), (6,3)]   # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]   
         #clear output file first
         hopsVisited = 1
     
@@ -758,14 +758,15 @@ class ClsSubgraphExtraction(object):
         
         # query graph from subgraph of data graph  10%, 20,... 80% subgraph
         
-        inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
-        inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
+        inputDataGraphfileDir = "output/syntheticDataGraphExtractOut/"
         
-        G = readEdgeListToGraph(inputEdgeListfilePath, inputNodeInfoFilePath)
-        outFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/inputQueryGraph/generalQueryGraph/generateQuerygraphInput"
-        
-        self.funcExecuteExtractQuerySynthetic(G, outFile)
-        
+        ratios = ["0.1", "0.2", "0.5", "0.8"]     #1.0 is also there
+        for r in ratios:
+            G = readEdgeListToGraph(inputDataGraphfileDir + "edgeListPart" + r, inputDataGraphfileDir + "nodeInfoPart" + r)
+            outFile = inputDataGraphfileDir + "inputGeneralQueryGraph/generateQuerygraphInput" + r
+            
+            self.funcExecuteExtractQuerySynthetic(G, outFile)
+            
         
         
         
