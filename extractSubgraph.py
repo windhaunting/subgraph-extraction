@@ -758,11 +758,11 @@ class ClsSubgraphExtraction(object):
         
         # query graph from subgraph of data graph  10%, 20,... 80% subgraph
         
-        inputDataGraphfileDir = "output/syntheticDataGraphExtractOut/"
+        inputDataGraphfileDir = "output/syntheticDataGraphExtractOut/dataGraphInfo"
         
         ratios = ["0.1", "0.2", "0.5", "0.8"]     #1.0 is also there
         for r in ratios:
-            G = readEdgeListToGraph(inputDataGraphfileDir + "edgeListPart" + r, inputDataGraphfileDir + "nodeInfoPart" + r)
+            G = readEdgeListToGraph(inputDataGraphfileDir  + r + "/edgeListPart" + r, inputDataGraphfileDir + r + "/nodeInfoPart" + r)
             outFile = inputDataGraphfileDir + "inputGeneralQueryGraph/generateQuerygraphInput" + r
             
             self.funcExecuteExtractQuerySynthetic(G, outFile)
@@ -779,10 +779,10 @@ class ClsSubgraphExtraction(object):
         syntheticDataEdgeListFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
         syntheticDataNodeInfoFile = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
-        G = readEdgeListToGraph(syntheticDataEdgeListFile, syntheticDataNodeInfoFile)
+        #G = readEdgeListToGraph(syntheticDataEdgeListFile, syntheticDataNodeInfoFile)
 
-        outputDir = "output/syntheticDataGraphExtractOut/"         # output directory
-        self.executeSubgraphExtractFromDatagraph(G, outputDir)
+        #outputDir = "output/syntheticDataGraphExtractOut/"         # output directory
+        #self.executeSubgraphExtractFromDatagraph(G, outputDir)
         
         inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
@@ -820,7 +820,7 @@ class ClsSubgraphExtraction(object):
 #main 
 def main():
     subgraphExtractionObj = ClsSubgraphExtraction()
-    subgraphExtractionObj.subgraphExtractRatiosExecute()
+    #subgraphExtractionObj.subgraphExtractRatiosExecute()
     
 
     #funcMainStarQueryExatractCiscoProduct()            
@@ -828,8 +828,7 @@ def main():
     
     #funcMainStarQueryExatractDblpProduct()
 
-    #subgraphExtractionObj = ClsSubgraphExtraction()
-    #subgraphExtractionObj.subgraphForQueryExecute()
+    subgraphExtractionObj.subgraphForQueryExecute()
     
     
 if __name__== "__main__":
