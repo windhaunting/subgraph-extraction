@@ -825,7 +825,6 @@ def main():
 
     #funcMainStarQueryExatractCiscoProduct()            
     #funcMainStarQueryExatractSyntheticGraph()
-    
     #funcMainStarQueryExatractDblpProduct()
 
     subgraphExtractionObj.subgraphForQueryExecute()
