@@ -727,6 +727,7 @@ class ClsSubgraphExtraction(object):
         '''
         
         '''
+        # extract query graph syntehtic data
         inputEdgeListfilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphEdgeListInfo.tsv"
         inputNodeInfoFilePath = "../../GraphQuerySearchRelatedPractice/Data/syntheticGraph/syntheticGraph_hierarchiRandom/syntheticGraphNodeInfo.tsv"
         
@@ -756,8 +757,7 @@ class ClsSubgraphExtraction(object):
         '''
        
         
-        # query graph from subgraph of data graph  10%, 20,... 80% subgraph
-        
+        # extract subgraph of data graph  10%, 20,... 80% subgraph
         inputDataGraphfileDir = "output/syntheticDataGraphExtractOut/dataGraphInfo"
         
         ratios = ["0.1", "0.2", "0.5", "0.8"]     #1.0 is also there
