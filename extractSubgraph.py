@@ -766,9 +766,7 @@ class ClsSubgraphExtraction(object):
             outFile = inputDataGraphfileDir + "inputGeneralQueryGraph/generateQuerygraphInput" + r
             
             self.funcExecuteExtractQuerySynthetic(G, outFile)
-            
-        
-        
+                    
         
     def subgraphExtractRatiosExecute(self):
         '''
