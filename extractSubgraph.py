@@ -781,6 +781,17 @@ class ClsSubgraphExtraction(object):
 
         #outputDir = "output/syntheticDataGraphExtractOut/"         # output directory
         #self.executeSubgraphExtractFromDatagraph(G, outputDir)
+        #G = readEdgeListToGraph(syntheticDataEdgeListFile, syntheticDataNodeInfoFile)
+        
+        
+        #data graph subtraction for synthetic  data 10% data graph
+        syntheticDataEdgeListFile01 = "output/syntheticDataGraphExtractOut/edgeListPart0.1"
+        syntheticDataNodeInfoFile01 = "output/syntheticDataGraphExtractOut/nodeInfoPart0.1"
+        G = readEdgeListToGraph(syntheticDataEdgeListFile01, syntheticDataNodeInfoFile01)
+
+        outputDir = "output/syntheticDataGraphExtractOut/inputGeneralQueryGraph"         # output directory
+        
+        
         
         inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
