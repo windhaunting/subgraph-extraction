@@ -756,17 +756,19 @@ class ClsSubgraphExtraction(object):
         self.funcExecuteExtractQueryDblp(G, outFile)
         '''
        
-        
-        # extract subgraph of data graph  10%, 20,... 80% subgraph
-        inputDataGraphfileDir = "output/syntheticDataGraphExtractOut/dataGraphInfo"
-        
-        ratios = ["0.1", "0.2", "0.5", "0.8"]     #1.0 is also there
-        for r in ratios:
-            G = readEdgeListToGraph(inputDataGraphfileDir  + r + "/edgeListPart" + r, inputDataGraphfileDir + r + "/nodeInfoPart" + r)
-            outFile = inputDataGraphfileDir + "inputGeneralQueryGraph/generateQuerygraphInput" + r
+        #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
+        dataPartPrefixs = ["0.1"]
+        for prefix in dataPartPrefixs:
             
-            self.funcExecuteExtractQuerySynthetic(G, outFile)
-                    
+            syntheticDataEdgeListFileTmp = "output/syntheticDataGraphExtractOut/dataGraphInfo" + prefix+ "/edgeListPart" + prefix
+            syntheticDataNodeInfoFileTmp = "output/syntheticDataGraphExtractOut/dataGraphInfo" + prefix +"/nodeInfoPart" + prefix
+            G = readEdgeListToGraph(syntheticDataEdgeListFileTmp, syntheticDataNodeInfoFileTmp)
+
+            outputDir = "output/syntheticDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix      # output directory
+        
+            self.funcExecuteExtractQuerySynthetic(G, outputDir)
+            
+       
         
     def subgraphExtractRatiosExecute(self):
         '''
@@ -784,27 +786,31 @@ class ClsSubgraphExtraction(object):
         #G = readEdgeListToGraph(syntheticDataEdgeListFile, syntheticDataNodeInfoFile)
         
         
-        #data graph subtraction for synthetic  data 10% data graph
-        syntheticDataEdgeListFile01 = "output/syntheticDataGraphExtractOut/edgeListPart0.1"
-        syntheticDataNodeInfoFile01 = "output/syntheticDataGraphExtractOut/nodeInfoPart0.1"
-        G = readEdgeListToGraph(syntheticDataEdgeListFile01, syntheticDataNodeInfoFile01)
-
-        outputDir = "output/syntheticDataGraphExtractOut/inputGeneralQueryGraph"         # output directory
+        '''
+        # extract subgraph of data graph  10%, 20,... 80% subgraph
+        inputDataGraphfileDir = "output/syntheticDataGraphExtractOut/dataGraphInfo"
         
+        ratios = ["0.1", "0.2", "0.5", "0.8"]     #1.0 is also there
+        for r in ratios:
+            G = readEdgeListToGraph(inputDataGraphfileDir  + r + "/edgeListPart" + r, inputDataGraphfileDir + r + "/nodeInfoPart" + r)
+            outFile = inputDataGraphfileDir + "inputGeneralQueryGraph/generateQuerygraphInput" + r
+            
+            self.funcExecuteExtractQuerySynthetic(G, outFile)
+        '''
         
-        
+            
         inputEdgeListFile = "../dblpParserGraph/output/finalOutput/newOutEdgeListFile.tsv"
         inputDblpNodeInfoFile = "../dblpParserGraph/output/finalOutput/newOutNodeNameToIdFile.tsv"
         #outputDir = "output/dblpDataGraphExtractOut/"       #output directory
         #G = readdblpDataGraph(inputEdgeListFile, inputDblpNodeInfoFile)
-        #subgraphExtractionObj.executeSubgraphExtractFromDatagraph(G, outputDir)
+        #self.executeSubgraphExtractFromDatagraph(G, outputDir)
         
         
         #query graph subtraction from data subgraph
         inputDblpNodeInfo01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/nodeInfoPart0.1"   
         inputEdgeList01File = "output/dblpDataGraphExtractOut/dataGraphInfo0.1/edgeListPart0.1"   
         #outFile = "output/extractDblpQuerySizeGraph/subDatagraphExtract/dblpData01ExtractQueryGraph.tsv"
-        #subgraphExtractionObj.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
+        #self.funcExecuteExtractQueryDblp(inputDblpNodeInfo01File, inputEdgeList01File, outFile)             #extract query graph from data graph
         
         
         #data graph subtraction for cisco data
