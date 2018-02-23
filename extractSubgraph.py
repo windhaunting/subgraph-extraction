@@ -757,7 +757,7 @@ class ClsSubgraphExtraction(object):
         '''
        
         #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
-        dataPartPrefixs = ["0.1"]
+        dataPartPrefixs = ["0.1", "0.2", "0.5", "0.8", "1.0"]
         for prefix in dataPartPrefixs:
             
             syntheticDataEdgeListFileTmp = "output/syntheticDataGraphExtractOut/dataGraphInfo" + prefix+ "/edgeListPart" + prefix
