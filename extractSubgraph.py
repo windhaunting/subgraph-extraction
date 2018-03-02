@@ -260,7 +260,7 @@ class ClsSubgraphExtraction(object):
             #timeBegin = time.time()
            
             #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-            queryNodesStarQuery = self.getRequiredPaths(G, src, 400, 400, dstTypeLst)
+            queryNodesStarQuery = self.getRequiredPaths(G, src, 600, 600, dstTypeLst)
             
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
             if queryNodesStarQuery is None:
@@ -431,7 +431,7 @@ class ClsSubgraphExtraction(object):
                         #[DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value,
                         # DBLPDATATYPE.INPROCEEDINGS.value, DBLPDATATYPE.PROCEEDINGS.value] 
         
-        specNodesQueryNodesLst =  [(5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst = [(2, 1), (4, 2), (6,3)]  # [(5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
         hopsVisited = 3
 
@@ -445,7 +445,7 @@ class ClsSubgraphExtraction(object):
             specificNdTypeLst = [DBLPDATATYPE.TOPIC.value]
                    
             for i in range(0, queryNodeNum-1):
-                dstTypeLst.append(DBLPDATATYPE.PEOPLE.value)    #(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
+                dstTypeLst.append(choice(randomLst))       #  (DBLPDATATYPE.PEOPLE.value)    #(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
             endNodeLst = list(getTypeNodeSet(G, dstTypeLst[-1]))
@@ -770,19 +770,7 @@ class ClsSubgraphExtraction(object):
             self.funcExecuteExtractQuerySynthetic(G, outputDir)
         '''
         
-         #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
-        dataPartPrefixs = ["0.1", "0.2", "0.5", "0.8", "1.0"]
-        for prefix in dataPartPrefixs:
-            
-            syntheticDataEdgeListFileTmp = "output/ciscoDataGraphExtractOut/dataGraphInfo" + prefix+ "/edgeListPart" + prefix
-            syntheticDataNodeInfoFileTmp = "output/ciscoDataGraphExtractOut/dataGraphInfo" + prefix +"/nodeInfoPart" + prefix
-            G = readEdgeListToGraph(syntheticDataEdgeListFileTmp, syntheticDataNodeInfoFileTmp)
-
-            outputDir = "output/ciscoDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix         # output directory
-        
-            self.funcExecuteExtractQueryProduct(G, outputDir)
-            
-        
+        '''
         #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
         dataPartPrefixs = ["0.1", "0.2", "0.5", "0.8", "1.0"]
         for prefix in dataPartPrefixs:
@@ -794,8 +782,21 @@ class ClsSubgraphExtraction(object):
             outputDir = "output/ciscoDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix         # output directory
         
             self.funcExecuteExtractQueryProduct(G, outputDir)
-            
         
+        '''
+        
+        #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
+        dataPartPrefixs = ["0.1", "0.2"]         #   , "0.5", "0.8", "1.0"]             # ["0.1", "0.2", "0.5", "0.8", "1.0"]
+        for prefix in dataPartPrefixs:
+            
+            syntheticDataEdgeListFileTmp = "output/dblpDataGraphExtractOut/dataGraphInfo" + prefix+ "/edgeListPart" + prefix
+            syntheticDataNodeInfoFileTmp = "output/dblpDataGraphExtractOut/dataGraphInfo" + prefix +"/nodeInfoPart" + prefix
+            G = readEdgeListToGraph(syntheticDataEdgeListFileTmp, syntheticDataNodeInfoFileTmp)
+
+            outputDir = "output/dblpDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix         # output directory
+        
+            self.funcExecuteExtractQueryDblp(G, outputDir)
+            
     def subgraphExtractRatiosExecute(self):
         '''
         data graph subtraction for dblp data
