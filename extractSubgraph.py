@@ -781,6 +781,20 @@ class ClsSubgraphExtraction(object):
             outputDir = "output/ciscoDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix         # output directory
         
             self.funcExecuteExtractQueryProduct(G, outputDir)
+            
+        
+        #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
+        dataPartPrefixs = ["0.1", "0.2", "0.5", "0.8", "1.0"]
+        for prefix in dataPartPrefixs:
+            
+            syntheticDataEdgeListFileTmp = "output/ciscoDataGraphExtractOut/dataGraphInfo" + prefix+ "/edgeListPart" + prefix
+            syntheticDataNodeInfoFileTmp = "output/ciscoDataGraphExtractOut/dataGraphInfo" + prefix +"/nodeInfoPart" + prefix
+            G = readEdgeListToGraph(syntheticDataEdgeListFileTmp, syntheticDataNodeInfoFileTmp)
+
+            outputDir = "output/ciscoDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix         # output directory
+        
+            self.funcExecuteExtractQueryProduct(G, outputDir)
+            
         
     def subgraphExtractRatiosExecute(self):
         '''
