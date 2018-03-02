@@ -337,7 +337,7 @@ class ClsSubgraphExtraction(object):
                          SYNTHETICGRAPHNODETYPE.TYPE1INHERIT.value, SYNTHETICGRAPHNODETYPE.TYPE0GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE1GENERIC.value, SYNTHETICGRAPHNODETYPE.TYPE2GENERIC.value]
         specificNdTypeLst = [SYNTHETICGRAPHNODETYPE.TYPE0INHERIT.value]
         
-        fd = open(outFile,'a')
+        fd = open(outFile,'w')
         for tpls in specNodesGeneralQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
@@ -381,10 +381,10 @@ class ClsSubgraphExtraction(object):
         wholeTypeLst =  [PRODUCTDATATYPE.PRODUCT.value, PRODUCTDATATYPE.VULNERABILITY.value, PRODUCTDATATYPE.BUGID.value, 
                          PRODUCTDATATYPE.WORKAROUND.value, PRODUCTDATATYPE.TECHNOLOGY.value, PRODUCTDATATYPE.WORKGROUP.value, PRODUCTDATATYPE.PRODUCTSITE.value]
         
-        specNodesQueryNodesLst =  [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,7), (8, 8), (10,10)] #[(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
+        specNodesQueryNodesLst =  [(2, 1),(4, 2), (6,3)]  # [(2, 1),(4, 2), (4,3), (5,4), (6,3), (6,5), (7,7), (8, 8), (10,10)] #[(4,3), (6,3)]   #[(2, 1),(4, 2), (4,3), (6,3)]    #[(2, 1),(4, 2), (6,3)]    # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
         hopsVisited = 1
         
-        fd = open(outFile,'a')
+        fd = open(outFile,'w')
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
@@ -435,7 +435,7 @@ class ClsSubgraphExtraction(object):
     
         hopsVisited = 3
 
-        fd = open(outFile,'a')
+        fd = open(outFile,'w')
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
