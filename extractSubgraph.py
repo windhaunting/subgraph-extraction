@@ -260,7 +260,7 @@ class ClsSubgraphExtraction(object):
             #timeBegin = time.time()
            
             #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-            queryNodesStarQuery = self.getRequiredPaths(G, src, 600, 600, dstTypeLst)
+            queryNodesStarQuery = self.getRequiredPaths(G, src, 10000, 600, dstTypeLst)
             
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
             if queryNodesStarQuery is None:
@@ -439,12 +439,13 @@ class ClsSubgraphExtraction(object):
         for tpls in specNodesQueryNodesLst:
             specNodeNum = tpls[0]
             queryNodeNum = tpls[1]
-            dstTypeLst =  [DBLPDATATYPE.PEOPLE.value]          #  [1]*queryNodeNum
+            dstTypeLst = [] #  [DBLPDATATYPE.PEOPLE.value]          # [] [1]*queryNodeNum
             randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
              
             specificNdTypeLst = [DBLPDATATYPE.TOPIC.value]
                    
-            for i in range(0, queryNodeNum-1):
+            #for i in range(0, queryNodeNum-1):
+            for i in range(0, queryNodeNum):
                 dstTypeLst.append(choice(randomLst))       #  (DBLPDATATYPE.PEOPLE.value)    #(choice(randomLst))                         #choice(randomLst))       #[0]*queryNodeNum
             
             startNodeLst = list(getTypeNodeSet(G, dstTypeLst[0]))
