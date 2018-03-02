@@ -370,7 +370,7 @@ class ClsSubgraphExtraction(object):
 
     def funcExecuteExtractQueryProduct(self, G, outFile):
         '''
-        extract product data query graph for decomposed star queries   
+        extract cisco product data query graph for decomposed star queries   
         '''
         #nodeLst = G.nodes()
         #print ("node number: ", len(nodeLst), G.node[1]['labelType'])
@@ -756,6 +756,7 @@ class ClsSubgraphExtraction(object):
         self.funcExecuteExtractQueryDblp(G, outFile)
         '''
        
+        '''
         #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
         dataPartPrefixs = ["0.1", "0.2", "0.5", "0.8", "1.0"]
         for prefix in dataPartPrefixs:
@@ -767,8 +768,19 @@ class ClsSubgraphExtraction(object):
             outputDir = "output/syntheticDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix      # output directory
         
             self.funcExecuteExtractQuerySynthetic(G, outputDir)
+        '''
+        
+         #data graph subtraction for synthetic  data 10% data graphdataPartPrefixs
+        dataPartPrefixs = ["0.1", "0.2", "0.5", "0.8", "1.0"]
+        for prefix in dataPartPrefixs:
             
-       
+            syntheticDataEdgeListFileTmp = "output/ciscoDataGraphExtractOut/dataGraphInfo" + prefix+ "/edgeListPart" + prefix
+            syntheticDataNodeInfoFileTmp = "output/ciscoDataGraphExtractOut/dataGraphInfo" + prefix +"/nodeInfoPart" + prefix
+            G = readEdgeListToGraph(syntheticDataEdgeListFileTmp, syntheticDataNodeInfoFileTmp)
+
+            outputDir = "output/ciscoDataGraphExtractOut/inputGeneralQueryGraph/" + "queryGraphInput"+prefix         # output directory
+        
+            self.funcExecuteExtractQueryProduct(G, outputDir)
         
     def subgraphExtractRatiosExecute(self):
         '''
