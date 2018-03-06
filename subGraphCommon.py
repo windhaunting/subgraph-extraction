@@ -38,7 +38,7 @@ def getFixedHopsNodes(G, sourceNode, nodeLastTypes, hopsVisited):
         nodeInfo = queue.pop(0)
         nodeId = nodeInfo[0]
         nodeLevel = nodeInfo[1]
-        if nodeLevel == hopsVisited and G.node[nodeId]['labelType'] in nodeLastTypes:          #get the answer node
+        if nodeLevel <= hopsVisited and G.node[nodeId]['labelType'] in nodeLastTypes:          #get the answer node if nodeLevel == hopsVisited 
             explored[nodeId] = True              #added into explored list;  level arrived
             answerNodes.append(nodeId)
         elif nodeLevel > hopsVisited:
