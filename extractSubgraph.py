@@ -433,7 +433,7 @@ class ClsSubgraphExtraction(object):
         
         specNodesQueryNodesLst = [(2, 1), (4, 2), (6,3)]  # [(5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-        hopsVisited = 4
+        hopsVisited = 5
 
         fd = open(outFile,'w')
         for tpls in specNodesQueryNodesLst:
@@ -442,7 +442,7 @@ class ClsSubgraphExtraction(object):
             dstTypeLst = [] #  [DBLPDATATYPE.PEOPLE.value]          # [] [1]*queryNodeNum
             randomLst = [DBLPDATATYPE.PEOPLE.value, DBLPDATATYPE.PAPER.value, DBLPDATATYPE.TOPIC.value, DBLPDATATYPE.ARTICLE.value]
              
-            specificNdTypeLst = [DBLPDATATYPE.TOPIC.value]
+            specificNdTypeLst = [choice(randomLst)]       #[DBLPDATATYPE.TOPIC.value]
                    
             #for i in range(0, queryNodeNum-1):
             for i in range(0, queryNodeNum):
