@@ -260,7 +260,7 @@ class ClsSubgraphExtraction(object):
             #timeBegin = time.time()
            
             #allPaths =  nx.all_simple_paths(G, src, dst, cutoff= 20)     #list(nx.all_pairs_shortest_path(G))        #        nx.all_simple_paths(G, src, dst, cutoff= 20))
-            queryNodesStarQuery = self.getRequiredPaths(G, src, 10000, 600, dstTypeLst)
+            queryNodesStarQuery = self.getRequiredPaths(G, src, 600, 600, dstTypeLst)
             
             #allPaths = timelimit(60, nx.all_simple_paths, (G, src, dst, 50))
             if queryNodesStarQuery is None:
@@ -433,7 +433,7 @@ class ClsSubgraphExtraction(object):
         
         specNodesQueryNodesLst = [(2, 1), (4, 2), (6,3)]  # [(5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,7), (8, 8), (10,10)]  # [(4,3), (6,3)] #[(2, 1),(4, 2), (6,3)]   #        [(2, 1),(4, 2), (4,3), (5,4), (6,5), (7,6), (8, 8), (10,10)]
     
-        hopsVisited = 3
+        hopsVisited = 2
 
         fd = open(outFile,'w')
         for tpls in specNodesQueryNodesLst:
