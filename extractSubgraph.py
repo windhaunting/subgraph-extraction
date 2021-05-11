@@ -15,7 +15,7 @@ from random import shuffle
 
 import copy
 
-sys.path.append("../")
+#sys.path.append("../")
 
 from hierarchicalQueryPython.CommonFiles.commons  import mycsv_reader
 from hierarchicalQueryPython.CommonFiles.commons  import writeListRowToFileWriterTsv
