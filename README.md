@@ -1,7 +1,7 @@
 
 # Subgraph extraction
 
-Subgraph extraction is to extract a subgraph with a random subgraph size or differnt hops from a starting graph node.
+Subgraph extraction is a subprogram to extract a subgraph with a random subgraph size or differnt hops from a starting graph node.
 
 
 
