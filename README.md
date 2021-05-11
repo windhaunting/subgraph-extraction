@@ -1,5 +1,20 @@
-# graph_extraction
+
+# Subgraph extraction
+
+Subgraph extraction is to extract a subgraph with a random subgraph size or differnt hops from a starting graph node.
 
 
- Extract the subgraph as the query graph based on different hops
+
+## Installation  
+
+- python 3.3 or more
+
+
+
+## Algorithm Overflow
+
+- Read the graph as adjancy list or edge list
+- Shortest path traversal all the potential nodes Or Random walk nodes
+
+- Obtain the subgraph as the query graph
 
